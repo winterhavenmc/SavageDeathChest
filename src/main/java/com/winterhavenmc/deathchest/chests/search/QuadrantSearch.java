@@ -30,7 +30,8 @@ public final class QuadrantSearch extends AbstractSearch {
 
 
 	/**
-	 * An enum that implements a cartesian quadrant system, where each member defines the sign of the x and z coordinates
+	 * An enum that implements a cartesian quadrant system, where each member defines the sign of the x and z coordinates.
+	 * The x and z coordinates are used to describe a plane in the horizontal orientation, as if looking down from above.
 	 */
 	private enum Quadrant {
 		I(1,1),
