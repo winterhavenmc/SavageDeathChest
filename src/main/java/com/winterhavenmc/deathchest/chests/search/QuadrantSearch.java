@@ -33,7 +33,7 @@ public final class QuadrantSearch extends AbstractSearch {
 	 * An enum that implements a cartesian quadrant system, where each member defines the sign of the x and z coordinates.
 	 * The x and z coordinates are used to describe a plane in the horizontal orientation, as if looking down from above.
 	 */
-	private enum Quadrant {
+	enum Quadrant {
 		I(1,1),
 		II(-1,1),
 		III(-1,-1),
@@ -42,16 +42,32 @@ public final class QuadrantSearch extends AbstractSearch {
 		final int xFactor;
 		final int zFactor;
 
-
 		/**
 		 * Constructor for Quadrant enum
 		 * @param xFactor the x multiplier to achieve negative or positive sign for the quadrant member
 		 * @param zFactor the z multiplier to achieve negative or positive sign for the quadrant member
 		 */
 		Quadrant(final int xFactor, final int zFactor) {
-
 			this.xFactor = xFactor;
 			this.zFactor = zFactor;
+		}
+
+		/**
+		 * Get a value for x that is contained within this quadrant
+		 * @param x the value to be negated if necessary to become a value contained within this quadrant
+		 * @return the value for x that is contained within this quadrant
+		 */
+		int getFactoredX(int x) {
+			return x * xFactor;
+		}
+
+		/**
+		 * Get a value for z that is contained within this quadrant
+		 * @param z the value to be negated if necessary to become a value contained within this quadrant
+		 * @return the value for z that is contained within this quadrant
+		 */
+		int getFactoredZ(int z) {
+			return z * zFactor;
 		}
 	}
 
@@ -139,9 +155,9 @@ public final class QuadrantSearch extends AbstractSearch {
 							}
 
 							// set new test location
-							testLocation.add(x * quadrant.xFactor,
-									y * verticalAxis.yFactor,
-									z * quadrant.zFactor);
+							testLocation.add(quadrant.getFactoredX(x),
+									verticalAxis.getFactoredY(y),
+									quadrant.getFactoredZ(z));
 
 							// get result for test location
 							searchResult = validateChestLocation(player, testLocation, chestSize);
