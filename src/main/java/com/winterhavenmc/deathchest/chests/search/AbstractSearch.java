@@ -191,6 +191,10 @@ abstract class AbstractSearch implements Search {
 		VerticalAxis(final int yFactor) {
 			this.yFactor = yFactor;
 		}
+
+		int getFactoredY(int y) {
+			return y + this.yFactor;
+		}
 	}
 
 }

@@ -25,12 +25,11 @@ import javax.annotation.Nonnull;
 import java.util.*;
 
 
-abstract class SubcommandAbstract implements Subcommand {
-
+abstract class SubcommandAbstract implements Subcommand
+{
 	protected String name;
 	protected String usageString;
 	protected MessageId description;
-	protected int minArgs;
 	protected int maxArgs;
 
 	@Override
@@ -54,11 +53,6 @@ abstract class SubcommandAbstract implements Subcommand {
 	}
 
 	@Override
-	public int getMinArgs() {
-		return this.minArgs;
-	}
-
-	@Override
 	public int getMaxArgs() {
 		return this.maxArgs;
 	}
@@ -67,8 +61,8 @@ abstract class SubcommandAbstract implements Subcommand {
 	public List<String> onTabComplete(final @Nonnull CommandSender sender,
 	                                  final @Nonnull Command command,
 	                                  final @Nonnull String alias,
-	                                  final String[] args) {
-
+	                                  final String[] args)
+	{
 		return Collections.emptyList();
 	}
 

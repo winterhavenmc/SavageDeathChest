@@ -287,7 +287,8 @@ public abstract class AbstractDeployment implements Deployment {
 		}
 
 		// if chest protection is enabled and chest-protection-time is set (non-zero), send message
-		if (plugin.getConfig().getBoolean("chest-protection") && chestProtectionTime > 0) {
+		if (plugin.getConfig().getBoolean("chest-protection") && chestProtectionTime > 0)
+		{
 			plugin.messageBuilder.compose(player, MessageId.CHEST_DEPLOYED_PROTECTION_TIME)
 					.setMacro(Macro.OWNER, player.getName())
 					.setMacro(Macro.LOCATION, deathChest.getLocation())
@@ -323,7 +324,8 @@ public abstract class AbstractDeployment implements Deployment {
 		}
 
 		// send message based on result
-		switch (result.getResultCode()) {
+		switch (result.getResultCode())
+		{
 			case SUCCESS -> plugin.messageBuilder.compose(player, MessageId.CHEST_SUCCESS)
 					.setMacro(Macro.LOCATION, result.getLocation())
 					.setMacro(Macro.EXPIRATION_DURATION, MINUTES.toMillis(expireTime))
@@ -367,8 +369,8 @@ public abstract class AbstractDeployment implements Deployment {
 	 *
 	 * @param result the search result of a death chest deployment
 	 */
-	private void logResult(final SearchResult result) {
-
+	private void logResult(final SearchResult result)
+	{
 		if (result == null) {
 			plugin.getLogger().info("SearchResult is null!");
 			return;

@@ -30,61 +30,62 @@ import org.bukkit.entity.Player;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
-public class ChestSign {
 
+public class ChestSign
+{
 	private final PluginMain plugin;
 	private final Player player;
 	private final DeathChest deathChest;
 
 
 	// new chestSign(plugin, player, deathChest).place();
-	public ChestSign(final PluginMain plugin, final Player player, final DeathChest deathChest) {
+	public ChestSign(final PluginMain plugin, final Player player, final DeathChest deathChest)
+	{
 		this.plugin = plugin;
 		this.player = player;
 		this.deathChest = deathChest;
 	}
 
-	public void place() {
 
+	public void place()
+	{
 		// if chest-signs are not enabled in configuration, do nothing and return
-		if (!plugin.getConfig().getBoolean("chest-signs")) {
-			return;
-		}
+		if (!plugin.getConfig().getBoolean("chest-signs")) { return; }
 
 		// get chest block location
-		Location chestBlockLocation = deathChest.getLocation();
+		deathChest.getOptLocation().ifPresent(location -> {
 
-		if (chestBlockLocation == null) {
-			return;
-		}
+			// get chest block at location
+			Block chestBlock = location.getBlock();
 
-		// get chest block at location
-		Block chestBlock = chestBlockLocation.getBlock();
+			// get chest block state
+			BlockState chestState = chestBlock.getState();
 
-		// get chest block state
-		BlockState chestState = chestBlock.getState();
+			// if block state is not chest, do nothing and return
+			if (!(chestState.getBlockData() instanceof Chest)) {
+				return;
+			}
 
-		// if block state is not chest, do nothing and return
-		if (!(chestState.getBlockData() instanceof Chest)) {
-			return;
-		}
+			// get chest block face direction from block data
+			BlockFace blockFace = ((Chest) chestState.getBlockData()).getFacing();
 
-		// get chest block face direction from block data
-		BlockFace blockFace = ((Chest) chestState.getBlockData()).getFacing();
+			// if chest face is valid location, create wall sign
+			if (isValidSignLocation(chestBlock.getRelative(blockFace).getLocation()))
+			{
+				placeFrontSign(chestBlock, player, deathChest);
+			}
 
-		// if chest face is valid location, create wall sign
-		if (isValidSignLocation(chestBlock.getRelative(blockFace).getLocation())) {
-			placeFrontSign(chestBlock, player, deathChest);
-		}
-		// if front sign could not be placed and holograms are not enabled, place top sign
-		else if (!plugin.getConfig().getBoolean("holograms-enabled")) {
-			placeTopSign(chestBlock, player, deathChest);
-		}
+			// if front sign could not be placed and holograms are not enabled, place top sign
+			else if (!plugin.getConfig().getBoolean("holograms-enabled"))
+			{
+				placeTopSign(chestBlock, player, deathChest);
+			}
+		});
 	}
 
 
-	private void placeFrontSign(final Block chestBlock, final Player player, final DeathChest deathChest) {
-
+	private void placeFrontSign(final Block chestBlock, final Player player, final DeathChest deathChest)
+	{
 		// get block adjacent to chest facing player direction
 		Block signBlock = chestBlock.getRelative(LocationUtilities.getCardinalBlockFace(player));
 
@@ -101,8 +102,8 @@ public class ChestSign {
 	}
 
 
-	private void placeTopSign(final Block chestBlock, final Player player, final DeathChest deathChest) {
-
+	private void placeTopSign(final Block chestBlock, final Player player, final DeathChest deathChest)
+	{
 		// get block on top of chest
 		Block signBlock = chestBlock.getRelative(BlockFace.UP);
 
@@ -119,8 +120,8 @@ public class ChestSign {
 	}
 
 
-	private void finalizeSign(final Block signBlock, final Player player, final DeathChest deathChest) {
-
+	private void finalizeSign(final Block signBlock, final Player player, final DeathChest deathChest)
+	{
 		// put configured text on sign
 		setSignText(signBlock, player);
 
@@ -135,8 +136,8 @@ public class ChestSign {
 	}
 
 
-	private void setSignText(final Block signBlock, final Player player) {
-
+	private void setSignText(final Block signBlock, final Player player)
+	{
 		// get block state of sign block
 		BlockState signBlockState = signBlock.getState();
 
@@ -191,8 +192,8 @@ public class ChestSign {
 	 * @param location Location to check
 	 * @return boolean {@code true} if location is valid for sign placement, {@code false} if not
 	 */
-	private boolean isValidSignLocation(final Location location) {
-
+	private boolean isValidSignLocation(final Location location)
+	{
 		// check for null parameter
 		if (location == null) {
 			return false;

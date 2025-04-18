@@ -26,7 +26,6 @@ import com.winterhavenmc.deathchest.permissions.PermissionCheck;
 import com.winterhavenmc.deathchest.permissions.QuickLootAction;
 import com.winterhavenmc.deathchest.permissions.ResultAction;
 import com.winterhavenmc.deathchest.tasks.DeployChestTask;
-
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -44,8 +43,8 @@ import java.util.LinkedList;
  * A class that contains {@code EventHandler} methods to process player related events
  */
 
-public final class PlayerEventListener implements Listener {
-
+public final class PlayerEventListener implements Listener
+{
 	// reference to main class
 	private final PluginMain plugin;
 
@@ -61,8 +60,8 @@ public final class PlayerEventListener implements Listener {
 	 *
 	 * @param plugin reference to main class
 	 */
-	public PlayerEventListener(final PluginMain plugin) {
-
+	public PlayerEventListener(final PluginMain plugin)
+	{
 		// set reference to main class
 		this.plugin = plugin;
 
@@ -83,14 +82,15 @@ public final class PlayerEventListener implements Listener {
 	 * @param event PlayerDeathEvent
 	 */
 	@EventHandler(priority = EventPriority.HIGH)
-	public void onPlayerDeath(final PlayerDeathEvent event) {
-
+	public void onPlayerDeath(final PlayerDeathEvent event)
+	{
 		// get event player
 		Player player = event.getEntity();
 
 		// if player's current world is not enabled in config,
 		// do nothing and allow inventory items to drop on ground
-		if (!plugin.worldManager.isEnabled(player.getWorld())) {
+		if (!plugin.worldManager.isEnabled(player.getWorld()))
+		{
 			plugin.messageBuilder.compose(player, MessageId.CHEST_DENIED_WORLD_DISABLED)
 					.setMacro(Macro.LOCATION, player.getLocation())
 					.send();
@@ -99,7 +99,8 @@ public final class PlayerEventListener implements Listener {
 
 		// if player does not have permission for death chest creation,
 		// do nothing and allow inventory items to drop on ground
-		if (!player.hasPermission("deathchest.chest")) {
+		if (!player.hasPermission("deathchest.chest"))
+		{
 			plugin.messageBuilder.compose(player, MessageId.CHEST_DENIED_PERMISSION)
 					.setMacro(Macro.LOCATION, player.getLocation())
 					.send();
@@ -110,7 +111,8 @@ public final class PlayerEventListener implements Listener {
 		// and creative-deploy is configured false,
 		// and player does not have creative-deploy permission override:
 		// output message and return
-		if (permissionCheck.isCreativeDeployDisabled(player)) {
+		if (permissionCheck.isCreativeDeployDisabled(player))
+		{
 			plugin.messageBuilder.compose(player, MessageId.CREATIVE_MODE)
 					.setMacro(Macro.LOCATION, player.getLocation())
 					.send();
@@ -118,7 +120,8 @@ public final class PlayerEventListener implements Listener {
 		}
 
 		// if player inventory is empty, output message and return
-		if (event.getDrops().isEmpty()) {
+		if (event.getDrops().isEmpty())
+		{
 			plugin.messageBuilder.compose(player, MessageId.INVENTORY_EMPTY)
 					.setMacro(Macro.LOCATION, player.getLocation())
 					.send();
@@ -126,7 +129,8 @@ public final class PlayerEventListener implements Listener {
 		}
 
 		// if configured true, output player inventory to log
-		if (plugin.getConfig().getBoolean("log-inventory-on-death")) {
+		if (plugin.getConfig().getBoolean("log-inventory-on-death"))
+		{
 			plugin.getLogger().info(player.getDisplayName() + " death inventory:");
 			plugin.getLogger().info(event.getDrops().toString());
 		}
@@ -151,13 +155,14 @@ public final class PlayerEventListener implements Listener {
 	 * @param event PlayerInteractEvent
 	 */
 	@EventHandler(priority = EventPriority.LOW)
-	public void onPlayerInteract(final PlayerInteractEvent event) {
-
+	public void onPlayerInteract(final PlayerInteractEvent event)
+	{
 		// get DeathChest from event clicked block
 		final DeathChest deathChest = plugin.chestManager.getChest(event.getClickedBlock());
 
 		// if DeathChest is null, do nothing and return
-		if (deathChest == null) {
+		if (deathChest == null)
+		{
 			return;
 		}
 
@@ -165,13 +170,15 @@ public final class PlayerEventListener implements Listener {
 		final Player player = event.getPlayer();
 
 		// if player sneak-clicked chest, try auto-loot
-		if (isPlayerQuickLooting(event, player)) {
+		if (isPlayerQuickLooting(event, player))
+		{
 			permissionCheck.performChecks(event, player, deathChest, quickLootAction);
 			return;
 		}
 
 		// if right-click chest, try to open chest inventory
-		if (isPlayerOpeningInventory(event)) {
+		if (isPlayerOpeningInventory(event))
+		{
 			permissionCheck.performChecks(event, player, deathChest, inventoryOpenAction);
 		}
 	}
@@ -180,11 +187,12 @@ public final class PlayerEventListener implements Listener {
 	/**
 	 * Test if player is attempting to quick loot chest if allowed
 	 *
-	 * @param event the PlayerInteractEvent being checked
+	 * @param event  the PlayerInteractEvent being checked
 	 * @param player the player being checked
 	 * @return true if player is sneak-punching a chest and configuration and permissions allows
 	 */
-	private boolean isPlayerQuickLooting(final PlayerInteractEvent event, final Player player) {
+	private boolean isPlayerQuickLooting(final PlayerInteractEvent event, final Player player)
+	{
 		return (event.getAction().equals(Action.LEFT_CLICK_BLOCK) || event.getAction().equals(Action.RIGHT_CLICK_BLOCK))
 				&& player.isSneaking()
 				&& plugin.getConfig().getBoolean("quick-loot")
@@ -198,7 +206,8 @@ public final class PlayerEventListener implements Listener {
 	 * @param event the PlayerInteractEvent being checked
 	 * @return true if player is opening a chest by right-clinking
 	 */
-	private boolean isPlayerOpeningInventory(final PlayerInteractEvent event) {
+	private boolean isPlayerOpeningInventory(final PlayerInteractEvent event)
+	{
 		return event.getAction().equals(Action.RIGHT_CLICK_BLOCK);
 	}
 

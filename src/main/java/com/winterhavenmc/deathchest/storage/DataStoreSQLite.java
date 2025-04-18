@@ -25,7 +25,10 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.File;
 import java.sql.*;
-import java.util.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 
@@ -33,8 +36,8 @@ import java.util.concurrent.TimeUnit;
  * SQLite implementation of Datastore
  * for persistent storage of death chests and chest block objects
  */
-final class DataStoreSQLite extends DataStoreAbstract implements DataStore {
-
+final class DataStoreSQLite extends DataStoreAbstract implements DataStore
+{
 	// reference to main class
 	private final PluginMain plugin;
 
@@ -53,8 +56,8 @@ final class DataStoreSQLite extends DataStoreAbstract implements DataStore {
 	 *
 	 * @param plugin reference to main class
 	 */
-	DataStoreSQLite(final PluginMain plugin) {
-
+	DataStoreSQLite(final PluginMain plugin)
+	{
 		// set reference to main class
 		this.plugin = plugin;
 
@@ -70,10 +73,11 @@ final class DataStoreSQLite extends DataStoreAbstract implements DataStore {
 	 * create table if one doesn't already exist
 	 */
 	@Override
-	public void initialize() throws SQLException, ClassNotFoundException {
-
+	public void initialize() throws SQLException, ClassNotFoundException
+	{
 		// if data store is already initialized, do nothing and return
-		if (this.isInitialized()) {
+		if (this.isInitialized())
+		{
 			plugin.getLogger().info(this + " datastore already initialized.");
 			return;
 		}
@@ -106,23 +110,27 @@ final class DataStoreSQLite extends DataStoreAbstract implements DataStore {
 	}
 
 
-	private int getStoredSchemaVersion() {
-
+	private int getStoredSchemaVersion()
+	{
 		int version = -1;
 
-		try {
+		try
+		{
 			final Statement statement = connection.createStatement();
 
 			ResultSet rs = statement.executeQuery(Queries.getQuery("GetUserVersion"));
 
-			while (rs.next()) {
+			while (rs.next())
+			{
 				version = rs.getInt(1);
 			}
 		}
-		catch (SQLException e) {
+		catch (SQLException e)
+		{
 			plugin.getLogger().warning("Could not get schema version for the " + this + " datastore!");
 			plugin.getLogger().warning(e.getLocalizedMessage());
-			if (plugin.getConfig().getBoolean("debug")) {
+			if (plugin.getConfig().getBoolean("debug"))
+			{
 				e.printStackTrace();
 			}
 		}
@@ -130,28 +138,32 @@ final class DataStoreSQLite extends DataStoreAbstract implements DataStore {
 	}
 
 
-	private void updateSchema() throws SQLException {
-
+	private void updateSchema() throws SQLException
+	{
 		this.schemaVersion = getStoredSchemaVersion();
 
-		if (plugin.getConfig().getBoolean("debug")) {
+		if (plugin.getConfig().getBoolean("debug"))
+		{
 			plugin.getLogger().info("Current schema version: " + schemaVersion);
 		}
 
 		final Statement statement = connection.createStatement();
 
-		if (this.schemaVersion == 0) {
+		if (this.schemaVersion == 0)
+		{
 
 			Collection<DeathChest> existingChestRecords = Collections.emptySet();
 			Collection<ChestBlock> existingBlockRecords = Collections.emptySet();
 
 			ResultSet chestTable = statement.executeQuery(Queries.getQuery("SelectDeathChestTable"));
-			if (chestTable.next()) {
+			if (chestTable.next())
+			{
 				existingChestRecords = selectAllChestRecords();
 			}
 
 			ResultSet blockTable = statement.executeQuery(Queries.getQuery("SelectDeathBlockTable"));
-			if (blockTable.next()) {
+			if (blockTable.next())
+			{
 				existingBlockRecords = selectAllBlockRecords();
 			}
 
@@ -189,18 +201,22 @@ final class DataStoreSQLite extends DataStoreAbstract implements DataStore {
 	 * Close database connection
 	 */
 	@Override
-	public void close() {
-
-		if (isInitialized()) {
-			try {
+	public void close()
+	{
+		if (isInitialized())
+		{
+			try
+			{
 				connection.close();
 				plugin.getLogger().info(this + " datastore connection closed.");
 			}
-			catch (SQLException e) {
+			catch (SQLException e)
+			{
 				plugin.getLogger().warning("An error occurred while closing the " +
 						this + " datastore connection.");
 				plugin.getLogger().warning(e.getMessage());
-				if (plugin.getConfig().getBoolean("debug")) {
+				if (plugin.getConfig().getBoolean("debug"))
+				{
 					e.printStackTrace();
 				}
 			}
@@ -210,17 +226,19 @@ final class DataStoreSQLite extends DataStoreAbstract implements DataStore {
 
 
 	@Override
-	public void sync() {
+	public void sync()
+	{
 		// no action necessary for this storage type
 	}
 
 
 	@Override
-	public boolean delete() {
-
+	public boolean delete()
+	{
 		boolean result = false;
 		File dataStoreFile = new File(dataFilePath);
-		if (dataStoreFile.exists()) {
+		if (dataStoreFile.exists())
+		{
 			result = dataStoreFile.delete();
 		}
 		return result;
@@ -228,18 +246,20 @@ final class DataStoreSQLite extends DataStoreAbstract implements DataStore {
 
 
 	@Override
-	public int getChestCount() {
-
+	public int getChestCount()
+	{
 		int count = 0;
 
-		try {
+		try
+		{
 			PreparedStatement preparedStatement = connection.prepareStatement(Queries.getQuery("SelectChestCount"));
 			ResultSet rs = preparedStatement.executeQuery();
-			if (rs.next()) {
+			if (rs.next())
+			{
 				count = rs.getInt("ChestCount");
 			}
-		}
-		catch (SQLException e) {
+		} catch (SQLException e)
+		{
 			plugin.getLogger().warning("An error occurred while attempting to retrieve a count of chest records from the " + this + " datastore.");
 			plugin.getLogger().warning(e.getLocalizedMessage());
 		}
@@ -249,17 +269,19 @@ final class DataStoreSQLite extends DataStoreAbstract implements DataStore {
 
 
 	@Override
-	public Collection<ChestBlock> selectAllBlockRecords() {
-
+	public Collection<ChestBlock> selectAllBlockRecords()
+	{
 		final Collection<ChestBlock> results = new HashSet<>();
 
-		try {
+		try
+		{
 			PreparedStatement preparedStatement = connection.prepareStatement(Queries.getQuery("SelectAllBlocks"));
 
 			// execute sql query
 			ResultSet rs = preparedStatement.executeQuery();
 
-			while (rs.next()) {
+			while (rs.next())
+			{
 
 				// declare common fields
 				final UUID chestUid;
@@ -270,15 +292,20 @@ final class DataStoreSQLite extends DataStoreAbstract implements DataStore {
 				final int y = rs.getInt("Y");
 				final int z = rs.getInt("Z");
 
-				if (schemaVersion == 0) {
+				if (schemaVersion == 0)
+				{
 					// try to convert chest uuid from stored string
-					try {
+					try
+					{
 						chestUid = UUID.fromString(rs.getString("ChestUUID"));
-					} catch (Exception e) {
+					}
+					catch (Exception e)
+					{
 						plugin.getLogger().warning("An error occurred while trying to set chestUid in the " +
 								this + " datastore.");
 						plugin.getLogger().warning(e.getLocalizedMessage());
-						if (plugin.getConfig().getBoolean("debug")) {
+						if (plugin.getConfig().getBoolean("debug"))
+						{
 							plugin.getLogger().warning("[" + this + " getAllBlockRecords] chestUid string: "
 									+ rs.getString("ChestUUID"));
 						}
@@ -288,7 +315,8 @@ final class DataStoreSQLite extends DataStoreAbstract implements DataStore {
 					// get server world by name
 					world = plugin.getServer().getWorld(worldName);
 				}
-				else {
+				else
+				{
 					chestUid = new UUID(rs.getLong("ChestUidMsb"), rs.getLong("chestUidLsb"));
 					final UUID worldUid = new UUID(rs.getLong("WorldUidMsb"), rs.getLong("WorldUidLsb"));
 
@@ -297,7 +325,8 @@ final class DataStoreSQLite extends DataStoreAbstract implements DataStore {
 				}
 
 				// if server world is null, skip adding record to return set
-				if (world == null) {
+				if (world == null)
+				{
 					// delete all records expired more than 30 days in database that have this invalid world
 					deleteOrphanedChests(worldName);
 					continue;
@@ -310,16 +339,19 @@ final class DataStoreSQLite extends DataStoreAbstract implements DataStore {
 				results.add(chestBlock);
 			}
 		}
-		catch (SQLException e) {
+		catch (SQLException e)
+		{
 			plugin.getLogger().warning("An error occurred while trying to "
 					+ "select all block records from the " + this + " datastore.");
 			plugin.getLogger().warning(e.getLocalizedMessage());
-			if (plugin.getConfig().getBoolean("debug")) {
+			if (plugin.getConfig().getBoolean("debug"))
+			{
 				e.printStackTrace();
 			}
 		}
 
-		if (plugin.getConfig().getBoolean("debug")) {
+		if (plugin.getConfig().getBoolean("debug"))
+		{
 			plugin.getLogger().info(results.size() + " block records selected from the " + this + " datastore.");
 		}
 
@@ -328,32 +360,37 @@ final class DataStoreSQLite extends DataStoreAbstract implements DataStore {
 
 
 	@Override
-	public Collection<DeathChest> selectAllChestRecords() {
-
+	public Collection<DeathChest> selectAllChestRecords()
+	{
 		final Collection<DeathChest> results = new HashSet<>();
 
-		try {
+		try
+		{
 			PreparedStatement preparedStatement = connection.prepareStatement(Queries.getQuery("SelectAllChests"));
 			ResultSet rs = preparedStatement.executeQuery();
 
-			while (rs.next()) {
+			while (rs.next())
+			{
 
 				final UUID chestUid;
 				final UUID ownerUid;
 				UUID killerUid;
 				final long protectionExpirationTime;
 
-				if (schemaVersion == 0) {
+				if (schemaVersion == 0)
+				{
 
 					// try to convert chest uuid from stored string
-					try {
+					try
+					{
 						chestUid = UUID.fromString(rs.getString("ChestUUID"));
-					}
-					catch (Exception e) {
+					} catch (Exception e)
+					{
 						plugin.getLogger().warning("An error occurred while trying to set chestUid in the " +
 								this + " datastore.");
 						plugin.getLogger().warning(e.getLocalizedMessage());
-						if (plugin.getConfig().getBoolean("debug")) {
+						if (plugin.getConfig().getBoolean("debug"))
+						{
 							plugin.getLogger().warning("[" + this + " selectAllChestRecords] chestUid string: "
 									+ rs.getString("ChestUUID"));
 						}
@@ -361,14 +398,16 @@ final class DataStoreSQLite extends DataStoreAbstract implements DataStore {
 					}
 
 					// try to convert owner uuid from stored string
-					try {
+					try
+					{
 						ownerUid = UUID.fromString(rs.getString("OwnerUUID"));
-					}
-					catch (Exception e) {
+					} catch (Exception e)
+					{
 						plugin.getLogger().warning("An error occurred while trying to set ownerUid in the" +
 								this + " datastore.");
 						plugin.getLogger().warning(e.getLocalizedMessage());
-						if (plugin.getConfig().getBoolean("debug")) {
+						if (plugin.getConfig().getBoolean("debug"))
+						{
 							plugin.getLogger().warning("[" + this + " selectAllChestRecords] ownerUid string: "
 									+ rs.getString("OwnerUUID"));
 						}
@@ -376,17 +415,19 @@ final class DataStoreSQLite extends DataStoreAbstract implements DataStore {
 					}
 
 					// try to convert killer uuid from stored string, or set to zero uuid if invalid uuid
-					try {
+					try
+					{
 						killerUid = UUID.fromString(rs.getString("KillerUUID"));
-					}
-					catch (Exception e) {
+					} catch (Exception e)
+					{
 						killerUid = new UUID(0, 0);
 					}
 
 					protectionExpirationTime = 0;
 				}
 
-				else {
+				else
+				{
 					// convert chest uuid from stored components
 					chestUid = new UUID(rs.getLong("ChestUidMsb"), rs.getLong("ChestUidLsb"));
 
@@ -414,16 +455,20 @@ final class DataStoreSQLite extends DataStoreAbstract implements DataStore {
 				results.add(deathChest);
 			}
 		}
-		catch (SQLException e) {
+		catch (SQLException e)
+		{
 			plugin.getLogger().warning("An error occurred while trying to " +
 					"select all chest records from the " + this + " datastore.");
 			plugin.getLogger().warning(e.getMessage());
-			if (plugin.getConfig().getBoolean("debug")) {
+
+			if (plugin.getConfig().getBoolean("debug"))
+			{
 				e.printStackTrace();
 			}
 		}
 
-		if (plugin.getConfig().getBoolean("debug")) {
+		if (plugin.getConfig().getBoolean("debug"))
+		{
 			plugin.getLogger().info(results.size() + " chest records selected from the " + this + " datastore.");
 		}
 		return results;
@@ -431,11 +476,13 @@ final class DataStoreSQLite extends DataStoreAbstract implements DataStore {
 
 
 	@Override
-	public synchronized int insertChestRecords(final Collection<DeathChest> deathChests) {
-
-		new BukkitRunnable() {
+	public synchronized int insertChestRecords(final Collection<DeathChest> deathChests)
+	{
+		new BukkitRunnable()
+		{
 			@Override
-			public void run() {
+			public void run()
+			{
 				insertChestRecordsSync(deathChests);
 			}
 		}.runTaskAsynchronously(plugin);
@@ -444,18 +491,20 @@ final class DataStoreSQLite extends DataStoreAbstract implements DataStore {
 	}
 
 
-	public synchronized int insertChestRecordsSync(final Collection<DeathChest> deathChests) {
-
+	public synchronized int insertChestRecordsSync(final Collection<DeathChest> deathChests)
+	{
 		int count = 0;
 
-		for (DeathChest deathChest : deathChests) {
-
+		for (DeathChest deathChest : deathChests)
+		{
 			// if deathChest is null, skip to next
-			if (deathChest == null) {
+			if (deathChest == null)
+			{
 				continue;
 			}
 
-			try {
+			try
+			{
 				// create prepared statement
 				PreparedStatement preparedStatement =
 						connection.prepareStatement(Queries.getQuery("InsertChestRecord"));
@@ -476,11 +525,13 @@ final class DataStoreSQLite extends DataStoreAbstract implements DataStore {
 
 				count += rowsAffected;
 			}
-			catch (SQLException e) {
+			catch (SQLException e)
+			{
 				plugin.getLogger().warning("An error occurred while inserting a DeathChest into the " +
 						"SQLite datastore.");
 				plugin.getLogger().warning(e.getMessage());
-				if (plugin.getConfig().getBoolean("debug")) {
+				if (plugin.getConfig().getBoolean("debug"))
+				{
 					e.printStackTrace();
 				}
 			}
@@ -490,7 +541,8 @@ final class DataStoreSQLite extends DataStoreAbstract implements DataStore {
 		}
 
 		// output debugging information
-		if (plugin.getConfig().getBoolean("debug")) {
+		if (plugin.getConfig().getBoolean("debug"))
+		{
 			plugin.getLogger().info(count + " chest records inserted into the " +
 					"SQLite datastore.");
 		}
@@ -500,11 +552,13 @@ final class DataStoreSQLite extends DataStoreAbstract implements DataStore {
 
 
 	@Override
-	synchronized public int insertBlockRecords(final Collection<ChestBlock> blockRecords) {
-
-		new BukkitRunnable() {
+	synchronized public int insertBlockRecords(final Collection<ChestBlock> blockRecords)
+	{
+		new BukkitRunnable()
+		{
 			@Override
-			public void run() {
+			public void run()
+			{
 				insertBlockRecordsSync(blockRecords);
 			}
 		}.runTaskAsynchronously(plugin);
@@ -513,18 +567,21 @@ final class DataStoreSQLite extends DataStoreAbstract implements DataStore {
 	}
 
 
-	int insertBlockRecordsSync(final Collection<ChestBlock> blockRecords) {
-
+	int insertBlockRecordsSync(final Collection<ChestBlock> blockRecords)
+	{
 		int count = 0;
 
-		for (ChestBlock blockRecord : blockRecords) {
+		for (ChestBlock blockRecord : blockRecords)
+		{
 
 			// if blockRecord is null, skip to next record in collection
-			if (blockRecord == null) {
+			if (blockRecord == null)
+			{
 				continue;
 			}
 
-			try {
+			try
+			{
 				// create prepared statement
 				PreparedStatement preparedStatement =
 						connection.prepareStatement(Queries.getQuery("InsertBlockRecord"));
@@ -543,18 +600,21 @@ final class DataStoreSQLite extends DataStoreAbstract implements DataStore {
 
 				count += rowsAffected;
 			}
-			catch (SQLException e) {
+			catch (SQLException e)
+			{
 				plugin.getLogger().warning("An error occurred while "
 						+ "inserting a death chest block into the SQLite datastore.");
 				plugin.getLogger().warning(e.getMessage());
-				if (plugin.getConfig().getBoolean("debug")) {
+				if (plugin.getConfig().getBoolean("debug"))
+				{
 					e.printStackTrace();
 				}
 			}
 		}
 
 		// output debugging information
-		if (plugin.getConfig().getBoolean("debug")) {
+		if (plugin.getConfig().getBoolean("debug"))
+		{
 			plugin.getLogger().info(count + " block records inserted into the " +
 					"SQLite datastore.");
 		}
@@ -564,17 +624,21 @@ final class DataStoreSQLite extends DataStoreAbstract implements DataStore {
 
 
 	@Override
-	synchronized public void deleteChestRecord(final DeathChest deathChest) {
-
+	synchronized public void deleteChestRecord(final DeathChest deathChest)
+	{
 		// if passed deathChest is null, do nothing and return
-		if (deathChest == null) {
+		if (deathChest == null)
+		{
 			return;
 		}
 
-		new BukkitRunnable() {
+		new BukkitRunnable()
+		{
 			@Override
-			public void run() {
-				try {
+			public void run()
+			{
+				try
+				{
 					// create prepared statement
 					PreparedStatement preparedStatement =
 							connection.prepareStatement(Queries.getQuery("DeleteChestByUUID"));
@@ -586,15 +650,17 @@ final class DataStoreSQLite extends DataStoreAbstract implements DataStore {
 					int rowsAffected = preparedStatement.executeUpdate();
 
 					// output debugging information
-					if (plugin.getConfig().getBoolean("debug")) {
+					if (plugin.getConfig().getBoolean("debug"))
+					{
 						plugin.getLogger().info(rowsAffected + " chest records deleted from the SQLite datastore.");
 					}
-				}
-				catch (SQLException e) {
+				} catch (SQLException e)
+				{
 					plugin.getLogger().warning("An error occurred while attempting to "
 							+ "delete a chest record from the SQLite datastore.");
 					plugin.getLogger().warning(e.getMessage());
-					if (plugin.getConfig().getBoolean("debug")) {
+					if (plugin.getConfig().getBoolean("debug"))
+					{
 						e.printStackTrace();
 					}
 				}
@@ -605,17 +671,21 @@ final class DataStoreSQLite extends DataStoreAbstract implements DataStore {
 
 
 	@Override
-	synchronized public void deleteBlockRecord(final ChestBlock chestBlock) {
-
+	synchronized public void deleteBlockRecord(final ChestBlock chestBlock)
+	{
 		// if passed chestBlock is null, do nothing and return
-		if (chestBlock == null) {
+		if (chestBlock == null)
+		{
 			return;
 		}
 
-		new BukkitRunnable() {
+		new BukkitRunnable()
+		{
 			@Override
-			public void run() {
-				try {
+			public void run()
+			{
+				try
+				{
 					// create prepared statement
 					PreparedStatement preparedStatement =
 							connection.prepareStatement(Queries.getQuery("DeleteBlockByLocation"));
@@ -630,15 +700,17 @@ final class DataStoreSQLite extends DataStoreAbstract implements DataStore {
 					int rowsAffected = preparedStatement.executeUpdate();
 
 					// output debugging information
-					if (plugin.getConfig().getBoolean("debug")) {
+					if (plugin.getConfig().getBoolean("debug"))
+					{
 						plugin.getLogger().info(rowsAffected + " block records deleted from the SQLite datastore.");
 					}
-				}
-				catch (SQLException e) {
+				} catch (SQLException e)
+				{
 					plugin.getLogger().warning("An error occurred while attempting to "
 							+ "delete a record from the SQLite datastore.");
 					plugin.getLogger().warning(e.getMessage());
-					if (plugin.getConfig().getBoolean("debug")) {
+					if (plugin.getConfig().getBoolean("debug"))
+					{
 						e.printStackTrace();
 					}
 				}
@@ -652,12 +724,13 @@ final class DataStoreSQLite extends DataStoreAbstract implements DataStore {
 	 *
 	 * @param worldName the world name of orphaned chests to delete
 	 */
-	private void deleteOrphanedChests(final String worldName) {
-
+	private void deleteOrphanedChests(final String worldName)
+	{
 		// pastDueTime = current time in milliseconds - 30 days
 		final long pastDueTime = System.currentTimeMillis() - TimeUnit.DAYS.toMillis(30);
 
-		try {
+		try
+		{
 			// create prepared statement
 			PreparedStatement preparedStatement =
 					connection.prepareStatement(Queries.getQuery("DeleteOrphanedChests"));
@@ -669,15 +742,18 @@ final class DataStoreSQLite extends DataStoreAbstract implements DataStore {
 			int rowsAffected = preparedStatement.executeUpdate();
 
 			// output debugging information
-			if (plugin.getConfig().getBoolean("debug")) {
+			if (plugin.getConfig().getBoolean("debug"))
+			{
 				plugin.getLogger().info(rowsAffected + " rows deleted.");
 			}
 		}
-		catch (SQLException e) {
+		catch (SQLException e)
+		{
 			plugin.getLogger().warning("An error occurred while attempting to delete orphaned chests from the " +
 					this + " datastore.");
 			plugin.getLogger().warning(e.getMessage());
-			if (plugin.getConfig().getBoolean("debug")) {
+			if (plugin.getConfig().getBoolean("debug"))
+			{
 				e.printStackTrace();
 			}
 		}

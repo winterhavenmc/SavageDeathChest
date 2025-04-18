@@ -38,8 +38,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 /**
  * The main class for SavageDeathChest plugin
  */
-public final class PluginMain extends JavaPlugin {
-
+public final class PluginMain extends JavaPlugin
+{
 	public MessageBuilder<MessageId, Macro> messageBuilder;
 	public WorldManager worldManager;
 	public SoundConfiguration soundConfig;
@@ -49,8 +49,8 @@ public final class PluginMain extends JavaPlugin {
 
 
 	@Override
-	public void onEnable() {
-
+	public void onEnable()
+	{
 		// copy default config from jar if it doesn't exist
 		saveDefaultConfig();
 
@@ -86,8 +86,8 @@ public final class PluginMain extends JavaPlugin {
 
 
 	@Override
-	public void onDisable() {
-
+	public void onDisable()
+	{
 		// close datastore
 		chestManager.closeDataStore();
 	}

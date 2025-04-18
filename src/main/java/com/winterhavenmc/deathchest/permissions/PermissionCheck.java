@@ -24,7 +24,6 @@ import com.winterhavenmc.deathchest.messages.MessageId;
 import com.winterhavenmc.deathchest.permissions.protectionplugins.ProtectionCheckResult;
 import com.winterhavenmc.deathchest.permissions.protectionplugins.ProtectionCheckResultCode;
 import com.winterhavenmc.deathchest.sounds.SoundId;
-
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
@@ -33,8 +32,8 @@ import org.bukkit.event.Cancellable;
 /**
  * A class of helper methods for event listeners, mostly conditional statements
  */
-final public class PermissionCheck {
-
+final public class PermissionCheck
+{
 	// reference to plugin main class
 	final PluginMain plugin;
 
@@ -44,7 +43,8 @@ final public class PermissionCheck {
 	 *
 	 * @param plugin reference to plugin main class
 	 */
-	public PermissionCheck(final PluginMain plugin) {
+	public PermissionCheck(final PluginMain plugin)
+	{
 		this.plugin = plugin;
 	}
 
@@ -52,11 +52,13 @@ final public class PermissionCheck {
 	/**
 	 * Send debug message to log if debugging is enabled in configuration file
 	 *
- 	 * @param message the debug message to log
+	 * @param message the debug message to log
 	 */
 	@SuppressWarnings("unused")
-	public void logDebugMessage(final String message) {
-		if (plugin.getConfig().getBoolean("debug")) {
+	public void logDebugMessage(final String message)
+	{
+		if (plugin.getConfig().getBoolean("debug"))
+		{
 			plugin.getLogger().info(message);
 		}
 	}
@@ -68,7 +70,8 @@ final public class PermissionCheck {
 	 * @param result the access check result
 	 * @return true if protectionPlugin is a valid plugin, false if it is null
 	 */
-	public boolean isPluginBlockingAccess(final ProtectionCheckResult result) {
+	public boolean isPluginBlockingAccess(final ProtectionCheckResult result)
+	{
 		return result.getResultCode().equals(ProtectionCheckResultCode.BLOCKED);
 	}
 
@@ -80,7 +83,8 @@ final public class PermissionCheck {
 	 * @param player the player on whose behalf a chest is being deployed
 	 * @return true if deployment should be denied, false if not
 	 */
-	public boolean isCreativeDeployDisabled(final Player player) {
+	public boolean isCreativeDeployDisabled(final Player player)
+	{
 		return player.getGameMode().equals(GameMode.CREATIVE)
 				&& !plugin.getConfig().getBoolean("creative-deploy")
 				&& !player.hasPermission("deathchest.creative-deploy");
@@ -94,7 +98,8 @@ final public class PermissionCheck {
 	 * @param player the player attempting to access a chest
 	 * @return true if player should be denied access, false if not
 	 */
-	private boolean isCreativeAccessDisabled(final Player player) {
+	private boolean isCreativeAccessDisabled(final Player player)
+	{
 		return player.getGameMode().equals(GameMode.CREATIVE)
 				&& !plugin.getConfig().getBoolean("creative-access")
 				&& !player.hasPermission("deathchest.creative-access");
@@ -103,11 +108,12 @@ final public class PermissionCheck {
 
 	/**
 	 * Check if a chest inventory is already open and being viewed by another player
-	 * @param deathChest the deathchest to check
 	 *
+	 * @param deathChest the deathchest to check
 	 * @return true if chest is already open, false if not
 	 */
-	private boolean isCurrentlyOpen(final DeathChest deathChest) {
+	private boolean isCurrentlyOpen(final DeathChest deathChest)
+	{
 		return deathChest.getViewerCount() > 0;
 	}
 
@@ -117,7 +123,8 @@ final public class PermissionCheck {
 	 *
 	 * @return true if chest protection is enabled, false if not
 	 */
-	private boolean isProtectionDisabled() {
+	private boolean isProtectionDisabled()
+	{
 		return !plugin.getConfig().getBoolean("chest-protection");
 	}
 
@@ -128,7 +135,8 @@ final public class PermissionCheck {
 	 * @param deathChest the death chest to check expiration
 	 * @return true if protection is enabled and chest has expired, false if not
 	 */
-	private boolean isProtectionExpired(final DeathChest deathChest) {
+	private boolean isProtectionExpired(final DeathChest deathChest)
+	{
 		return plugin.getConfig().getBoolean("chest-protection") &&
 				deathChest.protectionExpired();
 	}
@@ -140,7 +148,8 @@ final public class PermissionCheck {
 	 * @param deathChest the death chest to check expiration
 	 * @return true if protection is enabled and chest has not expired, otherwise false
 	 */
-	private boolean isProtectionNotExpired(final DeathChest deathChest) {
+	private boolean isProtectionNotExpired(final DeathChest deathChest)
+	{
 		return plugin.getConfig().getBoolean("chest-protection") &&
 				!deathChest.protectionExpired();
 	}
@@ -152,7 +161,8 @@ final public class PermissionCheck {
 	 * @param player the player to check for permission
 	 * @return true if player has permission, false if not
 	 */
-	private boolean hasLootOtherPermission(final Player player) {
+	private boolean hasLootOtherPermission(final Player player)
+	{
 		return plugin.getConfig().getBoolean("chest-protection") &&
 				player.hasPermission("deathchest.loot.other");
 	}
@@ -162,11 +172,12 @@ final public class PermissionCheck {
 	 * Check if chest protection is enabled and killer looting is enabled
 	 * and player is killer of death chest owner and player has killer looting permission
 	 *
-	 * @param player the player to check for killer looting
+	 * @param player     the player to check for killer looting
 	 * @param deathChest the death chest being looted
 	 * @return true if all killer looting checks pass, false if not
 	 */
-	private boolean isKillerLooting(final Player player, final DeathChest deathChest) {
+	private boolean isKillerLooting(final Player player, final DeathChest deathChest)
+	{
 		return plugin.getConfig().getBoolean("chest-protection") &&
 				plugin.getConfig().getBoolean("killer-looting") &&
 				deathChest.isKiller(player) &&
@@ -177,27 +188,30 @@ final public class PermissionCheck {
 	/**
 	 * Perform permission checks and take action for a player interacting with death chest
 	 *
-	 * @param event the PlayerInteractEvent being checked
-	 * @param player the player who is attempting to open a chest
+	 * @param event      the PlayerInteractEvent being checked
+	 * @param player     the player who is attempting to open a chest
 	 * @param deathChest the deathchest that is being quick-looted
 	 */
 	public void performChecks(final Cancellable event, final Player player,
-	                          final DeathChest deathChest, final ResultAction resultAction) {
+	                          final DeathChest deathChest, final ResultAction resultAction)
+	{
 
 		// get protectionCheckResult of all protection plugin checks
 		final ProtectionCheckResult protectionCheckResult = plugin.protectionPluginRegistry.AccessAllowed(player, deathChest.getLocation());
 
 		// if access blocked by protection plugin, do nothing and return (allow protection plugin to handle)
-		if (isPluginBlockingAccess(protectionCheckResult)) {
+		if (isPluginBlockingAccess(protectionCheckResult))
+		{
 			// do not cancel event - allow protection plugin to handle it
 			return;
 		}
 
 		// if chest inventory is already being viewed: cancel event, send message and return
-		if (isCurrentlyOpen(deathChest)) {
+		if (isCurrentlyOpen(deathChest))
+		{
 			event.setCancelled(true);
 			String viewerName = deathChest.getInventory().getViewers().iterator().next().getName();
-			plugin.messageBuilder.build(player, MessageId.CHEST_CURRENTLY_OPEN)
+			plugin.messageBuilder.compose(player, MessageId.CHEST_CURRENTLY_OPEN)
 					.setMacro(Macro.LOCATION, deathChest.getLocation())
 					.setMacro(Macro.OWNER, deathChest.getOwnerName())
 					.setMacro(Macro.KILLER, deathChest.getKillerName())
@@ -209,9 +223,10 @@ final public class PermissionCheck {
 
 		// if player is in creative mode, and creative-access is configured false,
 		// and player does not have override permission: cancel event, send message and return
-		if (isCreativeAccessDisabled(player)) {
+		if (isCreativeAccessDisabled(player))
+		{
 			event.setCancelled(true);
-			plugin.messageBuilder.build(player, MessageId.NO_CREATIVE_ACCESS)
+			plugin.messageBuilder.compose(player, MessageId.NO_CREATIVE_ACCESS)
 					.setMacro(Macro.LOCATION, player.getLocation()
 					).send();
 			plugin.soundConfig.playSound(player, SoundId.CHEST_DENIED_ACCESS);
@@ -219,31 +234,36 @@ final public class PermissionCheck {
 		}
 
 		// if player is chest owner, perform result action and return
-		if (deathChest.isOwner(player)) {
+		if (deathChest.isOwner(player))
+		{
 			resultAction.execute(event, player, deathChest);
 			return;
 		}
 
 		// if chest protection is not enabled, perform result action and return
-		if (isProtectionDisabled()) {
+		if (isProtectionDisabled())
+		{
 			resultAction.execute(event, player, deathChest);
 			return;
 		}
 
 		// if chest protection is not enabled or chest protection has expired, perform result action and return
-		if (isProtectionExpired(deathChest)) {
+		if (isProtectionExpired(deathChest))
+		{
 			resultAction.execute(event, player, deathChest);
 			return;
 		}
 
 		// if player has loot other permission, perform result action and return
-		if (hasLootOtherPermission(player)) {
+		if (hasLootOtherPermission(player))
+		{
 			resultAction.execute(event, player, deathChest);
 			return;
 		}
 
 		// if player is killer and killer looting enabled, perform result action and return
-		if (isKillerLooting(player, deathChest)) {
+		if (isKillerLooting(player, deathChest))
+		{
 			resultAction.execute(event, player, deathChest);
 			return;
 		}
@@ -252,9 +272,10 @@ final public class PermissionCheck {
 		event.setCancelled(true);
 
 		// if chest protection is enabled and has not expired, send message and return
-		if (isProtectionNotExpired(deathChest)) {
+		if (isProtectionNotExpired(deathChest))
+		{
 			long protectionTimeRemainingMillis = deathChest.getProtectionTime() - System.currentTimeMillis();
-			plugin.messageBuilder.build(player, MessageId.CHEST_ACCESSED_PROTECTION_TIME)
+			plugin.messageBuilder.compose(player, MessageId.CHEST_ACCESSED_PROTECTION_TIME)
 					.setMacro(Macro.OWNER, deathChest.getOwnerName())
 					.setMacro(Macro.PROTECTION_DURATION, protectionTimeRemainingMillis)
 					.setMacro(Macro.PROTECTION_DURATION_MINUTES, protectionTimeRemainingMillis)
@@ -262,8 +283,9 @@ final public class PermissionCheck {
 					.send();
 		}
 		// else send player not-owner message
-		else {
-			plugin.messageBuilder.build(player, MessageId.NOT_OWNER)
+		else
+		{
+			plugin.messageBuilder.compose(player, MessageId.NOT_OWNER)
 					.setMacro(Macro.LOCATION, deathChest.getLocation())
 					.setMacro(Macro.OWNER, deathChest.getOwnerName())
 					.setMacro(Macro.KILLER, deathChest.getKillerName())

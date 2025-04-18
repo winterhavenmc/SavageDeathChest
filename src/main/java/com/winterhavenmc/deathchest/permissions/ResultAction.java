@@ -25,8 +25,8 @@ import org.bukkit.event.Cancellable;
 /**
  * Interface for action to be taken on permission result checks
  */
-public interface ResultAction {
-
+public interface ResultAction
+{
 	/**
 	 * Execute action for permission check
 	 *

@@ -18,14 +18,13 @@
 package com.winterhavenmc.deathchest.listeners;
 
 import com.winterhavenmc.deathchest.PluginMain;
+import com.winterhavenmc.deathchest.chests.DeathChest;
+import com.winterhavenmc.deathchest.chests.LocationUtilities;
 import com.winterhavenmc.deathchest.permissions.BreakChestAction;
 import com.winterhavenmc.deathchest.permissions.PermissionCheck;
 import com.winterhavenmc.deathchest.permissions.ResultAction;
-import com.winterhavenmc.deathchest.chests.DeathChest;
-
-import com.winterhavenmc.deathchest.chests.LocationUtilities;
-import org.bukkit.Material;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -44,11 +43,11 @@ import java.util.LinkedList;
 /**
  * A class that contains {@code EventHandler} methods to process block related events
  */
-public final class BlockEventListener implements Listener {
-
+public final class BlockEventListener implements Listener
+{
 	// reference to main class
 	private final PluginMain plugin;
-	
+
 	// reference to permissionCheck class
 	private final PermissionCheck permissionCheck;
 
@@ -60,8 +59,8 @@ public final class BlockEventListener implements Listener {
 	 *
 	 * @param plugin reference to main class
 	 */
-	public BlockEventListener(final PluginMain plugin) {
-
+	public BlockEventListener(final PluginMain plugin)
+	{
 		// set reference to main class
 		this.plugin = plugin;
 
@@ -80,19 +79,21 @@ public final class BlockEventListener implements Listener {
 	 * @param event the event being handled by this method
 	 */
 	@EventHandler
-	public void onBlockPlace(final BlockPlaceEvent event) {
-
+	public void onBlockPlace(final BlockPlaceEvent event)
+	{
 		final Block block = event.getBlock();
 		final Location location = block.getLocation();
 
 		// if placed block is not a chest, do nothing and return
-		if (!block.getType().equals(Material.CHEST)) {
+		if (!block.getType().equals(Material.CHEST))
+		{
 			return;
 		}
 
 		// check for adjacent death chests and cancel event if found
 		if (plugin.chestManager.isChestBlockChest(LocationUtilities.getBlockToLeft(location))
-				|| plugin.chestManager.isChestBlockChest(LocationUtilities.getBlockToRight(location))) {
+				|| plugin.chestManager.isChestBlockChest(LocationUtilities.getBlockToRight(location)))
+		{
 			event.setCancelled(true);
 		}
 	}
@@ -106,13 +107,14 @@ public final class BlockEventListener implements Listener {
 	 * @param event the event being handled by this method
 	 */
 	@EventHandler(priority = EventPriority.LOW)
-	public void onBlockBreak(final BlockBreakEvent event) {
-
+	public void onBlockBreak(final BlockBreakEvent event)
+	{
 		// get instance of DeathChest from event block
 		final DeathChest deathChest = plugin.chestManager.getChest(event.getBlock());
 
 		// if death chest is null, do nothing and return
-		if (deathChest == null) {
+		if (deathChest == null)
+		{
 			return;
 		}
 
@@ -131,20 +133,24 @@ public final class BlockEventListener implements Listener {
 	 * @param event the event being handled by this method
 	 */
 	@EventHandler
-	public void onEntityExplode(final EntityExplodeEvent event) {
-
+	public void onEntityExplode(final EntityExplodeEvent event)
+	{
 		// if chest-protection is not enabled in config, do nothing and return
-		if (!plugin.getConfig().getBoolean("chest-protection")) {
+		if (!plugin.getConfig().getBoolean("chest-protection"))
+		{
 			return;
 		}
 
 		// iterate through all blocks in explosion event and remove those that are DeathChest chests or signs
 		Collection<Block> blocks = new LinkedList<>(event.blockList());
-		for (Block block : blocks) {
-			if (plugin.chestManager.isChestBlock(block)) {
+		for (Block block : blocks)
+		{
+			if (plugin.chestManager.isChestBlock(block))
+			{
 				// remove death chest block from blocks exploded list if protection has not expired
 				DeathChest deathChest = plugin.chestManager.getChest(block);
-				if (deathChest != null && !deathChest.protectionExpired()) {
+				if (deathChest != null && !deathChest.protectionExpired())
+				{
 					event.blockList().remove(block);
 				}
 			}
@@ -159,20 +165,23 @@ public final class BlockEventListener implements Listener {
 	 * @param event the event being handled by this method
 	 */
 	@EventHandler
-	public void onBlockExplode(final BlockExplodeEvent event) {
-
+	public void onBlockExplode(final BlockExplodeEvent event)
+	{
 		// if chest-protection is not enabled in config, do nothing and return
-		if (!plugin.getConfig().getBoolean("chest-protection")) {
+		if (!plugin.getConfig().getBoolean("chest-protection"))
+		{
 			return;
 		}
 
 		// iterate through all blocks in explosion event and remove those that are DeathChest chests or signs
 		Collection<Block> blocks = new LinkedList<>(event.blockList());
 		for (Block block : blocks) {
-			if (plugin.chestManager.isChestBlock(block)) {
+			if (plugin.chestManager.isChestBlock(block))
+			{
 				// remove death chest block from blocks exploded list if protection has not expired
 				DeathChest deathChest = plugin.chestManager.getChest(block);
-				if (deathChest != null && !deathChest.protectionExpired()) {
+				if (deathChest != null && !deathChest.protectionExpired())
+				{
 					event.blockList().remove(block);
 				}
 			}
@@ -187,10 +196,11 @@ public final class BlockEventListener implements Listener {
 	 * @param event the event being handled by this method
 	 */
 	@EventHandler
-	public void signDetachCheck(final BlockPhysicsEvent event) {
-
+	public void signDetachCheck(final BlockPhysicsEvent event)
+	{
 		// if event block is a DeathChest component, cancel event
-		if (plugin.chestManager.isChestBlockSign(event.getBlock())) {
+		if (plugin.chestManager.isChestBlockSign(event.getBlock()))
+		{
 			event.setCancelled(true);
 		}
 	}

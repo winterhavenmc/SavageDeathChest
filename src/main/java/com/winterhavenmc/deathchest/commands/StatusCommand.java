@@ -21,7 +21,6 @@ import com.winterhavenmc.deathchest.PluginMain;
 import com.winterhavenmc.deathchest.messages.MessageId;
 import com.winterhavenmc.deathchest.permissions.protectionplugins.ProtectionPlugin;
 import com.winterhavenmc.deathchest.sounds.SoundId;
-
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
@@ -32,12 +31,13 @@ import java.util.concurrent.TimeUnit;
 /**
  * Class that implements the status subcommand. Displays plugin configuration settings.
  */
-final class StatusCommand extends SubcommandAbstract {
-
+final class StatusCommand extends SubcommandAbstract
+{
 	private final PluginMain plugin;
 
 
-	StatusCommand(final PluginMain plugin) {
+	StatusCommand(final PluginMain plugin)
+	{
 		this.plugin = Objects.requireNonNull(plugin);
 		this.name = "status";
 		this.usageString = "/deathchest status";
@@ -46,9 +46,11 @@ final class StatusCommand extends SubcommandAbstract {
 
 
 	@Override
-	public boolean onCommand(final CommandSender sender, final List<String> args) {
-		if (!sender.hasPermission("deathchest.status")) {
-			plugin.messageBuilder.build(sender, MessageId.COMMAND_FAIL_STATUS_PERMISSION).send();
+	public boolean onCommand(final CommandSender sender, final List<String> args)
+	{
+		if (!sender.hasPermission("deathchest.status"))
+		{
+			plugin.messageBuilder.compose(sender, MessageId.COMMAND_FAIL_STATUS_PERMISSION).send();
 			plugin.soundConfig.playSound(sender, SoundId.COMMAND_FAIL);
 			return true;
 		}
@@ -57,7 +59,8 @@ final class StatusCommand extends SubcommandAbstract {
 		sender.sendMessage(ChatColor.DARK_AQUA + "DeathChest " + ChatColor.AQUA + "Version: "
 				+ ChatColor.RESET + versionString);
 
-		if (plugin.getConfig().getBoolean("debug")) {
+		if (plugin.getConfig().getBoolean("debug"))
+		{
 			sender.sendMessage(ChatColor.DARK_RED + "DEBUG: true");
 		}
 
@@ -65,7 +68,8 @@ final class StatusCommand extends SubcommandAbstract {
 				+ ChatColor.RESET + plugin.getConfig().getString("language"));
 
 		int expireTime = plugin.getConfig().getInt("expire-time");
-		if (expireTime == 0) {
+		if (expireTime == 0)
+		{
 			expireTime = -1;
 		}
 
@@ -73,13 +77,14 @@ final class StatusCommand extends SubcommandAbstract {
 				+ ChatColor.RESET + plugin.messageBuilder.getTimeString(TimeUnit.MINUTES.toMillis(expireTime)));
 
 		int chestProtectionTime = plugin.getConfig().getInt("chest-protection-time");
-		if (chestProtectionTime == 0) {
+		if (chestProtectionTime == 0)
+		{
 			chestProtectionTime = -1;
 		}
 
 		sender.sendMessage(ChatColor.GREEN + "Chest Protection: "
 				+ ChatColor.RESET + plugin.messageBuilder
-					.getTimeString(TimeUnit.MINUTES.toMillis(chestProtectionTime)));
+				.getTimeString(TimeUnit.MINUTES.toMillis(chestProtectionTime)));
 
 		sender.sendMessage(ChatColor.GREEN + "Search Distance: "
 				+ ChatColor.RESET + plugin.getConfig().getString("search-distance"));
@@ -96,29 +101,35 @@ final class StatusCommand extends SubcommandAbstract {
 		sender.sendMessage(ChatColor.GREEN + "Protection Plugin Support:");
 
 		int count = 0;
-		for (ProtectionPlugin protectionPlugin : plugin.protectionPluginRegistry.getAll()) {
+		for (ProtectionPlugin protectionPlugin : plugin.protectionPluginRegistry.getAll())
+		{
 
 			Collection<String> pluginSettings = new LinkedList<>();
 
 			count++;
 			String statusString = ChatColor.AQUA + "  " + protectionPlugin + ": ";
 
-			if (protectionPlugin.isIgnoredOnPlace()) {
+			if (protectionPlugin.isIgnoredOnPlace())
+			{
 				pluginSettings.add("ignore on placement");
 			}
-			else {
+			else
+			{
 				pluginSettings.add("comply on placement");
 			}
-			if (protectionPlugin.isIgnoredOnAccess()) {
+			if (protectionPlugin.isIgnoredOnAccess())
+			{
 				pluginSettings.add("ignore on access");
 			}
-			else {
+			else
+			{
 				pluginSettings.add("comply on access");
 			}
 			statusString = statusString + ChatColor.RESET + pluginSettings;
 			sender.sendMessage(statusString);
 		}
-		if (count == 0) {
+		if (count == 0)
+		{
 			sender.sendMessage(ChatColor.AQUA + "  [ NONE ENABLED ]");
 		}
 

@@ -29,8 +29,8 @@ import java.util.Objects;
 /**
  * Class that implements the reload subcommand. Reloads the plugin configuration settings.
  */
-final class ReloadCommand extends SubcommandAbstract {
-
+final class ReloadCommand extends SubcommandAbstract
+{
 	private final PluginMain plugin;
 
 
@@ -39,7 +39,8 @@ final class ReloadCommand extends SubcommandAbstract {
 	 *
 	 * @param plugin reference to plugin main class
 	 */
-	ReloadCommand(final PluginMain plugin) {
+	ReloadCommand(final PluginMain plugin)
+	{
 		this.plugin = Objects.requireNonNull(plugin);
 		this.name = "reload";
 		this.usageString = "/deathchest reload";
@@ -47,12 +48,14 @@ final class ReloadCommand extends SubcommandAbstract {
 	}
 
 
-	public boolean onCommand(final CommandSender sender, final List<String> args) {
+	public boolean onCommand(final CommandSender sender, final List<String> args)
+	{
 		// check for null parameter
 		Objects.requireNonNull(sender);
 
-		if (!sender.hasPermission("deathchest.reload")) {
-			plugin.messageBuilder.build(sender, MessageId.COMMAND_FAIL_RELOAD_PERMISSION).send();
+		if (!sender.hasPermission("deathchest.reload"))
+		{
+			plugin.messageBuilder.compose(sender, MessageId.COMMAND_FAIL_RELOAD_PERMISSION).send();
 			plugin.soundConfig.playSound(sender, SoundId.COMMAND_FAIL);
 			return true;
 		}
@@ -76,7 +79,7 @@ final class ReloadCommand extends SubcommandAbstract {
 		plugin.chestManager.reload();
 
 		// send success message
-		plugin.messageBuilder.build(sender, MessageId.COMMAND_SUCCESS_RELOAD).send();
+		plugin.messageBuilder.compose(sender, MessageId.COMMAND_SUCCESS_RELOAD).send();
 
 		// play success sound
 		plugin.soundConfig.playSound(sender, SoundId.COMMAND_RELOAD_SUCCESS);

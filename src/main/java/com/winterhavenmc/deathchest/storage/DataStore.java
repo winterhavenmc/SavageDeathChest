@@ -21,14 +21,14 @@ import com.winterhavenmc.deathchest.PluginMain;
 import com.winterhavenmc.deathchest.chests.ChestBlock;
 import com.winterhavenmc.deathchest.chests.DeathChest;
 
-import java.util.*;
+import java.util.Collection;
 
 
 /**
  * An interface that declares methods for managing persistent storage of death chests and chest blocks.
  */
-public interface DataStore {
-
+public interface DataStore
+{
 	/**
 	 * Initialize the datastore
 	 *
@@ -131,8 +131,8 @@ public interface DataStore {
 	 * @param plugin reference to plugin main class
 	 * @return the new datastore
 	 */
-	static DataStore connect(final PluginMain plugin) {
-
+	static DataStore connect(final PluginMain plugin)
+	{
 		// get data store type from config
 		DataStoreType dataStoreType = DataStoreType.match(plugin.getConfig().getString("storage-type"));
 
@@ -140,12 +140,15 @@ public interface DataStore {
 		DataStore newDataStore = dataStoreType.connect(plugin);
 
 		// initialize new data store
-		try {
+		try
+		{
 			newDataStore.initialize();
 		}
-		catch (Exception e) {
+		catch (Exception e)
+		{
 			plugin.getLogger().severe("Could not initialize " + newDataStore + " datastore!");
-			if (plugin.getConfig().getBoolean("debug")) {
+			if (plugin.getConfig().getBoolean("debug"))
+			{
 				e.printStackTrace();
 			}
 		}

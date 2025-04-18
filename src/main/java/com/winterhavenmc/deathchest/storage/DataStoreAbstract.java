@@ -21,8 +21,8 @@ package com.winterhavenmc.deathchest.storage;
 /**
  * An abstract class that declares methods for managing persistent storage of death chests and chest blocks.
  */
-public abstract class DataStoreAbstract implements DataStore {
-
+public abstract class DataStoreAbstract implements DataStore
+{
 	protected boolean initialized;
 
 	protected DataStoreType type;
@@ -33,7 +33,8 @@ public abstract class DataStoreAbstract implements DataStore {
 	 *
 	 * @return {@code true} if the datastore is initialized, {@code false} if it is not
 	 */
-	public boolean isInitialized() {
+	public boolean isInitialized()
+	{
 		return this.initialized;
 	}
 
@@ -43,7 +44,8 @@ public abstract class DataStoreAbstract implements DataStore {
 	 *
 	 * @param initialized the boolean value to assign to the datastore initialized field
 	 */
-	public void setInitialized(final boolean initialized) {
+	public void setInitialized(final boolean initialized)
+	{
 		this.initialized = initialized;
 	}
 
@@ -53,7 +55,8 @@ public abstract class DataStoreAbstract implements DataStore {
 	 *
 	 * @return the datastore type of this datastore instance
 	 */
-	public DataStoreType getType() {
+	public DataStoreType getType()
+	{
 		return this.type;
 	}
 
@@ -64,7 +67,8 @@ public abstract class DataStoreAbstract implements DataStore {
 	 * @return the name of this datastore instance
 	 */
 	@Override
-	public String toString() {
+	public String toString()
+	{
 		return this.type.toString();
 	}
 
