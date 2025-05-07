@@ -29,8 +29,8 @@ import java.util.LinkedList;
  * A class that encapsulates fields to be returned
  * as the result of a search for a valid chest location
  */
-public final class SearchResult {
-
+public final class SearchResult
+{
 	private SearchResultCode searchResultCode;
 	private Location location;
 	private ProtectionPlugin protectionPlugin;
@@ -40,7 +40,8 @@ public final class SearchResult {
 	/**
 	 * Class constructor
 	 */
-	SearchResult() {
+	SearchResult()
+	{
 		this.searchResultCode = SearchResultCode.NON_REPLACEABLE_BLOCK;
 		this.location = null;
 		this.protectionPlugin = null;
@@ -55,7 +56,8 @@ public final class SearchResult {
 	 * @param remainingItems player dropped items remaining
 	 *
 	 */
-	public SearchResult(final SearchResultCode searchResultCode, final Collection<ItemStack> remainingItems) {
+	public SearchResult(final SearchResultCode searchResultCode, final Collection<ItemStack> remainingItems)
+	{
 		this.searchResultCode = searchResultCode;
 		this.location = null;
 		this.protectionPlugin = null;
@@ -68,7 +70,8 @@ public final class SearchResult {
 	 *
 	 * @return SearchResultCode - the result code currently set for this result object
 	 */
-	public SearchResultCode getResultCode() {
+	public SearchResultCode getResultCode()
+	{
 		return searchResultCode;
 	}
 
@@ -78,7 +81,8 @@ public final class SearchResult {
 	 *
 	 * @param searchResultCode - the result code to set for this result object
 	 */
-	public void setResultCode(final SearchResultCode searchResultCode) {
+	public void setResultCode(final SearchResultCode searchResultCode)
+	{
 		this.searchResultCode = searchResultCode;
 	}
 
@@ -88,7 +92,8 @@ public final class SearchResult {
 	 *
 	 * @return Location - the location currently set for this result object
 	 */
-	public Location getLocation() {
+	public Location getLocation()
+	{
 		return location;
 	}
 
@@ -98,7 +103,8 @@ public final class SearchResult {
 	 *
 	 * @param location - the location to set for this result object
 	 */
-	void setLocation(final Location location) {
+	void setLocation(final Location location)
+	{
 		this.location = location;
 	}
 
@@ -108,7 +114,8 @@ public final class SearchResult {
 	 *
 	 * @return ProtectionPlugin - the protection plugin enum value currently set for this result object
 	 */
-	public ProtectionPlugin getProtectionPlugin() {
+	public ProtectionPlugin getProtectionPlugin()
+	{
 		return protectionPlugin;
 	}
 
@@ -119,7 +126,8 @@ public final class SearchResult {
 	 * @param protectionPlugin - the protection plugin enum value to set for this result object
 	 */
 	@SuppressWarnings("unused")
-	void setProtectionPlugin(final ProtectionPlugin protectionPlugin) {
+	void setProtectionPlugin(final ProtectionPlugin protectionPlugin)
+	{
 		this.protectionPlugin = protectionPlugin;
 	}
 
@@ -129,7 +137,8 @@ public final class SearchResult {
 	 *
 	 * @return Collection of ItemStack - the remaining items currently set for this result object
 	 */
-	public Collection<ItemStack> getRemainingItems() {
+	public Collection<ItemStack> getRemainingItems()
+	{
 		return remainingItems;
 	}
 
@@ -139,7 +148,8 @@ public final class SearchResult {
 	 *
 	 * @param remainingItems Collection of ItemStack - the remaining items to set for this result object
 	 */
-	public void setRemainingItems(final Collection<ItemStack> remainingItems) {
+	public void setRemainingItems(final Collection<ItemStack> remainingItems)
+	{
 		this.remainingItems = remainingItems;
 	}
 

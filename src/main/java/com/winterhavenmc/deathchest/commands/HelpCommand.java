@@ -34,7 +34,6 @@ import java.util.Objects;
  */
 final class HelpCommand extends SubcommandAbstract
 {
-
 	private final PluginMain plugin;
 	private final SubcommandRegistry subcommandRegistry;
 

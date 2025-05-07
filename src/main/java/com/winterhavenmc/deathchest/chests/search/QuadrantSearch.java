@@ -26,14 +26,14 @@ import org.bukkit.entity.Player;
 /**
  * A class that implements a search strategy for a valid chest location
  */
-public final class QuadrantSearch extends AbstractSearch {
-
-
+public final class QuadrantSearch extends AbstractSearch
+{
 	/**
 	 * An enum that implements a cartesian quadrant system, where each member defines the sign of the x and z coordinates.
 	 * The x and z coordinates are used to describe a plane in the horizontal orientation, as if looking down from above.
 	 */
-	enum Quadrant {
+	enum Quadrant
+	{
 		I(1,1),
 		II(-1,1),
 		III(-1,-1),
@@ -47,7 +47,8 @@ public final class QuadrantSearch extends AbstractSearch {
 		 * @param xFactor the x multiplier to achieve negative or positive sign for the quadrant member
 		 * @param zFactor the z multiplier to achieve negative or positive sign for the quadrant member
 		 */
-		Quadrant(final int xFactor, final int zFactor) {
+		Quadrant(final int xFactor, final int zFactor)
+		{
 			this.xFactor = xFactor;
 			this.zFactor = zFactor;
 		}
@@ -57,7 +58,8 @@ public final class QuadrantSearch extends AbstractSearch {
 		 * @param x the value to be negated if necessary to become a value contained within this quadrant
 		 * @return the value for x that is contained within this quadrant
 		 */
-		int getFactoredX(int x) {
+		int getFactoredX(int x)
+		{
 			return x * xFactor;
 		}
 
@@ -66,7 +68,8 @@ public final class QuadrantSearch extends AbstractSearch {
 		 * @param z the value to be negated if necessary to become a value contained within this quadrant
 		 * @return the value for z that is contained within this quadrant
 		 */
-		int getFactoredZ(int z) {
+		int getFactoredZ(int z)
+		{
 			return z * zFactor;
 		}
 	}
@@ -80,8 +83,8 @@ public final class QuadrantSearch extends AbstractSearch {
 	 */
 	public QuadrantSearch(final PluginMain plugin,
 						  final Player player,
-						  final ChestSize chestSize) {
-
+						  final ChestSize chestSize)
+	{
 		// call superclass constructor
 		super(plugin, player, chestSize);
 	}
@@ -91,8 +94,8 @@ public final class QuadrantSearch extends AbstractSearch {
 	 * Execute search algorithm
 	 */
 	@Override
-	public SearchResult execute() {
-
+	public SearchResult execute()
+	{
 		// get player death location
 		Location origin = player.getLocation();
 
@@ -101,16 +104,20 @@ public final class QuadrantSearch extends AbstractSearch {
 
 		// get min y for origin
 		int minY = 0;
-		if (origin.getWorld() != null) {
+		if (origin.getWorld() != null)
+		{
 			minY = origin.getWorld().getMinHeight();
 		}
 
 		// if player died below world min height and place-above-void configured true, start search at world min height
-		if (origin.getY() < minY) {
-			if (placeAboveVoid) {
+		if (origin.getY() < minY)
+		{
+			if (placeAboveVoid)
+			{
 				origin.setY(minY);
 			}
-			else {
+			else
+			{
 				searchResult.setResultCode(SearchResultCode.VOID);
 				searchResult.setLocation(origin);
 				return searchResult;
@@ -124,31 +131,36 @@ public final class QuadrantSearch extends AbstractSearch {
 		Location testLocation = origin.clone();
 
 		// search all locations in vertical axis upward, then downward
-		for (VerticalAxis verticalAxis : VerticalAxis.values()) {
-			for (int y = 0; y < searchDistance; y++) {
-
+		for (VerticalAxis verticalAxis : VerticalAxis.values())
+		{
+			for (int y = 0; y < searchDistance; y++)
+			{
 				// if world max height reached, break loop
-				if (y * verticalAxis.yFactor + testLocation.getY() >= player.getWorld().getMaxHeight()) {
+				if (y * verticalAxis.yFactor + testLocation.getY() >= player.getWorld().getMaxHeight())
+				{
 					break;
 				}
 
 				// if world min height reached, break loop
-				if (y * verticalAxis.yFactor + testLocation.getY() < minY) {
+				if (y * verticalAxis.yFactor + testLocation.getY() < minY)
+				{
 					break;
 				}
 
 				// skip test in upper vertical axis when y == 0
-				if (verticalAxis.equals(VerticalAxis.LOWER) && y == 0) {
+				if (verticalAxis.equals(VerticalAxis.LOWER) && y == 0)
+				{
 					continue;
 				}
 
 				// iterate over all locations within search distance until a valid location is found
-				for (int x = 0; x < searchDistance; x++) {
-					for (int z = 0; z < searchDistance; z++) {
-
+				for (int x = 0; x < searchDistance; x++)
+				{
+					for (int z = 0; z < searchDistance; z++)
+					{
 						// search x,z coordinates in each quadrant
-						for (Quadrant quadrant : Quadrant.values()) {
-
+						for (Quadrant quadrant : Quadrant.values())
+						{
 							// only test x == 0 or z == 0 in first quadrant
 							if (!quadrant.equals(Quadrant.I) && (x == 0 || z == 0)) {
 								continue;
@@ -163,7 +175,8 @@ public final class QuadrantSearch extends AbstractSearch {
 							searchResult = validateChestLocation(player, testLocation, chestSize);
 
 							// if test location is valid, return search result object
-							if (searchResult.getResultCode().equals(SearchResultCode.SUCCESS)) {
+							if (searchResult.getResultCode().equals(SearchResultCode.SUCCESS))
+							{
 								return searchResult;
 							}
 
@@ -174,7 +187,8 @@ public final class QuadrantSearch extends AbstractSearch {
 							searchResult = validateChestLocation(player, testLocation, chestSize);
 
 							// if test location is valid, return search result object
-							if (searchResult.getResultCode().equals(SearchResultCode.SUCCESS)) {
+							if (searchResult.getResultCode().equals(SearchResultCode.SUCCESS))
+							{
 								return searchResult;
 							}
 

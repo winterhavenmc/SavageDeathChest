@@ -110,17 +110,10 @@ public final class CommandManager implements TabExecutor
 		// convert args array to list
 		List<String> argsList = new LinkedList<>(Arrays.asList(args));
 
-		String subcommandName;
-
-		// get subcommand, remove from front of list
-		if (!argsList.isEmpty())
-		{
-			subcommandName = argsList.remove(0);
-		}
-		else{
-			// if no arguments, set command to help
-			subcommandName = "help";
-		}
+		// get subcommand name, or "help" if list is empty
+		String subcommandName = (!argsList.isEmpty())
+				? argsList.remove(0)
+				: "help";
 
 		// get subcommand from map by name
 		Subcommand subcommand = subcommandRegistry.getCommand(subcommandName);

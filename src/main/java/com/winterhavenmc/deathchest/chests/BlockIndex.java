@@ -23,8 +23,8 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 
-final class BlockIndex {
-
+final class BlockIndex
+{
 	// map of ChestBlocks indexed by location
 	private final Map<Location, ChestBlock> locationMap;
 
@@ -35,8 +35,8 @@ final class BlockIndex {
 	/**
 	 * Class constructor
 	 */
-	BlockIndex() {
-
+	BlockIndex()
+	{
 		// initialize location map
 		locationMap = new ConcurrentHashMap<>();
 
@@ -51,10 +51,11 @@ final class BlockIndex {
 	 * @param chestBlockType the ChestBlockType of ChestBlock to put in map
 	 * @param chestBlock the ChestBlock to put in map
 	 */
-	void put(final ChestBlockType chestBlockType, final ChestBlock chestBlock) {
-
+	void put(final ChestBlockType chestBlockType, final ChestBlock chestBlock)
+	{
 		// if passed key or value is null, do nothing and return
-		if (chestBlockType == null || chestBlock == null) {
+		if (chestBlockType == null || chestBlock == null)
+		{
 			return;
 		}
 
@@ -62,7 +63,8 @@ final class BlockIndex {
 		this.locationMap.put(chestBlock.getLocation(), chestBlock);
 
 		// if chestUUID key does not exist in map, add entry with chestUUID key and empty map as value
-		if (!uuidMap.containsKey(chestBlock.getChestUid())) {
+		if (!uuidMap.containsKey(chestBlock.getChestUid()))
+		{
 			uuidMap.put(chestBlock.getChestUid(), new EnumMap<>(ChestBlockType.class));
 		}
 
@@ -77,7 +79,8 @@ final class BlockIndex {
 	 * @param location the location to retrieve ChestBlock object
 	 * @return ChestBlock object, or null if no ChestBlock exists in map with passed location
 	 */
-	ChestBlock get(final Location location) {
+	ChestBlock get(final Location location)
+	{
 		return this.locationMap.get(location);
 	}
 
@@ -88,13 +91,14 @@ final class BlockIndex {
 	 * @param chestUid the UUID of the chest of which to retrieve a set of chest blocks
 	 * @return Set of Blocks in uuidMap, or empty set if no blocks exist for chest UUID
 	 */
-	Collection<ChestBlock> getBlocks(final UUID chestUid) {
-
+	Collection<ChestBlock> getBlocks(final UUID chestUid)
+	{
 		// create empty Set for return
 		Set<ChestBlock> returnSet = new HashSet<>();
 
 		// if chestUid key exists in map, add map values to returnSet
-		if (chestUid != null && uuidMap.containsKey(chestUid)) {
+		if (chestUid != null && uuidMap.containsKey(chestUid))
+		{
 			returnSet.addAll((uuidMap.get(chestUid)).values());
 		}
 		return returnSet;
@@ -107,13 +111,14 @@ final class BlockIndex {
 	 * @param chestUid the UUID of the chest of which to retrieve a map of chest blocks
 	 * @return Map of Blocks in uuidMap, or empty map if no blocks exist for chest UUID
 	 */
-	Map<ChestBlockType, ChestBlock> getBlockMap(final UUID chestUid) {
-
+	Map<ChestBlockType, ChestBlock> getBlockMap(final UUID chestUid)
+	{
 		// create empty map for return
 		Map<ChestBlockType, ChestBlock> returnMap = new EnumMap<>(ChestBlockType.class);
 
 		// if chestUUID exists in map, add values to returnMap
-		if (chestUid != null && this.uuidMap.containsKey(chestUid)) {
+		if (chestUid != null && this.uuidMap.containsKey(chestUid))
+		{
 			returnMap.putAll(this.uuidMap.get(chestUid));
 		}
 		return returnMap;
@@ -125,17 +130,19 @@ final class BlockIndex {
 	 *
 	 * @param chestBlock the ChestBlock object to remove from map
 	 */
-	void remove(final ChestBlock chestBlock) {
-
+	void remove(final ChestBlock chestBlock)
+	{
 		// check for null key
-		if (chestBlock == null) {
+		if (chestBlock == null)
+		{
 			return;
 		}
 
 		// get chest location
 		Location location = chestBlock.getLocation();
 
-		if (location == null) {
+		if (location == null)
+		{
 			return;
 		}
 
@@ -146,25 +153,28 @@ final class BlockIndex {
 		UUID chestUid = chestBlock.getChestUid();
 
 		// if passed chest block UUID is not null, remove chest block from uuid map
-		if (chestUid != null) {
-
+		if (chestUid != null)
+		{
 			// iterate over inner map
-			for (ChestBlockType chestBlockType : this.uuidMap.get(chestUid).keySet()) {
-
+			for (ChestBlockType chestBlockType : this.uuidMap.get(chestUid).keySet())
+			{
 				// get chest block location
 				Location chestBlockLocation = this.uuidMap.get(chestUid).get(chestBlockType).getLocation();
 
 				// check for null location
-				if (chestBlockLocation == null) {
+				if (chestBlockLocation == null)
+				{
 					return;
 				}
 
 				// if passed chest block location equals mapped chest block location, remove block from inner map
-				if (chestBlockLocation.equals(location)) {
+				if (chestBlockLocation.equals(location))
+				{
 					this.uuidMap.get(chestUid).remove(chestBlockType);
 
 					// if inner map is now empty, remove from outer map
-					if (this.uuidMap.get(chestUid).isEmpty()) {
+					if (this.uuidMap.get(chestUid).isEmpty())
+					{
 						this.uuidMap.remove(chestUid);
 					}
 				}
@@ -179,10 +189,11 @@ final class BlockIndex {
 	 * @param location the key to check
 	 * @return {@code true} if location key exists in map, {@code false} if it does not
 	 */
-	boolean containsKey(final Location location) {
-
+	boolean containsKey(final Location location)
+	{
 		// check for null location
-		if (location == null) {
+		if (location == null)
+		{
 			return false;
 		}
 

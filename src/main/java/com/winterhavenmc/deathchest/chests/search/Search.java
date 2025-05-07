@@ -17,8 +17,8 @@
 
 package com.winterhavenmc.deathchest.chests.search;
 
-public interface Search {
-
+public interface Search
+{
 	/**
 	 * Execute search algorithm
 	 */

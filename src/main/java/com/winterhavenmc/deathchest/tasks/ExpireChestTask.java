@@ -45,8 +45,8 @@ public final class ExpireChestTask extends BukkitRunnable
 	public void run()
 	{
 		// check for null death chest
-		if (this.deathChest != null) {
-
+		if (this.deathChest != null)
+		{
 			// expire death chest
 			this.deathChest.expire();
 		}
