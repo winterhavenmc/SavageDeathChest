@@ -22,12 +22,10 @@ import com.winterhavenmc.deathchest.commands.CommandManager;
 import com.winterhavenmc.deathchest.listeners.BlockEventListener;
 import com.winterhavenmc.deathchest.listeners.InventoryEventListener;
 import com.winterhavenmc.deathchest.listeners.PlayerEventListener;
-import com.winterhavenmc.deathchest.messages.MessageId;
-import com.winterhavenmc.deathchest.messages.Macro;
 import com.winterhavenmc.deathchest.util.MetricsHandler;
 import com.winterhavenmc.deathchest.permissions.protectionplugins.ProtectionPluginRegistry;
 
-import com.winterhavenmc.util.messagebuilder.MessageBuilder;
+import com.winterhavenmc.library.messagebuilder.MessageBuilder;
 import com.winterhavenmc.util.soundconfig.SoundConfiguration;
 import com.winterhavenmc.util.soundconfig.YamlSoundConfiguration;
 import com.winterhavenmc.util.worldmanager.WorldManager;
@@ -40,7 +38,7 @@ import org.bukkit.plugin.java.JavaPlugin;
  */
 public final class PluginMain extends JavaPlugin
 {
-	public MessageBuilder<MessageId, Macro> messageBuilder;
+	public MessageBuilder messageBuilder;
 	public WorldManager worldManager;
 	public SoundConfiguration soundConfig;
 	public ChestManager chestManager;
@@ -55,7 +53,7 @@ public final class PluginMain extends JavaPlugin
 		saveDefaultConfig();
 
 		// initialize message builder
-		messageBuilder = new MessageBuilder<>(this);
+		messageBuilder = MessageBuilder.create(this);
 
 		// instantiate sound configuration
 		soundConfig = new YamlSoundConfiguration(this);
