@@ -76,14 +76,14 @@ chest-signs: true
 
 # Custom sign text
 # Variable substitutions:
-# %PLAYER%  Player's name
-# %WORLD%   World name
-# %DATE%    Death date
+# {PLAYER}  Player's name
+# {WORLD}   World name
+# {DATE}    Death date
 SIGN_TEXT:
   - '&lR.I.P.&r'
-  - '%PLAYER%'
+  - '{PLAYER}'
   - ''
-  - 'D: %DATE%'
+  - 'D: {DATE}'
 
 # Date format documentation:
 # https://docs.oracle.com/javase/7/docs/api/java/text/SimpleDateFormat.html
@@ -99,15 +99,7 @@ protection-plugins:
     ignore-on-place: false
     ignore-on-access: true
 
-  PreciousStones:
-    ignore-on-place: false
-    ignore-on-access: true
-
   RoadBlock:
-    ignore-on-place: false
-    ignore-on-access: true
-
-  Towny:
     ignore-on-place: false
     ignore-on-access: true
 
