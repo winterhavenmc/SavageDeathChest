@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.winterhaven-mc</groupId>
 	<artifactId>SavageDeathChest</artifactId>
-	<version>1.19.0-SNAPSHOT</version>
+	<version>1.21.0-SNAPSHOT</version>
 	<name>SavageDeathChest</name>
 
 	<url>https://github.com/tim-savage/SavageDeathChest</url>
@@ -14,7 +14,7 @@
 	<properties>
 		<project.author>Tim Savage</project.author>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<maven.compiler.release>17</maven.compiler.release>
+		<maven.compiler.release>21</maven.compiler.release>
 	</properties>
 
 	<licenses>
@@ -50,38 +50,24 @@
 					<url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
 				</repository>
 				<repository>
-					<id>glaremasters-repo</id>
-					<url>https://repo.glaremasters.me/repository/public/</url>
+					<id>world-edit-repo</id>
+					<url>https://maven.enginehub.org/repo/</url>
 				</repository>
+<!--				<repository>-->
+<!--					<id>glaremasters repo</id>-->
+<!--					<url>https://repo.glaremasters.me/repository/towny/</url>-->
+<!--				</repository>-->
+<!--				<repository>-->
+<!--					<id>glaremasters-repo</id>-->
+<!--					<url>https://repo.glaremasters.me/repository/public/</url>-->
+<!--				</repository>-->
 				<repository>
 					<id>griefprevention-repo</id>
 					<url>https://repository.liferay.com/nexus/content/repositories/public/</url>
 				</repository>
-			</repositories>
-		</profile>
-		<profile>
-			<id>winterhaven</id>
-			<distributionManagement>
 				<repository>
-					<id>releases</id>
-					<url>https://maven.winterhaven-mc.com/repository/releases/</url>
-				</repository>
-				<snapshotRepository>
-					<id>snapshots</id>
-					<url>https://maven.winterhaven-mc.com/repository/snapshots/</url>
-				</snapshotRepository>
-			</distributionManagement>
-
-			<repositories>
-				<repository>
-					<id>public</id>
-					<url>https://maven.winterhaven-mc.com/repository/public/</url>
-					<releases>
-						<enabled>true</enabled>
-					</releases>
-					<snapshots>
-						<enabled>true</enabled>
-					</snapshots>
+					<id>elMakers-repo</id>
+					<url>http://maven.elmakers.com/repository/</url>
 				</repository>
 			</repositories>
 		</profile>
@@ -92,7 +78,7 @@
 		<dependency>
 			<groupId>com.winterhaven-mc</groupId>
 			<artifactId>message-builder-lib</artifactId>
-			<version>1.17.2-SNAPSHOT</version>
+			<version>1.21.0-SNAPSHOT</version>
 		</dependency>
 
 		<!-- SoundConfigLib -->
@@ -113,7 +99,7 @@
 		<dependency>
 			<groupId>org.spigotmc</groupId>
 			<artifactId>spigot-api</artifactId>
-			<version>1.19.2-R0.1-SNAPSHOT</version>
+			<version>1.21.5-R0.1-SNAPSHOT</version>
 			<scope>provided</scope>
 		</dependency>
 
@@ -121,7 +107,7 @@
 		<dependency>
 			<groupId>org.bstats</groupId>
 			<artifactId>bstats-bukkit</artifactId>
-			<version>3.0.0</version>
+			<version>3.1.0</version>
 		</dependency>
 
 
@@ -143,13 +129,18 @@
 			<scope>provided</scope>
 		</dependency>
 
-		<!-- PreciousStones -->
-		<dependency>
-			<groupId>net.sacredlabyrinth.Phaed</groupId>
-			<artifactId>PreciousStones</artifactId>
-			<version>1.16.1.9</version>
-			<scope>provided</scope>
-		</dependency>
+<!--		&lt;!&ndash; PreciousStones &ndash;&gt;-->
+<!--		<dependency>-->
+<!--			<groupId>net.sacredlabyrinth.Phaed</groupId>-->
+<!--			<artifactId>PreciousStones</artifactId>-->
+<!--			<version>1.16.1.9</version>-->
+<!--		</dependency>-->
+<!--		<dependency>-->
+<!--			<groupId>net.sacredlabyrinth.Phaed</groupId>-->
+<!--			<artifactId>PreciousStones</artifactId>-->
+<!--			<version>1.16.1.9</version>-->
+<!--			<scope>provided</scope>-->
+<!--		</dependency>-->
 
 		<!-- RoadBlock -->
 		<dependency>
@@ -160,12 +151,12 @@
 		</dependency>
 
 		<!-- Towny -->
-		<dependency>
-			<groupId>com.github.TownyAdvanced</groupId>
-			<artifactId>Towny</artifactId>
-			<version>0.96.2.0</version>
-			<scope>provided</scope>
-		</dependency>
+<!--		<dependency>-->
+<!--			<groupId>palmer</groupId>-->
+<!--			<artifactId>towny</artifactId>-->
+<!--			<version></version>-->
+<!--			<scope>provided</scope>-->
+<!--		</dependency>-->
 
 		<!-- WorldEdit Bukkit -->
 		<!-- https://mvnrepository.com/artifact/com.sk89q.worldedit/worldedit-core -->
@@ -191,7 +182,7 @@
 		<dependency>
 			<groupId>org.xerial</groupId>
 			<artifactId>sqlite-jdbc</artifactId>
-			<version>3.46.0.0</version>
+			<version>3.46.1.2</version>
 			<scope>test</scope>
 		</dependency>
 
@@ -199,17 +190,10 @@
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
 			<artifactId>junit-jupiter-api</artifactId>
-			<version>5.9.0</version>
+			<version>5.11.3</version>
 			<scope>test</scope>
 		</dependency>
 
-		<!-- Mock Bukkit Framework -->
-		<dependency>
-			<groupId>com.github.seeseemelk</groupId>
-			<artifactId>MockBukkit-v1.18</artifactId>
-			<version>2.85.2</version>
-			<scope>test</scope>
-		</dependency>
 	</dependencies>
 
 	<build>
@@ -236,7 +220,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-enforcer-plugin</artifactId>
-				<version>3.0.0</version>
+				<version>3.5.0</version>
 				<executions>
 					<execution>
 						<id>ban-bad-log4j-versions</id>
@@ -262,14 +246,14 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.9.0</version>
+				<version>3.13.0</version>
 			</plugin>
 
 			<!-- Shade plugin -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-shade-plugin</artifactId>
-				<version>3.3.0</version>
+				<version>3.6.0</version>
 				<executions>
 					<execution>
 						<phase>package</phase>
@@ -325,7 +309,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
-				<version>3.3.1</version>
+				<version>3.11.2</version>
 				<configuration>
 					<doclint>all,-missing</doclint>
 				</configuration>
@@ -343,7 +327,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-source-plugin</artifactId>
-				<version>3.2.1</version>
+				<version>3.3.1</version>
 				<executions>
 					<execution>
 						<id>attach-sources</id>
