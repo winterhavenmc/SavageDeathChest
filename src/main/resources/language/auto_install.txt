@@ -1,6 +1,6 @@
 # list of language files to be automatically installed
-en-US.yml
-es-ES.yml
-fr-FR.yml
-nl-NL.yml
-zh-CN.yml
+language/en-US.yml
+language/es-ES.yml
+language/fr-FR.yml
+language/nl-NL.yml
+language/zh-CN.yml
