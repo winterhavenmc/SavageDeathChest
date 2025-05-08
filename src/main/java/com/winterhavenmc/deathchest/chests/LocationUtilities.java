@@ -29,8 +29,8 @@ import java.util.Set;
 /**
  * A utility class that implements static methods for various location manipulations
  */
-public final class LocationUtilities {
-
+public final class LocationUtilities
+{
 	// set of path block material names as strings
 	private static final Collection<String> PATH_MATERIAL_NAMES = Set.of(
 			"GRASS_PATH",
@@ -41,7 +41,8 @@ public final class LocationUtilities {
 	/**
 	 * Private constructor to prevent instantiation this class
 	 */
-	private LocationUtilities() {
+	private LocationUtilities()
+	{
 		throw new AssertionError();
 	}
 
@@ -53,21 +54,25 @@ public final class LocationUtilities {
 	 * @param yaw Direction in degrees
 	 * @return BlockFace of cardinal direction
 	 */
-	private static BlockFace getCardinalBlockFace(final float yaw) {
-
+	private static BlockFace getCardinalBlockFace(final float yaw)
+	{
 		// ensure yaw is between 0 and 360 (in case of negative yaw)
 		double rotation = (yaw + 360) % 360;
 
-		if (45 <= rotation && rotation < 135) {
+		if (45 <= rotation && rotation < 135)
+		{
 			return BlockFace.EAST;
 		}
-		else if (135 <= rotation && rotation < 225) {
+		else if (135 <= rotation && rotation < 225)
+		{
 			return BlockFace.SOUTH;
 		}
-		else if (225 <= rotation && rotation < 315) {
+		else if (225 <= rotation && rotation < 315)
+		{
 			return BlockFace.WEST;
 		}
-		else {
+		else
+		{
 			return BlockFace.NORTH;
 		}
 	}
@@ -80,7 +85,8 @@ public final class LocationUtilities {
 	 * @param location location to determine cardinal direction
 	 * @return BlockFace of cardinal direction
 	 */
-	public static BlockFace getCardinalBlockFace(final Location location) {
+	public static BlockFace getCardinalBlockFace(final Location location)
+	{
 		return getCardinalBlockFace(location.getYaw());
 	}
 
@@ -92,7 +98,8 @@ public final class LocationUtilities {
 	 * @param player player to determine cardinal direction
 	 * @return BlockFace of cardinal direction
 	 */
-	public static BlockFace getCardinalBlockFace(final Player player) {
+	public static BlockFace getCardinalBlockFace(final Player player)
+	{
 		return getCardinalBlockFace(player.getLocation().getYaw());
 	}
 
@@ -103,8 +110,8 @@ public final class LocationUtilities {
 	 * @param location initial location
 	 * @return location one block to right, preserving original yaw
 	 */
-	public static Location getLocationToRight(final Location location) {
-
+	public static Location getLocationToRight(final Location location)
+	{
 		Location resultLocation = getBlockToRight(location).getLocation();
 
 		// set new location yaw to match original
@@ -119,7 +126,8 @@ public final class LocationUtilities {
 	 * @param location initial location
 	 * @return block to left of location
 	 */
-	public static Block getBlockToLeft(final Location location) {
+	public static Block getBlockToLeft(final Location location)
+	{
 		float yaw = location.getYaw() + 90;
 		return location.getBlock().getRelative(getCardinalBlockFace(yaw));
 	}
@@ -131,14 +139,15 @@ public final class LocationUtilities {
 	 * @param location initial location
 	 * @return block to right of initial location
 	 */
-	public static Block getBlockToRight(final Location location) {
+	public static Block getBlockToRight(final Location location)
+	{
 		float yaw = location.getYaw() - 90;
 		return location.getBlock().getRelative(getCardinalBlockFace(yaw));
 	}
 
 
-	public static boolean isAbovePath(final Block block) {
-
+	public static boolean isAbovePath(final Block block)
+	{
 		// get string for block material type at location below block
 		String materialType = block.getRelative(0, -1, 0).getType().toString();
 
