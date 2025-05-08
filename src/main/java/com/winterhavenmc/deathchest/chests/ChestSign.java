@@ -18,6 +18,7 @@
 package com.winterhavenmc.deathchest.chests;
 
 import com.winterhavenmc.deathchest.PluginMain;
+import com.winterhavenmc.library.messagebuilder.resources.configuration.LanguageTag;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -29,6 +30,7 @@ import org.bukkit.entity.Player;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Locale;
 
 
 public class ChestSign
@@ -62,7 +64,8 @@ public class ChestSign
 			BlockState chestState = chestBlock.getState();
 
 			// if block state is not chest, do nothing and return
-			if (!(chestState.getBlockData() instanceof Chest)) {
+			if (!(chestState.getBlockData() instanceof Chest))
+			{
 				return;
 			}
 
@@ -142,7 +145,8 @@ public class ChestSign
 		BlockState signBlockState = signBlock.getState();
 
 		// if block has not been successfully transformed into a sign, return false
-		if (!(signBlockState instanceof org.bukkit.block.Sign sign)) {
+		if (!(signBlockState instanceof org.bukkit.block.Sign sign))
+		{
 			return;
 		}
 
@@ -152,12 +156,18 @@ public class ChestSign
 		String dateFormat = plugin.getConfig().getString("DATE_FORMAT");
 
 		// if configured date format is null or empty, use default format
-		if (dateFormat == null || dateFormat.isEmpty()) {
+		if (dateFormat == null || dateFormat.isEmpty())
+		{
 			dateFormat = "MMM d, yyyy";
 		}
 
+		// get configured locale
+		Locale locale = Locale.forLanguageTag(LanguageTag.of(plugin.getConfig().getString("locale"))
+						.orElse(LanguageTag.of(plugin.getConfig().getString("language"))
+						.orElse(LanguageTag.getSystemDefault())).toString());
+
 		// create formatted date string from current time
-		String dateString = new SimpleDateFormat(dateFormat).format(System.currentTimeMillis());
+		String dateString = new SimpleDateFormat(dateFormat, locale).format(System.currentTimeMillis());
 
 		// get sign text from config file
 		List<String> lines = plugin.getConfig().getStringList("SIGN_TEXT");
@@ -171,9 +181,9 @@ public class ChestSign
 			}
 
 			// do string replacements
-			line = line.replace("%PLAYER%", player.getName());
-			line = line.replace("%DATE%", dateString);
-			line = line.replace("%WORLD%", plugin.worldManager.getWorldName(player.getWorld()));
+			line = line.replace("{PLAYER}", player.getName());
+			line = line.replace("{DATE}", dateString);
+			line = line.replace("{WORLD}", plugin.worldManager.getWorldName(player.getWorld()));
 			line = ChatColor.translateAlternateColorCodes('&', line);
 
 			// set sign text
@@ -195,7 +205,8 @@ public class ChestSign
 	private boolean isValidSignLocation(final Location location)
 	{
 		// check for null parameter
-		if (location == null) {
+		if (location == null)
+		{
 			return false;
 		}
 
