@@ -78,13 +78,7 @@ final class ReplaceableBlocks
 	 */
 	boolean contains(final Material material)
 	{
-		// check for null parameter
-		if (material == null)
-		{
-			return false;
-		}
-
-		return this.materialSet.contains(material);
+		return material != null && this.materialSet.contains(material);
 	}
 
 
