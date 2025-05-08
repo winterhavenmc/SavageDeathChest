@@ -100,7 +100,7 @@ public final class QuadrantSearch extends AbstractSearch
 		Location origin = player.getLocation();
 
 		// round y to account for fractional height blocks
-		origin.setY(Math.round(origin.getY()));
+		origin.setY(origin.getBlockY() - 1);
 
 		// get min y for origin
 		int minY = 0;
