@@ -36,24 +36,10 @@ public enum ProtectionPluginType {
 		}
 	},
 
-	PRECIOUS_STONES("PreciousStones") {
-		@Override
-		ProtectionPlugin create(final JavaPlugin plugin, final String version) {
-			return new PreciousStones(plugin, getName(), version);
-		}
-	},
-
 	ROAD_BLOCK("RoadBlock") {
 		@Override
 		ProtectionPlugin create(final JavaPlugin plugin, final String version) {
 			return new RoadBlock(plugin, getName(), version);
-		}
-	},
-
-	TOWNY("Towny") {
-		@Override
-		ProtectionPlugin create(final JavaPlugin plugin, final String version) {
-			return new Towny(plugin, getName(), version);
 		}
 	},
 
