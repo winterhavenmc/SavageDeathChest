@@ -15,11 +15,8 @@ CONSTANTS:
 # Custom Messages
 #################
 # Variable substitutions:
-# {EXPIRATION_DURATION}           expiration duration
-# {PROTECTION_DURATION}           protection duration
 
-# {PLAYER}          Player name of message recipient
-# {VIEWER}          Chest viewer name
+# {RECIPIENT}       Player name of message recipient
 # {PLUGIN}          Protection plugin name
 
 # {DEATH_CHEST} subfields:
@@ -62,125 +59,101 @@ MESSAGES:
   CHEST_DENIED_DEPLOYMENT_BY_PLUGIN:
     ENABLED: true
     MESSAGE_TEXT: '&cDeath chest deployment was prevented by {PLUGIN}.'
-    # available subs: {PLAYER}, {PLUGIN}, {LOCATION}
 
   CHEST_DENIED_ACCESS_BY_PLUGIN:
     ENABLED: true
     MESSAGE_TEXT: '&cDeath chest access was prevented by {PLUGIN}.'
-    # available subs: {PLAYER}, {PLUGIN}, {LOCATION}
 
   CHEST_DENIED_BLOCK:
     ENABLED: true
     MESSAGE_TEXT: '&cAn open space could not be found to place a chest.'
-    # available subs: {PLAYER}, {LOCATION}
 
   CHEST_DENIED_PERMISSION:
     ENABLED: false
     MESSAGE_TEXT: '&cYou do not have permission for death chests.'
-    # available subs: {PLAYER}, {LOCATION}
 
   CHEST_DENIED_ADJACENT:
     ENABLED: true
     MESSAGE_TEXT: '&cDeath chest deployment was prevented by an existing adjacent chest.'
-    # available subs: {PLAYER}, {LOCATION}
 
   CHEST_DENIED_SPAWN_RADIUS:
     ENABLED: true
     MESSAGE_TEXT: '&cDeath chest deployment was prevented by world spawn protection.'
-    # available subs: {PLAYER}, {LOCATION}
 
   CHEST_DENIED_WORLD_DISABLED:
     ENABLED: true
     MESSAGE_TEXT: '&cDeath chests are not enabled in this world.'
-    # available subs: {PLAYER}, {LOCATION}
 
   CHEST_DENIED_VOID:
     ENABLED: true
     MESSAGE_TEXT: '&cDeath chest cannot be deployed in the void.'
-    # available subs: {PLAYER}, {LOCATION}
 
 
   INVENTORY_EMPTY:
     ENABLED: true
     MESSAGE_TEXT: '&cYou had no inventory to place in a death chest.'
-    # available subs: {PLAYER}, {LOCATION}
 
   INVENTORY_FULL:
     ENABLED: true
     MESSAGE_TEXT: '&cSome items could not be transferred because your inventory is full.'
-    # available subs: {PLAYER}, {LOCATION}
 
   NO_CHEST_IN_INVENTORY:
     ENABLED: true
     MESSAGE_TEXT: '&cYou did not have any chests in your inventory.'
-    # available subs: {PLAYER}, {LOCATION}
 
   NOT_OWNER:
     ENABLED: true
     MESSAGE_TEXT: '&cThat death chest does not belong to you. It belongs to {DEATH_CHEST.OWNER}.'
-    # available subs: {DEATH_CHEST.LOCATION}, {DEATH_CHEST.OWNER}, {DEATH_CHEST.LOOTER}
 
   CHEST_EXPIRED:
     ENABLED: true
     MESSAGE_TEXT: '&cYour death chest has expired.'
     repeat-delay: 1
-    # available subs: {PLAYER}, {LOCATION}
 
   CREATIVE_MODE:
     ENABLED: true
     MESSAGE_TEXT: '&cCreative mode inventory is not saved in death chests.'
-    # available subs: {PLAYER}, {LOCATION}
 
 
   NO_CREATIVE_ACCESS:
     ENABLED: true
     MESSAGE_TEXT: '&cAccess to death chests in creative mode is not allowed.'
-    # available subs: {PLAYER}, {LOCATION}
 
   CHEST_CURRENTLY_OPEN:
     ENABLED: true
     MESSAGE_TEXT: '&cDeath chest is currently being accessed by another player.'
-    # available subs: {PLAYER}, {LOCATION}, {OWNER}, {KILLER}, {VIEWER}
 
   COMMAND_FAIL_INVALID_COMMAND:
     ENABLED: true
     MESSAGE_TEXT: '&cThat is not a valid command!'
-    # available subs: {PLAYER}
 
   COMMAND_FAIL_ARGS_COUNT_OVER:
     ENABLED: true
     MESSAGE_TEXT: '&cToo many arguments!'
-    # available subs: {PLAYER}
 
   COMMAND_FAIL_HELP_PERMISSION:
     ENABLED: true
     MESSAGE_TEXT: '&cYou do not have permission to display DeathChest help!'
-    # available subs: {PLAYER}
 
   COMMAND_FAIL_LIST_PERMISSION:
     ENABLED: true
     MESSAGE_TEXT: '&cYou do not have permission to list DeathChests!'
-    # available subs: {PLAYER}
 
   COMMAND_FAIL_LIST_OTHER_PERMISSION:
     ENABLED: true
     MESSAGE_TEXT: '&cYou do not have permission to list other player''s DeathChests!'
-    # available subs: {PLAYER}
 
   COMMAND_FAIL_RELOAD_PERMISSION:
     ENABLED: true
     MESSAGE_TEXT: '&cYou do not have permission to reload DeathChest configuration!'
-    # available subs: {PLAYER}
 
   COMMAND_FAIL_STATUS_PERMISSION:
     ENABLED: true
     MESSAGE_TEXT: '&cYou do not have permission to view DeathChest settings!'
-    # available subs: {PLAYER}
 
   COMMAND_SUCCESS_RELOAD:
     ENABLED: true
     MESSAGE_TEXT: '&7DeathChest configuration reloaded.'
-    # available subs: {PLAYER}
 
 
   COMMAND_HELP_HELP:
