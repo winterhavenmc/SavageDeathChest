@@ -19,12 +19,13 @@ package com.winterhavenmc.deathchest.storage;
 
 import com.winterhavenmc.deathchest.PluginMain;
 import com.winterhavenmc.deathchest.chests.ChestBlock;
-import com.winterhavenmc.deathchest.chests.DeathChest;
+import com.winterhavenmc.deathchest.chests.DeathChestRecord;
 import org.bukkit.World;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.File;
 import java.sql.*;
+import java.time.Instant;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
@@ -54,11 +55,11 @@ final class DataStoreSQLite extends DataStoreAbstract implements DataStore
 	/**
 	 * Class constructor
 	 *
-	 * @param plugin reference to main class
+	 * @param plugin reference to plugin main class
 	 */
 	DataStoreSQLite(final PluginMain plugin)
 	{
-		// set reference to main class
+		// set reference to plugin main class
 		this.plugin = plugin;
 
 		// set datastore type
@@ -67,6 +68,7 @@ final class DataStoreSQLite extends DataStoreAbstract implements DataStore
 		// set datastore file path
 		this.dataFilePath = plugin.getDataFolder() + File.separator + type.getStorageName();
 	}
+
 
 	/**
 	 * initialize the database connection and
@@ -149,45 +151,44 @@ final class DataStoreSQLite extends DataStoreAbstract implements DataStore
 
 		final Statement statement = connection.createStatement();
 
-		if (this.schemaVersion == 0)
-		{
-
-			Collection<DeathChest> existingChestRecords = Collections.emptySet();
-			Collection<ChestBlock> existingBlockRecords = Collections.emptySet();
-
-			ResultSet chestTable = statement.executeQuery(Queries.getQuery("SelectDeathChestTable"));
-			if (chestTable.next())
-			{
-				existingChestRecords = selectAllChestRecords();
-			}
-
-			ResultSet blockTable = statement.executeQuery(Queries.getQuery("SelectDeathBlockTable"));
-			if (blockTable.next())
-			{
-				existingBlockRecords = selectAllBlockRecords();
-			}
-
-			statement.executeUpdate(Queries.getQuery("dropDeathChestTable"));
-			statement.executeUpdate(Queries.getQuery("CreateDeathChestTable"));
-
-			statement.executeUpdate(Queries.getQuery("DropDeathBlockTable"));
-			statement.executeUpdate(Queries.getQuery("CreateDeathBlockTable"));
-
-
-			int chestCount = insertChestRecordsSync(existingChestRecords);
-			plugin.getLogger().info(chestCount + " death chest records migrated to schema v1 in the " +
-					this + " datastore.");
-
-			int blockCount = insertBlockRecordsSync(existingBlockRecords);
-			plugin.getLogger().info(blockCount + " death block records migrated to schema v1 in the " +
-					this + " datastore.");
-
-			// update schema version in database
-			statement.executeUpdate("PRAGMA user_version = 1");
-
-			// update schema version field
-			schemaVersion = 1;
-		}
+//		if (this.schemaVersion == 0)
+//		{
+//			Collection<DeathChestRecord> existingChestRecords = Collections.emptySet();
+//			Collection<ChestBlock> existingBlockRecords = Collections.emptySet();
+//
+//			ResultSet chestTable = statement.executeQuery(Queries.getQuery("SelectDeathChestTable"));
+//			if (chestTable.next())
+//			{
+//				existingChestRecords = selectAllChestRecords();
+//			}
+//
+//			ResultSet blockTable = statement.executeQuery(Queries.getQuery("SelectDeathBlockTable"));
+//			if (blockTable.next())
+//			{
+//				existingBlockRecords = selectAllBlockRecords();
+//			}
+//
+//			statement.executeUpdate(Queries.getQuery("dropDeathChestTable"));
+//			statement.executeUpdate(Queries.getQuery("CreateDeathChestTable"));
+//
+//			statement.executeUpdate(Queries.getQuery("DropDeathBlockTable"));
+//			statement.executeUpdate(Queries.getQuery("CreateDeathBlockTable"));
+//
+//
+//			int chestCount = insertChestRecordsSync(existingChestRecords);
+//			plugin.getLogger().info(chestCount + " death chest records migrated to schema v1 in the " +
+//					this + " datastore.");
+//
+//			int blockCount = insertBlockRecordsSync(existingBlockRecords);
+//			plugin.getLogger().info(blockCount + " death block records migrated to schema v1 in the " +
+//					this + " datastore.");
+//
+//			// update schema version in database
+//			statement.executeUpdate("PRAGMA user_version = 1");
+//
+//			// update schema version field
+//			schemaVersion = 1;
+//		}
 
 		// execute death chest table creation statement
 		statement.executeUpdate(Queries.getQuery("CreateDeathChestTable"));
@@ -282,47 +283,16 @@ final class DataStoreSQLite extends DataStoreAbstract implements DataStore
 
 			while (rs.next())
 			{
-
-				// declare common fields
-				final UUID chestUid;
-				World world;
-
 				final String worldName = rs.getString("WorldName");
 				final int x = rs.getInt("X");
 				final int y = rs.getInt("Y");
 				final int z = rs.getInt("Z");
 
-				if (schemaVersion == 0)
-				{
-					// try to convert chest uuid from stored string
-					try
-					{
-						chestUid = UUID.fromString(rs.getString("ChestUUID"));
-					}
-					catch (Exception e)
-					{
-						plugin.getLogger().warning("An error occurred while trying to set chestUid in the " +
-								this + " datastore.");
-						plugin.getLogger().warning(e.getLocalizedMessage());
-						if (plugin.getConfig().getBoolean("debug"))
-						{
-							plugin.getLogger().warning("[" + this + " getAllBlockRecords] chestUid string: "
-									+ rs.getString("ChestUUID"));
-						}
-						continue;
-					}
+				final UUID chestUid = new UUID(rs.getLong("ChestUidMsb"), rs.getLong("chestUidLsb"));
+				final UUID worldUid = new UUID(rs.getLong("WorldUidMsb"), rs.getLong("WorldUidLsb"));
 
-					// get server world by name
-					world = plugin.getServer().getWorld(worldName);
-				}
-				else
-				{
-					chestUid = new UUID(rs.getLong("ChestUidMsb"), rs.getLong("chestUidLsb"));
-					final UUID worldUid = new UUID(rs.getLong("WorldUidMsb"), rs.getLong("WorldUidLsb"));
-
-					// get server world by uuid
-					world = plugin.getServer().getWorld(worldUid);
-				}
+				// get server world by uuid
+				final World world = plugin.getServer().getWorld(worldUid);
 
 				// if server world is null, skip adding record to return set
 				if (world == null)
@@ -360,9 +330,9 @@ final class DataStoreSQLite extends DataStoreAbstract implements DataStore
 
 
 	@Override
-	public Collection<DeathChest> selectAllChestRecords()
+	public Collection<DeathChestRecord> selectAllChestRecords()
 	{
-		final Collection<DeathChest> results = new HashSet<>();
+		final Collection<DeathChestRecord> results = new HashSet<>();
 
 		try
 		{
@@ -372,84 +342,50 @@ final class DataStoreSQLite extends DataStoreAbstract implements DataStore
 			while (rs.next())
 			{
 
-				final UUID chestUid;
-				final UUID ownerUid;
-				UUID killerUid;
-				final long protectionExpirationTime;
+				// convert chest uuid from stored components
+				final UUID chestUid = new UUID(rs.getLong("ChestUidMsb"), rs.getLong("ChestUidLsb"));
 
-				if (schemaVersion == 0)
-				{
+				// convert owner uuid from stored components
+				final UUID ownerUid = new UUID(rs.getLong("OwnerUidMsb"), rs.getLong("OwnerUidLsb"));
 
-					// try to convert chest uuid from stored string
-					try
-					{
-						chestUid = UUID.fromString(rs.getString("ChestUUID"));
-					} catch (Exception e)
-					{
-						plugin.getLogger().warning("An error occurred while trying to set chestUid in the " +
-								this + " datastore.");
-						plugin.getLogger().warning(e.getLocalizedMessage());
-						if (plugin.getConfig().getBoolean("debug"))
-						{
-							plugin.getLogger().warning("[" + this + " selectAllChestRecords] chestUid string: "
-									+ rs.getString("ChestUUID"));
-						}
-						continue;
-					}
+				// convert killer uuid from stored components
+				final UUID killerUid = new UUID(rs.getLong("KillerUidMsb"), rs.getLong("KillerUidLsb"));
 
-					// try to convert owner uuid from stored string
-					try
-					{
-						ownerUid = UUID.fromString(rs.getString("OwnerUUID"));
-					} catch (Exception e)
-					{
-						plugin.getLogger().warning("An error occurred while trying to set ownerUid in the" +
-								this + " datastore.");
-						plugin.getLogger().warning(e.getLocalizedMessage());
-						if (plugin.getConfig().getBoolean("debug"))
-						{
-							plugin.getLogger().warning("[" + this + " selectAllChestRecords] ownerUid string: "
-									+ rs.getString("OwnerUUID"));
-						}
-						continue;
-					}
+				// get protection expiration time
+				final long protectionExpirationTime = rs.getLong("ProtectionExpirationTime");
 
-					// try to convert killer uuid from stored string, or set to zero uuid if invalid uuid
-					try
-					{
-						killerUid = UUID.fromString(rs.getString("KillerUUID"));
-					} catch (Exception e)
-					{
-						killerUid = new UUID(0, 0);
-					}
+				// get owner name string
+				final String ownerName = rs.getString("OwnerName");
 
-					protectionExpirationTime = 0;
-				}
-
-				else
-				{
-					// convert chest uuid from stored components
-					chestUid = new UUID(rs.getLong("ChestUidMsb"), rs.getLong("ChestUidLsb"));
-
-					// convert owner uuid from stored components
-					ownerUid = new UUID(rs.getLong("OwnerUidMsb"), rs.getLong("OwnerUidLsb"));
-
-					// convert killer uuid from stored components, or set to null if invalid uuid
-					long killerUidMsb = rs.getLong("KillerUidMsb");
-					long killerUidLsb = rs.getLong("KillerUidLsb");
-					killerUid = new UUID(killerUidMsb, killerUidLsb);
-
-					// get protection expiration time
-					protectionExpirationTime = rs.getLong("ProtectionExpirationTime");
-				}
+				// get killer name string
+				final String killerName = rs.getString("KillerName");
 
 				// set other fields in deathChestBlock from database fields
 				int itemCount = rs.getInt("ItemCount");
 				long placementTime = rs.getLong("PlacementTime");
 				long expirationTime = rs.getLong("ExpirationTime");
 
-				DeathChest deathChest = new DeathChest(chestUid, ownerUid, killerUid, itemCount,
-						placementTime, expirationTime, protectionExpirationTime);
+				final UUID worldUid = new UUID(rs.getLong("WorldUidMsb"), rs.getLong("WorldUidLsb"));
+				String worldName = rs.getString("WorldName");
+				int locationX = rs.getInt("LocationX");
+				int locationY = rs.getInt("LocationY");
+				int locationZ = rs.getInt("LocationZ");
+
+				DeathChestRecord deathChest = new DeathChestRecord(
+						chestUid,
+						ownerUid,
+						ownerName,
+						killerUid,
+						killerName,
+						worldUid,
+						worldName,
+						locationX,
+						locationY,
+						locationZ,
+						itemCount,
+						Instant.ofEpochMilli(placementTime),
+						Instant.ofEpochMilli(expirationTime),
+						Instant.ofEpochMilli(protectionExpirationTime));
 
 				// add DeathChestObject to results set
 				results.add(deathChest);
@@ -476,7 +412,7 @@ final class DataStoreSQLite extends DataStoreAbstract implements DataStore
 
 
 	@Override
-	public synchronized int insertChestRecords(final Collection<DeathChest> deathChests)
+	public synchronized int insertChestRecords(final Collection<DeathChestRecord> deathChests)
 	{
 		new BukkitRunnable()
 		{
@@ -491,11 +427,11 @@ final class DataStoreSQLite extends DataStoreAbstract implements DataStore
 	}
 
 
-	public synchronized int insertChestRecordsSync(final Collection<DeathChest> deathChests)
+	public synchronized int insertChestRecordsSync(final Collection<DeathChestRecord> deathChests)
 	{
 		int count = 0;
 
-		for (DeathChest deathChest : deathChests)
+		for (DeathChestRecord deathChest : deathChests)
 		{
 			// if deathChest is null, skip to next
 			if (deathChest == null)
@@ -506,19 +442,26 @@ final class DataStoreSQLite extends DataStoreAbstract implements DataStore
 			try
 			{
 				// create prepared statement
-				PreparedStatement preparedStatement =
-						connection.prepareStatement(Queries.getQuery("InsertChestRecord"));
+				PreparedStatement preparedStatement = connection.prepareStatement(Queries.getQuery("InsertChestRecord"));
 
-				preparedStatement.setLong(1, deathChest.getChestUid().getMostSignificantBits());
-				preparedStatement.setLong(2, deathChest.getChestUid().getLeastSignificantBits());
-				preparedStatement.setLong(3, deathChest.getOwnerUid().getMostSignificantBits());
-				preparedStatement.setLong(4, deathChest.getOwnerUid().getLeastSignificantBits());
-				preparedStatement.setLong(5, deathChest.getKillerUid().getMostSignificantBits());
-				preparedStatement.setLong(6, deathChest.getKillerUid().getLeastSignificantBits());
-				preparedStatement.setInt(7, deathChest.getItemCount());
-				preparedStatement.setLong(8, deathChest.getPlacementTime());
-				preparedStatement.setLong(9, deathChest.getExpirationTime());
-				preparedStatement.setLong(10, deathChest.getProtectionTime());
+				preparedStatement.setLong(1, deathChest.chestUid().getMostSignificantBits());
+				preparedStatement.setLong(2, deathChest.chestUid().getLeastSignificantBits());
+				preparedStatement.setLong(3, deathChest.ownerUid().getMostSignificantBits());
+				preparedStatement.setLong(4, deathChest.ownerUid().getLeastSignificantBits());
+				preparedStatement.setString(5, deathChest.ownerName());
+				preparedStatement.setLong(6, deathChest.killerUid().getMostSignificantBits());
+				preparedStatement.setLong(7, deathChest.killerUid().getLeastSignificantBits());
+				preparedStatement.setString(8, deathChest.killerName());
+				preparedStatement.setLong(9, deathChest.worldUid().getMostSignificantBits());
+				preparedStatement.setLong(10, deathChest.worldUid().getLeastSignificantBits());
+				preparedStatement.setString(11, deathChest.worldName());
+				preparedStatement.setInt(12, deathChest.locationX());
+				preparedStatement.setInt(13, deathChest.locationY());
+				preparedStatement.setInt(14, deathChest.locationZ());
+				preparedStatement.setInt(15, deathChest.itemCount());
+				preparedStatement.setLong(16, deathChest.placementTime().toEpochMilli());
+				preparedStatement.setLong(17, deathChest.expirationTime().toEpochMilli());
+				preparedStatement.setLong(18, deathChest.protectionTime().toEpochMilli());
 
 				// execute prepared statement
 				int rowsAffected = preparedStatement.executeUpdate();
@@ -537,7 +480,7 @@ final class DataStoreSQLite extends DataStoreAbstract implements DataStore
 			}
 
 			// insert chest blocks into datastore
-			insertBlockRecords(plugin.chestManager.getBlocks(deathChest.getChestUid()));
+			insertBlockRecords(plugin.chestManager.getBlocks(deathChest.chestUid()));
 		}
 
 		// output debugging information
@@ -624,7 +567,7 @@ final class DataStoreSQLite extends DataStoreAbstract implements DataStore
 
 
 	@Override
-	synchronized public void deleteChestRecord(final DeathChest deathChest)
+	synchronized public void deleteChestRecord(final DeathChestRecord deathChest)
 	{
 		// if passed deathChest is null, do nothing and return
 		if (deathChest == null)
@@ -643,8 +586,8 @@ final class DataStoreSQLite extends DataStoreAbstract implements DataStore
 					PreparedStatement preparedStatement =
 							connection.prepareStatement(Queries.getQuery("DeleteChestByUUID"));
 
-					preparedStatement.setLong(1, deathChest.getChestUid().getMostSignificantBits());
-					preparedStatement.setLong(2, deathChest.getChestUid().getLeastSignificantBits());
+					preparedStatement.setLong(1, deathChest.chestUid().getMostSignificantBits());
+					preparedStatement.setLong(2, deathChest.chestUid().getLeastSignificantBits());
 
 					// execute prepared statement
 					int rowsAffected = preparedStatement.executeUpdate();
