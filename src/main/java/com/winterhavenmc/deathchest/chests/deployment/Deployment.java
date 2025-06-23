@@ -19,8 +19,8 @@ package com.winterhavenmc.deathchest.chests.deployment;
 
 import com.winterhavenmc.deathchest.chests.search.SearchResult;
 
-public interface Deployment {
 
+public interface Deployment
+{
 	SearchResult deploy();
-
 }
