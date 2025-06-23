@@ -18,7 +18,7 @@
 package com.winterhavenmc.deathchest.listeners;
 
 import com.winterhavenmc.deathchest.PluginMain;
-import com.winterhavenmc.deathchest.chests.DeathChest;
+import com.winterhavenmc.deathchest.chests.DeathChestRecord;
 import com.winterhavenmc.deathchest.chests.LocationUtilities;
 import com.winterhavenmc.deathchest.permissions.BreakChestAction;
 import com.winterhavenmc.deathchest.permissions.PermissionCheck;
@@ -110,7 +110,7 @@ public final class BlockEventListener implements Listener
 	public void onBlockBreak(final BlockBreakEvent event)
 	{
 		// get instance of DeathChest from event block
-		final DeathChest deathChest = plugin.chestManager.getChest(event.getBlock());
+		final DeathChestRecord deathChest = plugin.chestManager.getChest(event.getBlock());
 
 		// if death chest is null, do nothing and return
 		if (deathChest == null)
@@ -148,8 +148,8 @@ public final class BlockEventListener implements Listener
 			if (plugin.chestManager.isChestBlock(block))
 			{
 				// remove death chest block from blocks exploded list if protection has not expired
-				DeathChest deathChest = plugin.chestManager.getChest(block);
-				if (deathChest != null && !deathChest.protectionExpired())
+				DeathChestRecord deathChest = plugin.chestManager.getChest(block);
+				if (deathChest != null && !plugin.chestManager.protectionExpired(deathChest))
 				{
 					event.blockList().remove(block);
 				}
@@ -179,8 +179,8 @@ public final class BlockEventListener implements Listener
 			if (plugin.chestManager.isChestBlock(block))
 			{
 				// remove death chest block from blocks exploded list if protection has not expired
-				DeathChest deathChest = plugin.chestManager.getChest(block);
-				if (deathChest != null && !deathChest.protectionExpired())
+				DeathChestRecord deathChest = plugin.chestManager.getChest(block);
+				if (deathChest != null && !plugin.chestManager.protectionExpired(deathChest))
 				{
 					event.blockList().remove(block);
 				}
