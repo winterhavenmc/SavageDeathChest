@@ -189,44 +189,12 @@ public abstract class AbstractDeployment implements Deployment
 	 */
 	private void setCustomInventoryName(final Player player, final Block block)
 	{
-		String customInventoryName = plugin.messageBuilder.compose(player, INVENTORY_NAME)
-				.setMacro(Macro.OWNER, player)
-				.toString();
-
-		if (customInventoryName == null || customInventoryName.isBlank())
-		{
-			return;
-		}
-
-
-
-
-		// get custom inventory name from language file
-//		Optional<String> optionalInventoryName = plugin.messageBuilder.getString("CHEST_INFO.INVENTORY_NAME");
-
-//		if (optionalInventoryName.isEmpty())
-//		{
-//			return;
-//		}
-
-//		String customInventoryName = optionalInventoryName.get();
-
-		// if custom inventory name is not blank, do substitutions for player name
-//		if (!customInventoryName.isEmpty())
-//		{
-//			customInventoryName = customInventoryName.replace("{PLAYER}", player.getDisplayName());
-//			customInventoryName = customInventoryName.replace("{OWNER}", player.getDisplayName());
-//		}
-//		else
-//		{
-//			// set default custom inventory name
-//			customInventoryName = "Death Chest";
-//		}
-
-		// set custom inventory name in chest metadata
-		org.bukkit.block.Chest chestState = (org.bukkit.block.Chest) block.getState();
-		chestState.setCustomName(customInventoryName);
-		chestState.update();
+		plugin.messageBuilder.getConstantResolver().getString("CHEST_INFO.INVENTORY_NAME").ifPresent(string -> {
+			string = string.replace("{OWNER}", player.getName());
+			org.bukkit.block.Chest chestState = (org.bukkit.block.Chest) block.getState();
+			chestState.setCustomName(string);
+			chestState.update();
+		});
 	}
 
 
