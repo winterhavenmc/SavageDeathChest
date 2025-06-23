@@ -23,5 +23,4 @@ public interface Search
 	 * Execute search algorithm
 	 */
 	SearchResult execute();
-
 }
