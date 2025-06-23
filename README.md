@@ -1,4 +1,6 @@
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/871d864a23794c6583cc5eb7a930a8e4)](https://app.codacy.com/gh/tim-savage/SavageDeathChest?utm_source=github.com&utm_medium=referral&utm_content=tim-savage/SavageDeathChest&utm_campaign=Badge_Grade_Settings)
+[![Spigot Version](https://badgen.net/static/spigot-api/1.21.5?color=yellow)](https://spigotmc.org)
+&nbsp;[![License](https://badgen.net/static/license/GPLv3)](https://www.gnu.org/licenses/gpl-3.0)
 
 ### Description
 
