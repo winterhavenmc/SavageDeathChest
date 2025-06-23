@@ -30,7 +30,7 @@ public enum ChestSize
 
 
 	/**
-	 * Constructor
+	 * Constructor for the enum constants
 	 *
 	 * @param size the chest inventory size
 	 */
