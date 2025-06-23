@@ -357,10 +357,10 @@ public final class ChestBlock
 	 *
 	 * @param deathChest the DeathChest whose metadata will be set on this chest block
 	 */
-	public void setMetadata(final DeathChest deathChest)
+	public void setMetadata(final DeathChestRecord deathChest)
 	{
 		// check for null object
-		if (deathChest == null || deathChest.getChestUid() == null)
+		if (deathChest == null || deathChest.chestUid() == null)
 		{
 			return;
 		}
@@ -381,18 +381,18 @@ public final class ChestBlock
 		}
 
 		// set chest uuid metadata
-		block.setMetadata("deathchest-uuid", new FixedMetadataValue(plugin, deathChest.getChestUid()));
+		block.setMetadata("deathchest-uuid", new FixedMetadataValue(plugin, deathChest.chestUid()));
 
 		// set owner uuid metadata
 		if (deathChest.hasValidOwnerUid())
 		{
-			block.setMetadata("deathchest-owner", new FixedMetadataValue(plugin, deathChest.getOwnerUid()));
+			block.setMetadata("deathchest-owner", new FixedMetadataValue(plugin, deathChest.ownerUid()));
 		}
 
 		// set killer uuid metadata
 		if (deathChest.hasValidKillerUid())
 		{
-			block.setMetadata("deathchest-killer", new FixedMetadataValue(plugin, deathChest.getKillerUid()));
+			block.setMetadata("deathchest-killer", new FixedMetadataValue(plugin, deathChest.killerUid()));
 		}
 	}
 
