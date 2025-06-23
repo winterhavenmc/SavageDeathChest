@@ -87,7 +87,10 @@ public final class PluginMain extends JavaPlugin
 	public void onDisable()
 	{
 		// close datastore
-		chestManager.closeDataStore();
+		if (chestManager != null)
+		{
+			chestManager.closeDataStore();
+		}
 	}
 
 }
