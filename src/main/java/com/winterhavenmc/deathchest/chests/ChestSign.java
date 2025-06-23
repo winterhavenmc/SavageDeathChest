@@ -76,7 +76,7 @@ public record ChestSign(PluginMain plugin, Player player, DeathChestRecord death
 	}
 
 
-	private void placeFrontSign(final Block chestBlock, final Player player, final DeathChest deathChest)
+	private void placeFrontSign(final Block chestBlock, final Player player, final DeathChestRecord deathChest)
 	{
 		// get block adjacent to chest facing player direction
 		Block signBlock = chestBlock.getRelative(LocationUtilities.getCardinalBlockFace(player));
@@ -94,7 +94,7 @@ public record ChestSign(PluginMain plugin, Player player, DeathChestRecord death
 	}
 
 
-	private void placeTopSign(final Block chestBlock, final Player player, final DeathChest deathChest)
+	private void placeTopSign(final Block chestBlock, final Player player, final DeathChestRecord deathChest)
 	{
 		// get block on top of chest
 		Block signBlock = chestBlock.getRelative(BlockFace.UP);
@@ -112,13 +112,13 @@ public record ChestSign(PluginMain plugin, Player player, DeathChestRecord death
 	}
 
 
-	private void finalizeSign(final Block signBlock, final Player player, final DeathChest deathChest)
+	private void finalizeSign(final Block signBlock, final Player player, final DeathChestRecord deathChest)
 	{
 		// put configured text on sign
 		setSignText(signBlock, player);
 
 		// create ChestBlock for this sign block
-		ChestBlock signChestBlock = new ChestBlock(deathChest.getChestUid(), signBlock.getLocation());
+		ChestBlock signChestBlock = new ChestBlock(deathChest.chestUid(), signBlock.getLocation());
 
 		// add this ChestBlock to block map
 		plugin.chestManager.putBlock(ChestBlockType.SIGN, signChestBlock);
@@ -152,7 +152,7 @@ public record ChestSign(PluginMain plugin, Player player, DeathChestRecord death
 
 		// get configured locale
 		Locale locale = Locale.forLanguageTag(LanguageTag.of(plugin.getConfig().getString("locale"))
-						.orElse(LanguageTag.of(plugin.getConfig().getString("language"))
+				.orElse(LanguageTag.of(plugin.getConfig().getString("language"))
 						.orElse(LanguageTag.getSystemDefault())).toString());
 
 		// create formatted date string from current time
@@ -162,10 +162,12 @@ public record ChestSign(PluginMain plugin, Player player, DeathChestRecord death
 		List<String> lines = plugin.getConfig().getStringList("SIGN_TEXT");
 
 		int lineCount = 0;
-		for (String line : lines) {
+		for (String line : lines)
+		{
 
 			// stop after four lines (zero indexed)
-			if (lineCount > 3) {
+			if (lineCount > 3)
+			{
 				break;
 			}
 
@@ -203,7 +205,8 @@ public record ChestSign(PluginMain plugin, Player player, DeathChestRecord death
 		Block block = location.getBlock();
 
 		// check if block is above path
-		if (LocationUtilities.isAbovePath(block)) {
+		if (LocationUtilities.isAbovePath(block))
+		{
 			return false;
 		}
 
