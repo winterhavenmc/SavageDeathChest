@@ -19,7 +19,7 @@ package com.winterhavenmc.deathchest.listeners;
 
 
 import com.winterhavenmc.deathchest.PluginMain;
-import com.winterhavenmc.deathchest.chests.DeathChest;
+import com.winterhavenmc.deathchest.chests.DeathChestRecord;
 import com.winterhavenmc.deathchest.permissions.PermissionCheck;
 import com.winterhavenmc.deathchest.permissions.protectionplugins.ProtectionCheckResult;
 import org.bukkit.entity.Player;
@@ -81,7 +81,7 @@ public final class InventoryEventListener implements Listener
 	public void onInventoryOpen(final InventoryOpenEvent event)
 	{
 		// get death chest for event inventory
-		final DeathChest deathChest = plugin.chestManager.getChest(event.getInventory());
+		final DeathChestRecord deathChest = plugin.chestManager.getChest(event.getInventory());
 
 		// if death chest is null, do nothing and return
 		if (deathChest == null)
@@ -121,7 +121,7 @@ public final class InventoryEventListener implements Listener
 		final Inventory inventory = event.getInventory();
 
 		// get death chest from inventory
-		final DeathChest deathChest = plugin.chestManager.getChest(inventory);
+		final DeathChestRecord deathChest = plugin.chestManager.getChest(inventory);
 
 		// if death chest is null, do nothing and return
 		if (deathChest == null)
@@ -132,7 +132,7 @@ public final class InventoryEventListener implements Listener
 		// if inventory is empty, destroy chest(s) and sign
 		if (inventory.isEmpty())
 		{
-			deathChest.destroy();
+			plugin.chestManager.destroy(deathChest);
 		}
 	}
 
