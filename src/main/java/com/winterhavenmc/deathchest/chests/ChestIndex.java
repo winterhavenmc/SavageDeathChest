@@ -17,40 +17,55 @@
 
 package com.winterhavenmc.deathchest.chests;
 
+import com.winterhavenmc.deathchest.PluginMain;
+import com.winterhavenmc.deathchest.tasks.ExpireChestTask;
+import org.bukkit.scheduler.BukkitTask;
+
+import java.time.Duration;
+import java.time.Instant;
 import java.util.Collection;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 
-final class ChestIndex {
-
+final class ChestIndex
+{
 	// map of DeathChests
-	private final Map<UUID, DeathChest> deathChestMap;
+	private final Map<UUID, DeathChestRecord> deathChestMap;
+	private final Map<UUID, Integer> expireMap;
 
 
 	/**
 	 * Constructor
 	 */
-	ChestIndex() {
+	ChestIndex()
+	{
 		deathChestMap = new ConcurrentHashMap<>();
+		expireMap = new ConcurrentHashMap<>();
 	}
 
 
 	/**
 	 * Get DeathChest object by chestUUID
 	 *
-	 * @param chestUUID UUID of DeathChest object to retrieve
+	 * @param chestUid UUID of DeathChest object to retrieve
 	 * @return DeathChest object, or null if no DeathChest exists in map with passed chestUUID
 	 */
-	DeathChest get(final UUID chestUUID) {
-
+	DeathChestRecord get(final UUID chestUid)
+	{
 		// check for null key
-		if (chestUUID == null) {
+		if (chestUid == null) {
 			return null;
 		}
 
-		return this.deathChestMap.get(chestUUID);
+		return this.deathChestMap.get(chestUid);
+	}
+
+
+	int getExpireTaskId(final DeathChestRecord deathChest)
+	{
+		return expireMap.get(deathChest.chestUid());
 	}
 
 
@@ -59,14 +74,16 @@ final class ChestIndex {
 	 *
 	 * @param deathChest the DeathChest object to put in map
 	 */
-	void put(final DeathChest deathChest) {
-
+	void put(final PluginMain plugin, final DeathChestRecord deathChest)
+	{
 		// check for null key
-		if (deathChest == null || deathChest.getChestUid() == null) {
+		if (deathChest == null || deathChest.chestUid() == null)
+		{
 			return;
 		}
 
-		this.deathChestMap.put(deathChest.getChestUid(), deathChest);
+		this.deathChestMap.put(deathChest.chestUid(), deathChest);
+		this.expireMap.put(deathChest.chestUid(), createExpireTask(plugin, deathChest));
 	}
 
 
@@ -75,31 +92,33 @@ final class ChestIndex {
 	 *
 	 * @param deathChest the DeathChest object to remove from map
 	 */
-	void remove(final DeathChest deathChest) {
-
+	void remove(final DeathChestRecord deathChest)
+	{
 		// check for null key
-		if (deathChest == null || deathChest.getChestUid() == null) {
+		if (deathChest == null || deathChest.chestUid() == null)
+		{
 			return;
 		}
 
-		this.deathChestMap.remove(deathChest.getChestUid());
+		this.deathChestMap.remove(deathChest.chestUid());
 	}
 
 
 	/**
 	 * Check if chestUUID key exists in map
 	 *
-	 * @param chestUUID the chest UUID to check
+	 * @param chestUid the chest UUID to check
 	 * @return {@code true} if key exists in map, {@code false} if it does not
 	 */
-	boolean containsKey(final UUID chestUUID) {
-
+	boolean containsKey(final UUID chestUid)
+	{
 		// check for null chestUUID
-		if (chestUUID == null) {
+		if (chestUid == null)
+		{
 			return false;
 		}
 
-		return deathChestMap.containsKey(chestUUID);
+		return deathChestMap.containsKey(chestUid);
 	}
 
 
@@ -108,9 +127,40 @@ final class ChestIndex {
 	 *
 	 * @return Collection of DeathChests in map
 	 */
-	Collection<DeathChest> values() {
+	Collection<DeathChestRecord> values()
+	{
 		return deathChestMap.values();
 	}
 
-}
 
+	public int createExpireTask(final PluginMain plugin, final DeathChestRecord deathChest)
+	{
+		// create task to expire death chest after ticksRemaining
+		BukkitTask chestExpireTask = new ExpireChestTask(plugin.chestManager, deathChest)
+				.runTaskLater(plugin, ticksUntilExpires(deathChest));
+
+		// return taskId
+		return chestExpireTask.getTaskId();
+	}
+
+
+	public long ticksUntilExpires(DeathChestRecord deathChest)
+	{
+		// if DeathChestBlock expirationTime is zero or less, it is set to never expire
+		if (deathChest.expirationTime().isBefore(Instant.EPOCH))
+		{
+			return -1;
+		}
+
+		// compute ticks remaining until expire time (millisecond interval divided by 50 yields ticks)
+		long ticksRemaining = Duration.between(Instant.now(), deathChest.expirationTime()).toMillis() / 50;
+		if (ticksRemaining < 1)
+		{
+			ticksRemaining = 1L;
+		}
+
+		return ticksRemaining;
+	}
+
+
+}
