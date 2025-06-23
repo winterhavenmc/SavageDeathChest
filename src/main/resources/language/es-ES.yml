@@ -1,29 +1,15 @@
 # Language configuration file for ${project.name} v${project.version}
 
-############
-# Chest Info
-############
-CHEST_INFO:
+
+# constant strings
+CONSTANTS:
+  TIME:
+    LESS_THAN: "menos de {DURATION}"
+    UNLIMITED: 'tiempo ilimitado'
+
   # Custom chest inventory name
-  INVENTORY_NAME: "%PLAYER%'s Cofre de la muerte"
-
-##############
-# Time strings
-##############
-TIME_STRING:
-  DAY: 'día'
-  DAYS: 'días'
-  HOUR: 'hora'
-  HOUR_PLURAL: 'horas'
-  MINUTE: 'minuto'
-  MINUTE_PLURAL: 'minutos'
-  SECOND: 'segundo'
-  SECOND_PLURAL: 'segundos'
-  UNLIMITED: 'tiempo ilimitado'
-  LESS_THAN_ONE: 'menos de un'
-
-
-## SIGN_TEXT and DATE_FORMAT have been moved to config.yml
+  CHEST_INFO:
+    INVENTORY_NAME: "{OWNER}'s Cofre de la muerte"
 
 
 #################
@@ -31,197 +17,242 @@ TIME_STRING:
 #################
 # Variable substitutions:
 # Variable substitutions:
-# %EXPIRATION_DURATION%           expiration duration with seconds
-# %EXPIRATION_DURATION_MINUTES%   expiration duration without seconds
-# %PROTECTION_DURATION%           protection duration with seconds
-# %PROTECTION_DURATION_MINUTES%   protection duration without seconds
+# {EXPIRATION_DURATION}           expiration duration with seconds
+# {EXPIRATION_DURATION_MINUTES}   expiration duration without seconds
+# {PROTECTION_DURATION}           protection duration with seconds
+# {PROTECTION_DURATION_MINUTES}   protection duration without seconds
 
-# %PLAYER%        Player name of message recipient
-# %OWNER%         Chest owner name (only available in messages that reference a valid chest object)
-# %KILLER%        Chest killer name (only available in messages that reference a valid chest object)
-# %VIEWER%        Chest viewer name
-# %PLUGIN%        Protection plugin name
-# %LOCATION%      Chest location formatted: world [x, y, z]
-#   The following substitutions are available in all messages that support %LOCATION%
-# %WORLD%         World name of chest (or player if no chest)
-# %LOC_X%         Chest coordinates (or player if no chest)
-# %LOC_Y%         Chest coordinates (or player if no chest)
-# %LOC_Z%         Chest coordinates (or player if no chest)
+# {PLAYER}          Player name of message recipient
+# {OWNER}           Chest owner name (only available in messages that reference a valid chest object)
+# {KILLER}          Chest killer name (only available in messages that reference a valid chest object)
+# {VIEWER}          Chest viewer name
+# {PLUGIN}          Protection plugin name
+# {LOCATION}        Chest location formatted: world [x, y, z]
+#   The following   substitutions are available in all messages that support {LOCATION}
+# {LOCATION.WORLD}  World name of chest (or player if no chest)
+# {LOCation.X}      Chest coordinates (or player if no chest)
+# {LOCATION.Y}      Chest coordinates (or player if no chest)
+# {LOCATION.Z}      Chest coordinates (or player if no chest)
 
-# %PAGE%          List page number (only available in LIST_HEADER and LIST_FOOTER messages)
-# %PAGE_COUNT%    List page count (only available in LIST_HEADER and LIST_FOOTER messages)
-# %ITEM_NUMBER%   List item number (only available in list item messages)
+# {PAGE}            List page number (only available in LIST_HEADER and LIST_FOOTER messages)
+# {PAGE_COUNT}      List page count (only available in LIST_HEADER and LIST_FOOTER messages)
+# {ITEM_NUMBER}     List item number (only available in list item messages)
 
 MESSAGES:
   CHEST_SUCCESS:
-    enabled: true
-    string: '&cCofre de la muerte se ha desplegado con éxito. Usted tiene %EXPIRATION_DURATION% para recuperar tu artículos.'
+    ENABLED: true
+    MESSAGE_TEXT: '&cCofre de la muerte se ha desplegado con éxito. Usted tiene {EXPIRATION_DURATION} para recuperar tu artículos.'
 
   DOUBLECHEST_PARTIAL_SUCCESS:
-    enabled: true
-    string: '&cSólo se podía colocar un solo cofre del punto muerte.'
-    # available subs: %PLAYER%, %EXPIRATION_DURATION%, %EXPIRATION_DURATION_MINUTES%, %LOCATION%
+    ENABLED: true
+    MESSAGE_TEXT: '&cSólo se podía colocar un solo cofre del punto muerte.'
+    # available subs: {PLAYER}, {EXPIRATION_DURATION}, {EXPIRATION_DURATION_MINUTES}, {LOCATION}
 
   CHEST_DEPLOYED_PROTECTION_TIME:
-    enabled: true
-    string: '&cEl cofre de la muerte está protegido del saqueo durante %PROTECTION_DURATION_MINUTES%.'
-    # available subs: %OWNER%, %PROTECTION_DURATION%, %PROTECTION_DURATION_MINUTES%, %LOCATION%
+    ENABLED: true
+    MESSAGE_TEXT: '&cEl cofre de la muerte está protegido del saqueo durante {PROTECTION_DURATION_MINUTES}.'
+    # available subs: {OWNER}, {PROTECTION_DURATION}, {PROTECTION_DURATION_MINUTES}, {LOCATION}
 
   CHEST_ACCESSED_PROTECTION_TIME:
-    enabled: true
+    ENABLED: true
     repeat-delay: 1
-    string: '&cEl cofre de la muerte que pertenece a %OWNER% está protegido contra el saqueo durante %PROTECTION_DURATION_MINUTES%.'
-    # available subs: %OWNER%, %PROTECTION_DURATION%, %PROTECTION_DURATION_MINUTES%, %LOCATION%
+    MESSAGE_TEXT: '&cEl cofre de la muerte que pertenece a {OWNER} está protegido contra el saqueo durante {PROTECTION_DURATION_MINUTES}.'
+    # available subs: {OWNER}, {PROTECTION_DURATION}, {PROTECTION_DURATION_MINUTES}, {LOCATION}
 
   CHEST_DENIED_DEPLOYMENT_BY_PLUGIN:
-    enabled: true
-    string: '&cEl despliegue del cofre de la muerte fue prevenido por %PLUGIN%.'
-    # available subs: %PLAYER%, %PLUGIN%, %LOCATION%
+    ENABLED: true
+    MESSAGE_TEXT: '&cEl despliegue del cofre de la muerte fue prevenido por {PLUGIN}.'
+    # available subs: {PLAYER}, {PLUGIN}, {LOCATION}
 
   CHEST_DENIED_ACCESS_BY_PLUGIN:
-    enabled: true
-    string: '&cEl acceso al cofre de la muerte fue impedido por %PLUGIN%.'
-    # available subs: %PLAYER%, %PLUGIN%, %LOCATION%
+    ENABLED: true
+    MESSAGE_TEXT: '&cEl acceso al cofre de la muerte fue impedido por {PLUGIN}.'
+    # available subs: {PLAYER}, {PLUGIN}, {LOCATION}
 
   CHEST_DENIED_BLOCK:
-    enabled: true
-    string: '&cNo se pudo colocar el cofre de la muerte.'
+    ENABLED: true
+    MESSAGE_TEXT: '&cNo se pudo colocar el cofre de la muerte.'
 
   CHEST_DENIED_PERMISSION:
-    enabled: false
-    string: '&cNo tienes permiso para cofres de la muerte.'
+    ENABLED: false
+    MESSAGE_TEXT: '&cNo tienes permiso para cofres de la muerte.'
 
   CHEST_DENIED_ADJACENT:
-    enabled: true
-    string: '&cEl despliegue del cofre de la muerte fue prevenido por un cofre adyacente existente.'
+    ENABLED: true
+    MESSAGE_TEXT: '&cEl despliegue del cofre de la muerte fue prevenido por un cofre adyacente existente.'
 
   CHEST_DENIED_SPAWN_RADIUS:
-    enabled: true
-    string: '&cEl despliegue del cofre de la muerte fue prevenido por protección de origen mundial.'
+    ENABLED: true
+    MESSAGE_TEXT: '&cEl despliegue del cofre de la muerte fue prevenido por protección de origen mundial.'
 
   CHEST_DENIED_WORLD_DISABLED:
-    enabled: true
-    string: '&cLos cofres de la muerte no están habilitados en este mundo.'
+    ENABLED: true
+    MESSAGE_TEXT: '&cLos cofres de la muerte no están habilitados en este mundo.'
 
   CHEST_DENIED_VOID:
-    enabled: true
-    string: '&cEl cofre de la muerte no se puede desplegar en el vacío.'
+    ENABLED: true
+    MESSAGE_TEXT: '&cEl cofre de la muerte no se puede desplegar en el vacío.'
 
 
   INVENTORY_EMPTY:
-    enabled: true
-    string: '&cNo tenías ningún inventario para poner en un cofre de la muerte.'
+    ENABLED: true
+    MESSAGE_TEXT: '&cNo tenías ningún inventario para poner en un cofre de la muerte.'
 
   INVENTORY_FULL:
-    enabled: true
-    string: '&cAlgunos artículos no se pudieron transferir porque su inventario está lleno.'
+    ENABLED: true
+    MESSAGE_TEXT: '&cAlgunos artículos no se pudieron transferir porque su inventario está lleno.'
 
   NO_CHEST_IN_INVENTORY:
-    enabled: true
-    string: '&cNo tenías ningún cofres en su inventario.'
+    ENABLED: true
+    MESSAGE_TEXT: '&cNo tenías ningún cofres en su inventario.'
 
   NOT_OWNER:
-    enabled: true
-    string: '&cEse el cofre de muerte no pertenece a usted.'
+    ENABLED: true
+    MESSAGE_TEXT: '&cEse el cofre de muerte no pertenece a usted.'
 
   CHEST_EXPIRED:
-    enabled: true
-    string: '&cSu el cofre de muerte ha expirado.'
+    ENABLED: true
+    MESSAGE_TEXT: '&cSu el cofre de muerte ha expirado.'
 
   CREATIVE_MODE:
-    enabled: true
-    string: '&cInventario de modo creativo no se guarda en cofres de muerte.'
+    ENABLED: true
+    MESSAGE_TEXT: '&cInventario de modo creativo no se guarda en cofres de muerte.'
 
   NO_CREATIVE_ACCESS:
-    enabled: true
-    string: '&cEl acceso a los cofres de la muerte en el modo creativo no está permitido.'
+    ENABLED: true
+    MESSAGE_TEXT: '&cEl acceso a los cofres de la muerte en el modo creativo no está permitido.'
 
   CHEST_CURRENTLY_OPEN:
-    enabled: true
-    string: '&cPecho Muerte está accediendo por otro jugador.'
+    ENABLED: true
+    MESSAGE_TEXT: '&cPecho Muerte está accediendo por otro jugador.'
 
 
   COMMAND_FAIL_ARGS_COUNT_OVER:
-    enabled: true
-    string: '&c¡Demasiados parámetros!'
+    ENABLED: true
+    MESSAGE_TEXT: '&c¡Demasiados parámetros!'
 
   COMMAND_FAIL_HELP_PERMISSION:
-    enabled: true
-    string: '&c¡No tienes permiso para mostrar la ayuda de DeathChest!'
+    ENABLED: true
+    MESSAGE_TEXT: '&c¡No tienes permiso para mostrar la ayuda de DeathChest!'
 
   COMMAND_FAIL_LIST_PERMISSION:
-    enabled: true
-    string: '&c¡No tienes permiso para listar DeathChests!'
+    ENABLED: true
+    MESSAGE_TEXT: '&c¡No tienes permiso para listar DeathChests!'
 
   COMMAND_FAIL_LIST_OTHER_PERMISSION:
-    enabled: true
-    string: '&c¡No tienes permiso para enumerar los DeathChests de otros jugadores!'
+    ENABLED: true
+    MESSAGE_TEXT: '&c¡No tienes permiso para enumerar los DeathChests de otros jugadores!'
 
   COMMAND_FAIL_RELOAD_PERMISSION:
-    enabled: true
-    string: '&c¡No tienes permiso para recargar la configuración de DeathChest!'
+    ENABLED: true
+    MESSAGE_TEXT: '&c¡No tienes permiso para recargar la configuración de DeathChest!'
 
   COMMAND_FAIL_STATUS_PERMISSION:
-    enabled: true
-    string: '&c¡No tienes permiso para ver la configuración de DeathChest!'
+    ENABLED: true
+    MESSAGE_TEXT: '&c¡No tienes permiso para ver la configuración de DeathChest!'
 
   COMMAND_SUCCESS_RELOAD:
-    enabled: true
-    string: '&7Configuración del DeathChest recargada.'
+    ENABLED: true
+    MESSAGE_TEXT: '&7Configuración del DeathChest recargada.'
 
 
   COMMAND_HELP_HELP:
-    enabled: true
-    string: '&eMuestra ayuda para los comandos de DeathChest.'
+    ENABLED: true
+    MESSAGE_TEXT: '&eMuestra ayuda para los comandos de DeathChest.'
 
   COMMAND_HELP_LIST:
-    enabled: true
-    string: '&eMuestra la lista de todos los DeathChests.'
+    ENABLED: true
+    MESSAGE_TEXT: '&eMuestra la lista de todos los DeathChests.'
 
   COMMAND_HELP_RELOAD:
-    enabled: true
-    string: '&eRecarga la configuración.'
+    ENABLED: true
+    MESSAGE_TEXT: '&eRecarga la configuración.'
 
   COMMAND_HELP_STATUS:
-    enabled: true
-    string: '&eMuestra los ajustes de configuración.'
+    ENABLED: true
+    MESSAGE_TEXT: '&eMuestra los ajustes de configuración.'
 
   COMMAND_HELP_INVALID:
-    enabled: true
-    string: '&eEse no es un comando válido.'
+    ENABLED: true
+    MESSAGE_TEXT: '&eEse no es un comando válido.'
 
   COMMAND_HELP_USAGE:
-    enabled: true
-    string: '&eUso de comando:'
+    ENABLED: true
+    MESSAGE_TEXT: '&eUso de comando:'
 
 
+  #########################
+  # Status command messages
+  #########################
+  COMMAND_STATUS_BANNER:
+    MESSAGE_TEXT: "\n&3&m                    =&r&3[&b {PLUGIN} &3]&m=                    "
+
+  COMMAND_STATUS_PLUGIN_VERSION:
+    MESSAGE_TEXT: '&aVersion:&r {VERSION}'
+
+  COMMAND_STATUS_LANGUAGE:
+    MESSAGE_TEXT: "&aLanguage:&r {LANGUAGE}"
+
+  COMMAND_STATUS_LOCALE:
+    MESSAGE_TEXT: "&aLocale:&r {LOCALE}"
+
+  COMMAND_STATUS_EXPIRATION_TIME:
+    MESSAGE_TEXT: "&aChest Expiration:&r {EXPIRATION_DURATION}"
+
+  COMMAND_STATUS_PROTECTION_TIME:
+    MESSAGE_TEXT: "&aChest Protection:&r {PROTECTION_DURATION}"
+
+  COMMAND_STATUS_SEARCH_DISTANCE:
+    MESSAGE_TEXT: "&aSearch Distance:&r {SEARCH_DISTANCE}"
+
+  COMMAND_STATUS_REQUIRE_CHEST:
+    MESSAGE_TEXT: "&aRequire Chest:&r {REQUIRE_CHEST}"
+
+  COMMAND_STATUS_QUICK_LOOT:
+    MESSAGE_TEXT: "&aQuick Loot:&r {QUICK_LOOT}"
+
+  COMMAND_STATUS_KILLER_LOOTING:
+    MESSAGE_TEXT: "&aKiller looting:&r {KILLER_LOOTING}"
+
+  COMMAND_STATUS_ENABLED_WORLDS:
+    MESSAGE_TEXT: "&aEnabled Worlds:&r {ENABLED_WORLDS}"
+
+  COMMAND_STATUS_PROTECTION_PLUGINS:
+    MESSAGE_TEXT: "&aProtection Plugin Support:"
+
+
+
+#######################
+# List Command Elements
+#######################
   LIST_HEADER:
-    enabled: true
-    string: '&3Page &b%PAGE_NUMBER%&3 of &b%PAGE_TOTAL%'
+    ENABLED: true
+    MESSAGE_TEXT: '&3Page &b{PAGE_NUMBER}&3 of &b{PAGE_TOTAL}'
 
   LIST_FOOTER:
-    enabled: false
-    string: '&3Page &b%PAGE_NUMBER%&3 of &b%PAGE_TOTAL%'
+    ENABLED: false
+    MESSAGE_TEXT: '&3Page &b{PAGE_NUMBER}&3 of &b{PAGE_TOTAL}'
 
   LIST_ITEM:
-    enabled: true
-    string: |-
-      %ITEM_NUMBER%) &aLocation:&b %LOCATION%
-          &aExpiration time:&b %EXPIRATION_DURATION% &aKiller:&b %KILLER%
-          &aProtection time:&b %PROTECTION_DURATION% &aKiller:&b %KILLER%
+    ENABLED: true
+    MESSAGE_TEXT: |-
+      {ITEM_NUMBER}) &aKiller:&b {KILLER}
+          &aLocation:&b {LOCATION}
+          &aExpiration time:&b {EXPIRATION_DURATION}
+          &aProtection time:&b {PROTECTION_DURATION}
 
   LIST_ITEM_ALL:
-    enabled: true
-    string: |-
-      %ITEM_NUMBER%) &aOwner:&b %OWNER% &aKiller:&b %KILLER%
-          &aLocation:&b %LOCATION%
-          &aExpiration time:&b %EXPIRATION_DURATION%
-          &aProtection time:&b %PROTECTION_DURATION%
+    ENABLED: true
+    MESSAGE_TEXT: |-
+      {ITEM_NUMBER}) &aOwner:&b {OWNER} &aKiller:&b {KILLER}
+          &aLocation:&b {LOCATION}
+          &aExpiration time:&b {EXPIRATION_DURATION}
+          &aProtection time:&b {PROTECTION_DURATION}
 
   LIST_EMPTY:
-    enabled: true
-    string: '&bThere are no DeathChests to list!'
+    ENABLED: true
+    MESSAGE_TEXT: '&bThere are no DeathChests to list!'
 
   LIST_PLAYER_NOT_FOUND:
-    enabled: true
-    string: '&3That player could not be found!'
+    ENABLED: true
+    MESSAGE_TEXT: '&3That player could not be found!'

@@ -5,7 +5,7 @@
 ############
 CHEST_INFO:
   # Custom chest inventory name
-  INVENTORY_NAME: "%PLAYER%'s Dodenkist"
+  INVENTORY_NAME: "{PLAYER}'s Dodenkist"
 
 ##############
 # Time strings
@@ -31,197 +31,241 @@ TIME_STRINGS:
 #################
 # Variable substitutions:
 # Variable substitutions:
-# %EXPIRATION_DURATION%           expiration duration with seconds
-# %EXPIRATION_DURATION_MINUTES%   expiration duration without seconds
-# %PROTECTION_DURATION%           protection duration with seconds
-# %PROTECTION_DURATION_MINUTES%   protection duration without seconds
+# {EXPIRATION_DURATION}           expiration duration with seconds
+# {EXPIRATION_DURATION_MINUTES}   expiration duration without seconds
+# {PROTECTION_DURATION}           protection duration with seconds
+# {PROTECTION_DURATION_MINUTES}   protection duration without seconds
 
-# %PLAYER%        Player name of message recipient
-# %OWNER%         Chest owner name (only available in messages that reference a valid chest object)
-# %KILLER%        Chest killer name (only available in messages that reference a valid chest object)
-# %VIEWER%        Chest viewer name
-# %PLUGIN%        Protection plugin name
-# %LOCATION%      Chest location formatted: world [x, y, z]
-#   The following substitutions are available in all messages that support %LOCATION%
-# %WORLD%         World name of chest (or player if no chest)
-# %LOC_X%         Chest coordinates (or player if no chest)
-# %LOC_Y%         Chest coordinates (or player if no chest)
-# %LOC_Z%         Chest coordinates (or player if no chest)
+# {PLAYER}        Player name of message recipient
+# {OWNER}         Chest owner name (only available in messages that reference a valid chest object)
+# {KILLER}        Chest killer name (only available in messages that reference a valid chest object)
+# {VIEWER}        Chest viewer name
+# {PLUGIN}        Protection plugin name
+# {LOCATION}      Chest location formatted: world [x, y, z]
+#   The following substitutions are available in all messages that support {LOCATION}
+# {WORLD}         World name of chest (or player if no chest)
+# {LOC_X}         Chest coordinates (or player if no chest)
+# {LOC_Y}         Chest coordinates (or player if no chest)
+# {LOC_Z}         Chest coordinates (or player if no chest)
 
-# %PAGE_NUMBER%   List page number (only available in LIST_HEADER and LIST_FOOTER messages)
-# %PAGE_TOTAL%    List total page count (only available in LIST_HEADER and LIST_FOOTER messages)
-# %ITEM_NUMBER%   List item number (only available in list item messages)
+# {PAGE_NUMBER}   List page number (only available in LIST_HEADER and LIST_FOOTER messages)
+# {PAGE_TOTAL}    List total page count (only available in LIST_HEADER and LIST_FOOTER messages)
+# {ITEM_NUMBER}   List item number (only available in list item messages)
 
 MESSAGES:
   CHEST_SUCCESS:
-    enabled: true
-    string: '&eJe bezittingen zijn achtergebleven in een dodenkist!'
+    ENABLED: true
+    MESSAGE_TEXT: '&eJe bezittingen zijn achtergebleven in een dodenkist!'
 
   DOUBLECHEST_PARTIAL_SUCCESS:
-    enabled: true
-    string: '&cOmdat er niet genoeg ruimte was voor een dubbele kist, kon een deel van je bezittingen niet veiliggesteld worden.'
-    # available subs: %PLAYER%, %EXPIRATION_DURATION%, %EXPIRATION_DURATION_MINUTES%, %LOCATION%
+    ENABLED: true
+    MESSAGE_TEXT: '&cOmdat er niet genoeg ruimte was voor een dubbele kist, kon een deel van je bezittingen niet veiliggesteld worden.'
+    # available subs: {PLAYER}, {EXPIRATION_DURATION}, {EXPIRATION_DURATION_MINUTES}, {LOCATION}
 
   CHEST_DEPLOYED_PROTECTION_TIME:
-    enabled: true
-    string: '&cDe doodskist wordt gedurende %DURATION% beschermd tegen plunderingen.'
-    # available subs: %OWNER%, %PROTECTION_DURATION%, %PROTECTION_DURATION_MINUTES%, %LOCATION%
+    ENABLED: true
+    MESSAGE_TEXT: '&cDe doodskist wordt gedurende {PROTECTION_DURATION} beschermd tegen plunderingen.'
+    # available subs: {OWNER}, {PROTECTION_DURATION}, {PROTECTION_DURATION_MINUTES}, {LOCATION}
 
   CHEST_ACCESSED_PROTECTION_TIME:
-    enabled: true
+    ENABLED: true
     repeat-delay: 1
-    string: '&cDoodkist van %OWNER% wordt gedurende %PROTECTION_DURATION_MINUTES% beschermd tegen plunderingen.'
-    # available subs: %OWNER%, %PROTECTION_DURATION%, %PROTECTION_DURATION_MINUTES%, %LOCATION%
+    MESSAGE_TEXT: '&cDoodkist van {OWNER} wordt gedurende {PROTECTION_DURATION} beschermd tegen plunderingen.'
+    # available subs: {OWNER}, {PROTECTION_DURATION}, {PROTECTION_DURATION_MINUTES}, {LOCATION}
 
   CHEST_DENIED_DEPLOYMENT_BY_PLUGIN:
-    enabled: true
-    string: '&cHet plaatsen van een dodenkist was niet mogelijk vanwege een conflict met %PLUGIN%.'
-    # available subs: %PLAYER%, %PLUGIN%, %LOCATION%
+    ENABLED: true
+    MESSAGE_TEXT: '&cHet plaatsen van een dodenkist was niet mogelijk vanwege een conflict met {PLUGIN}.'
+    # available subs: {PLAYER}, {PLUGIN}, {LOCATION}
 
   CHEST_DENIED_ACCESS_BY_PLUGIN:
-    enabled: true
-    string: '&cToegang tot de kist bij overlijden werd voorkomen door %PLUGIN%.'
-    # available subs: %PLAYER%, %PLUGIN%, %LOCATION%
+    ENABLED: true
+    MESSAGE_TEXT: '&cToegang tot de kist bij overlijden werd voorkomen door {PLUGIN}.'
+    # available subs: {PLAYER}, {PLUGIN}, {LOCATION}
 
   CHEST_DENIED_BLOCK:
-    enabled: true
-    string: '&cEr is niet genoeg ruimte om een dodenkist te plaatsen.'
+    ENABLED: true
+    MESSAGE_TEXT: '&cEr is niet genoeg ruimte om een dodenkist te plaatsen.'
 
   CHEST_DENIED_PERMISSION:
-    enabled: false
-    string: '&cJe hebt niet de benodigde rechten voor het gebruik van dodenkisten.'
+    ENABLED: false
+    MESSAGE_TEXT: '&cJe hebt niet de benodigde rechten voor het gebruik van dodenkisten.'
 
   CHEST_DENIED_ADJACENT:
-    enabled: true
-    string: '&cHet plaatsen van een dodenkist was niet mogelijk omdat er al een andere dodenkist stond.'
+    ENABLED: true
+    MESSAGE_TEXT: '&cHet plaatsen van een dodenkist was niet mogelijk omdat er al een andere dodenkist stond.'
 
   CHEST_DENIED_SPAWN_RADIUS:
-    enabled: true
-    string: '&cHet plaatsen van een dodenkist was niet mogelijk vanwege de world spawn protection.'
+    ENABLED: true
+    MESSAGE_TEXT: '&cHet plaatsen van een dodenkist was niet mogelijk vanwege de world spawn protection.'
 
   CHEST_DENIED_WORLD_DISABLED:
-    enabled: true
-    string: '&cDoodskisten zijn niet ingeschakeld in deze wereld.'
+    ENABLED: true
+    MESSAGE_TEXT: '&cDoodskisten zijn niet ingeschakeld in deze wereld.'
 
   CHEST_DENIED_VOID:
-    enabled: true
-    string: '&cDeath chest kan niet worden ingezet in de leegte.'
+    ENABLED: true
+    MESSAGE_TEXT: '&cDeath chest kan niet worden ingezet in de leegte.'
 
 
   INVENTORY_EMPTY:
-    enabled: false
-    string: '&cJe had geen bezittingen waarvoor een dodenkist gemaakt moest worden.'
+    ENABLED: false
+    MESSAGE_TEXT: '&cJe had geen bezittingen waarvoor een dodenkist gemaakt moest worden.'
 
   INVENTORY_FULL:
-    enabled: true
-    string: '&cNiet alle bezittingen kunnen worden overgezet omdat je inventaris vol is.'
+    ENABLED: true
+    MESSAGE_TEXT: '&cNiet alle bezittingen kunnen worden overgezet omdat je inventaris vol is.'
 
   NO_CHEST_IN_INVENTORY:
-    enabled: true
-    string: '&cJe had geen kist in je inventaris.'
+    ENABLED: true
+    MESSAGE_TEXT: '&cJe had geen kist in je inventaris.'
 
   NOT_OWNER:
-    enabled: true
-    string: '&cHé! Deze dodenkist is niet van jou.'
+    ENABLED: true
+    MESSAGE_TEXT: '&cHé! Deze dodenkist is niet van jou.'
 
   CHEST_EXPIRED:
-    enabled: true
-    string: '&cJe hebt de dodenkist helaas niet op tijd gevonden.'
+    ENABLED: true
+    MESSAGE_TEXT: '&cJe hebt de dodenkist helaas niet op tijd gevonden.'
     repeat-delay: 1
 
   CREATIVE_MODE:
-    enabled: true
-    string: '&cEr is geen dodenkist gemaakt omdat je in creatieve modus speelt.'
+    ENABLED: true
+    MESSAGE_TEXT: '&cEr is geen dodenkist gemaakt omdat je in creatieve modus speelt.'
 
   NO_CREATIVE_ACCESS:
-    enabled: true
-    string: '&cToegang tot dodenkisten is niet mogelijk in de creatieve speelmodus.'
+    ENABLED: true
+    MESSAGE_TEXT: '&cToegang tot dodenkisten is niet mogelijk in de creatieve speelmodus.'
 
   CHEST_CURRENTLY_OPEN:
-    enabled: true
-    string: '&cDeze dodenkist wordt al bekeken.'
+    ENABLED: true
+    MESSAGE_TEXT: '&cDeze dodenkist wordt al bekeken.'
 
   COMMAND_FAIL_ARGS_COUNT_OVER:
-    enabled: true
-    string: '&cTeveel waarden opgegeven!'
+    ENABLED: true
+    MESSAGE_TEXT: '&cTeveel waarden opgegeven!'
 
   COMMAND_FAIL_HELP_PERMISSION:
-    enabled: true
-    string: '&cJe hebt niet de benodigde rechten om het help-commando te kunnen gebruiken!'
+    ENABLED: true
+    MESSAGE_TEXT: '&cJe hebt niet de benodigde rechten om het help-commando te kunnen gebruiken!'
 
   COMMAND_FAIL_LIST_PERMISSION:
-    enabled: true
-    string: '&cJe hebt niet de benodigde rechten om de lijst met dodenkisten te kunnen zien!'
+    ENABLED: true
+    MESSAGE_TEXT: '&cJe hebt niet de benodigde rechten om de lijst met dodenkisten te kunnen zien!'
 
   COMMAND_FAIL_LIST_OTHER_PERMISSION:
-    enabled: true
-    string: '&cJe hebt niet de benodigde rechten om de dodenkisten van andere spelers te kunnen inzien!'
+    ENABLED: true
+    MESSAGE_TEXT: '&cJe hebt niet de benodigde rechten om de dodenkisten van andere spelers te kunnen inzien!'
 
   COMMAND_FAIL_RELOAD_PERMISSION:
-    enabled: true
-    string: '&cJe hebt niet de benodigde rechten om de instellingen te kunnen herladen!'
+    ENABLED: true
+    MESSAGE_TEXT: '&cJe hebt niet de benodigde rechten om de instellingen te kunnen herladen!'
 
   COMMAND_FAIL_STATUS_PERMISSION:
-    enabled: true
-    string: '&cJe hebt niet de benodigde rechten om de instellingen te kunnen bekijken!'
+    ENABLED: true
+    MESSAGE_TEXT: '&cJe hebt niet de benodigde rechten om de instellingen te kunnen bekijken!'
 
   COMMAND_SUCCESS_RELOAD:
-    enabled: true
-    string: '&7Instellingen opnieuw ingeladen.'
+    ENABLED: true
+    MESSAGE_TEXT: '&7Instellingen opnieuw ingeladen.'
 
 
   COMMAND_HELP_HELP:
-    enabled: true
-    string: '&eGeeft hulp weer voor DeathChest-opdrachten.'
+    ENABLED: true
+    MESSAGE_TEXT: '&eGeeft hulp weer voor DeathChest-opdrachten.'
 
   COMMAND_HELP_LIST:
-    enabled: true
-    string: '&eGeeft een lijst met alle doodskisten weer.'
+    ENABLED: true
+    MESSAGE_TEXT: '&eGeeft een lijst met alle doodskisten weer.'
 
   COMMAND_HELP_RELOAD:
-    enabled: true
-    string: '&eLaadt de configuratie opnieuw.'
+    ENABLED: true
+    MESSAGE_TEXT: '&eLaadt de configuratie opnieuw.'
 
   COMMAND_HELP_STATUS:
-    enabled: true
-    string: '&eGeeft configuratie-instellingen weer.'
+    ENABLED: true
+    MESSAGE_TEXT: '&eGeeft configuratie-instellingen weer.'
 
   COMMAND_HELP_INVALID:
-    enabled: true
-    string: '&eDat is geen geldige opdracht.'
+    ENABLED: true
+    MESSAGE_TEXT: '&eDat is geen geldige opdracht.'
 
   COMMAND_HELP_USAGE:
-    enabled: true
-    string: '&eCommando gebruik:'
+    ENABLED: true
+    MESSAGE_TEXT: '&eCommando gebruik:'
 
 
+  #########################
+  # Status command messages
+  #########################
+  COMMAND_STATUS_BANNER:
+    MESSAGE_TEXT: "\n&3&m                    =&r&3[&b {PLUGIN} &3]&m=                    "
+
+  COMMAND_STATUS_PLUGIN_VERSION:
+    MESSAGE_TEXT: '&aVersion:&r {VERSION}'
+
+  COMMAND_STATUS_LANGUAGE:
+    MESSAGE_TEXT: "&aLanguage:&r {LANGUAGE}"
+
+  COMMAND_STATUS_LOCALE:
+    MESSAGE_TEXT: "&aLocale:&r {LOCALE}"
+
+  COMMAND_STATUS_EXPIRATION_TIME:
+    MESSAGE_TEXT: "&aChest Expiration:&r {EXPIRATION_DURATION}"
+
+  COMMAND_STATUS_PROTECTION_TIME:
+    MESSAGE_TEXT: "&aChest Protection:&r {PROTECTION_DURATION}"
+
+  COMMAND_STATUS_SEARCH_DISTANCE:
+    MESSAGE_TEXT: "&aSearch Distance:&r {SEARCH_DISTANCE}"
+
+  COMMAND_STATUS_REQUIRE_CHEST:
+    MESSAGE_TEXT: "&aRequire Chest:&r {REQUIRE_CHEST}"
+
+  COMMAND_STATUS_QUICK_LOOT:
+    MESSAGE_TEXT: "&aQuick Loot:&r {QUICK_LOOT}"
+
+  COMMAND_STATUS_KILLER_LOOTING:
+    MESSAGE_TEXT: "&aKiller looting:&r {KILLER_LOOTING}"
+
+  COMMAND_STATUS_ENABLED_WORLDS:
+    MESSAGE_TEXT: "&aEnabled Worlds:&r {ENABLED_WORLDS}"
+
+  COMMAND_STATUS_PROTECTION_PLUGINS:
+    MESSAGE_TEXT: "&aProtection Plugin Support:"
+
+
+
+  #######################
+  # List Command Elements
+  #######################
   LIST_HEADER:
-    enabled: true
-    string: '&3Pagina &b%PAGE_NUMBER%&3 van &b%PAGE_TOTAL%'
+    ENABLED: true
+    MESSAGE_TEXT: '&3Pagina &b{PAGE_NUMBER}&3 van &b{PAGE_TOTAL}'
 
   LIST_FOOTER:
-    enabled: false
-    string: '&3Pagina &b%PAGE_NUMBER%&3 van &b%PAGE_TOTAL%'
+    ENABLED: false
+    MESSAGE_TEXT: '&3Pagina &b{PAGE_NUMBER}&3 van &b{PAGE_TOTAL}'
 
   LIST_ITEM:
-    enabled: true
-    string: |-
-      %ITEM_NUMBER%) &aLocation:&b %LOCATION% &aKiller:&b %KILLER%
-          &aExpiration time:&b %EXPIRATION_DURATION%
-          &aProtection time:&b %PROTECTION_DURATION%
+    ENABLED: true
+    MESSAGE_TEXT: |-
+      {ITEM_NUMBER}) &aLocation:&b {LOCATION} &aKiller:&b {KILLER}
+          &aExpiration time:&b {EXPIRATION_DURATION}
+          &aProtection time:&b {PROTECTION_DURATION}
 
   LIST_ITEM_ALL:
-    enabled: true
-    string: |-
-      %ITEM_NUMBER%) &aOwner:&b %OWNER% &aKiller:&b %KILLER%
-          &aLocation:&b %LOCATION%
-          &aExpiration time:&b %EXPIRATION_DURATION%
-          &aProtection time:&b %PROTECTION_DURATION%
+    ENABLED: true
+    MESSAGE_TEXT: |-
+      {ITEM_NUMBER}) &aOwner:&b {OWNER} &aKiller:&b {KILLER}
+          &aLocation:&b {LOCATION}
+          &aExpiration time:&b {EXPIRATION_DURATION}
+          &aProtection time:&b {PROTECTION_DURATION}
 
   LIST_EMPTY:
-    enabled: true
-    string: '&bEr zijn geen dodenkisten om te tonen!'
+    ENABLED: true
+    MESSAGE_TEXT: '&bEr zijn geen dodenkisten om te tonen!'
 
   LIST_PLAYER_NOT_FOUND:
-    enabled: true
-    string: '&3Deze speler is onbekend!'
+    ENABLED: true
+    MESSAGE_TEXT: '&3Deze speler is onbekend!'

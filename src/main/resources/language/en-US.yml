@@ -1,4 +1,4 @@
-# Language configuration file for ${project.name} v${project.version}
+# Language configuration file for SavageDeathChest v1.21.0-SNAPSHOT
 
 # constant strings
 CONSTANTS:
@@ -6,45 +6,45 @@ CONSTANTS:
     LESS_THAN: "less than {DURATION}"
     UNLIMITED: "unlimited"
 
-CHEST_INFO:
   # Custom chest inventory name
-  INVENTORY_NAME: "{PLAYER}'s Death Chest"
-
-
-## SIGN_TEXT and DATE_FORMAT have been moved to config.yml
+  CHEST_INFO:
+    INVENTORY_NAME: "{OWNER}'s Death Chest"
 
 
 #################
 # Custom Messages
 #################
 # Variable substitutions:
-# {EXPIRATION_DURATION}           expiration duration with seconds
-# {EXPIRATION_DURATION_MINUTES}   expiration duration without seconds
-# {PROTECTION_DURATION}           protection duration with seconds
-# {PROTECTION_DURATION_MINUTES}   protection duration without seconds
+# {EXPIRATION_DURATION}           expiration duration
+# {PROTECTION_DURATION}           protection duration
 
-# {PLAYER}        Player name of message recipient
-# {OWNER}         Chest owner name (only available in messages that reference a valid chest object)
-# {KILLER}        Chest killer name (only available in messages that reference a valid chest object)
-# {VIEWER}        Chest viewer name
-# {PLUGIN}        Protection plugin name
-# {LOCATION}      Chest location formatted: world [x, y, z]
-#   The following substitutions are available in all messages that support {LOCATION}
-# {WORLD}         World name of chest (or player if no chest)
-# {LOC_X}         Chest coordinates (or player if no chest)
-# {LOC_Y}         Chest coordinates (or player if no chest)
-# {LOC_Z}         Chest coordinates (or player if no chest)
+# {PLAYER}          Player name of message recipient
+# {VIEWER}          Chest viewer name
+# {PLUGIN}          Protection plugin name
 
+# {DEATH_CHEST} subfields:
+# {DEATH_CHEST.OWNER}                Chest owner name (only available in messages that reference a valid chest object)
+# {DEATH_CHEST.LOOTER}               Chest looter name (only available in messages that reference a valid chest object)
+# {DEATH_CHEST.LOCATION}             Chest location formatted: world [x, y, z]
+# {DEATH_CHEST.LOCATION.WORLD}       World name of chest (or player if no chest)
+# {DEATH_CHEST.LOCATION.X}           Chest coordinates (or player if no chest)
+# {DEATH_CHEST.LOCATION.Y}           Chest coordinates (or player if no chest)
+# {DEATH_CHEST.LOCATION.Z}           Chest coordinates (or player if no chest)
+# {DEATH_CHEST.EXPIRATION.DURATION}  Time remaining until chest expires and drops contents
+# {DEATH_CHEST.EXPIRATION.INSTANT}   Date/time when chest expires and drops contents
+# {DEATH_CHEST.PROTECTION.DURATION}  Remaining time before non-owners may access chest contents
+# {DEATH_CHEST.PROTECTION.INSTANT}   Date/time when non-owners may access chest contents
+
+# List fields:
 # {PAGE_NUMBER}   List page number (only available in LIST_HEADER and LIST_FOOTER messages)
 # {PAGE_TOTAL}    List total page count (only available in LIST_HEADER and LIST_FOOTER messages)
 # {ITEM_NUMBER}   List item number (only available in list item messages)
 
-MESSAGES:
-  INVENTORY_NAME: "{OWNER}'s Death Chest"
 
+MESSAGES:
   CHEST_SUCCESS:
     ENABLED: true
-    MESSAGE_TEXT: '&cSuccessfully placed death chest. You have {EXPIRATION_DURATION} to retrieve your items.'
+    MESSAGE_TEXT: '&cSuccessfully placed death chest. You have {DEATH_CHEST.EXPIRATION.DURATION} to retrieve your items.'
 
   DOUBLECHEST_PARTIAL_SUCCESS:
     ENABLED: true
@@ -52,13 +52,12 @@ MESSAGES:
 
   CHEST_DEPLOYED_PROTECTION_TIME:
     ENABLED: true
-    MESSAGE_TEXT: '&cDeath chest is protected from looting for {PROTECTION_DURATION}.'
+    MESSAGE_TEXT: '&cDeath chest is protected from looting for {DEATH_CHEST.PROTECTION.DURATION}.'
 
   CHEST_ACCESSED_PROTECTION_TIME:
     ENABLED: true
     repeat-delay: 1
-    MESSAGE_TEXT: '&cDeath chest belonging to {OWNER} is protected from looting for {PROTECTION_DURATION_MINUTES}.'
-    # available subs: {OWNER}, {PROTECTION_DURATION}, {PROTECTION_DURATION_MINUTES}, {LOCATION}
+    MESSAGE_TEXT: '&cDeath chest belonging to {DEATH_CHEST.OWNER} is protected from looting for {DEATH_CHEST.PROTECTION.DURATION}.'
 
   CHEST_DENIED_DEPLOYMENT_BY_PLUGIN:
     ENABLED: true
@@ -118,8 +117,8 @@ MESSAGES:
 
   NOT_OWNER:
     ENABLED: true
-    MESSAGE_TEXT: '&cThat death chest does not belong to you.'
-    # available subs: {PLAYER}, {LOCATION}, {OWNER}, {KILLER}
+    MESSAGE_TEXT: '&cThat death chest does not belong to you. It belongs to {DEATH_CHEST.OWNER}.'
+    # available subs: {DEATH_CHEST.LOCATION}, {DEATH_CHEST.OWNER}, {DEATH_CHEST.LOOTER}
 
   CHEST_EXPIRED:
     ENABLED: true
@@ -209,11 +208,51 @@ MESSAGES:
     MESSAGE_TEXT: '&eCommand usage:'
 
 
+  #########################
+  # Status command messages
+  #########################
+  COMMAND_STATUS_BANNER:
+    MESSAGE_TEXT: "\n&3&m                    =&r&3[&b {PLUGIN} &3]&m=                    "
+
+  COMMAND_STATUS_FOOTER:
+    MESSAGE_TEXT: "\n&3Proudly Uses MessageBuilderLib  &6❖&r  {URL}"
+
+  COMMAND_STATUS_PLUGIN_VERSION:
+    MESSAGE_TEXT: '&aVersion:&r {VERSION}'
+
+  COMMAND_STATUS_LANGUAGE:
+    MESSAGE_TEXT: "&aLanguage:&r {LANGUAGE}"
+
+  COMMAND_STATUS_LOCALE:
+    MESSAGE_TEXT: "&aLocale:&r {LOCALE}"
+
+  COMMAND_STATUS_TIMEZONE:
+    MESSAGE_TEXT: "&aTimezone:&r {TIMEZONE}"
+
   COMMAND_STATUS_EXPIRATION_TIME:
-    MESSAGE_TEXT: "&3Chest Expiration:&r {DURATION}"
+    MESSAGE_TEXT: "&aChest Expiration:&r {EXPIRATION_DURATION}"
 
   COMMAND_STATUS_PROTECTION_TIME:
-    MESSAGE_TEXT: "&3Chest Protection:&r {DURATION}"
+    MESSAGE_TEXT: "&aChest Protection:&r {PROTECTION_DURATION}"
+
+  COMMAND_STATUS_SEARCH_DISTANCE:
+    MESSAGE_TEXT: "&aSearch Distance:&r {SEARCH_DISTANCE}"
+
+  COMMAND_STATUS_REQUIRE_CHEST:
+    MESSAGE_TEXT: "&aRequire Chest:&r {REQUIRE_CHEST}"
+
+  COMMAND_STATUS_QUICK_LOOT:
+    MESSAGE_TEXT: "&aQuick Loot:&r {QUICK_LOOT}"
+
+  COMMAND_STATUS_KILLER_LOOTING:
+    MESSAGE_TEXT: "&aKiller looting:&r {KILLER_LOOTING}"
+
+  COMMAND_STATUS_ENABLED_WORLDS:
+    MESSAGE_TEXT: "&aEnabled Worlds:&r {ENABLED_WORLDS}"
+
+  COMMAND_STATUS_PROTECTION_PLUGINS:
+    MESSAGE_TEXT: "&aProtection Plugin Support:"
+
 
   LIST_HEADER:
     ENABLED: true
@@ -226,17 +265,18 @@ MESSAGES:
   LIST_ITEM:
     ENABLED: true
     MESSAGE_TEXT: |-
-      {ITEM_NUMBER}) &aLocation:&b {LOCATION} &aKiller:&b {KILLER}
-          &aExpiration time:&b {EXPIRATION_DURATION}
-          &aProtection time:&b {PROTECTION_DURATION}
+      {ITEM_NUMBER}) &aKiller:&b {DEATH_CHEST.LOOTER}
+          &aLocation:&b {DEATH_CHEST.LOCATION}
+          &aExpiration time:&b {DEATH_CHEST.EXPIRATION.DURATION}
+          &aProtection time:&b {DEATH_CHEST.PROTECTION.DURATION}
 
   LIST_ITEM_ALL:
     ENABLED: true
-    MESSAGE_TEXT: |- 
-      {ITEM_NUMBER}) &aOwner:&b {OWNER} &aKiller:&b {KILLER}
-          &aLocation:&b {LOCATION}
-          &aExpiration time:&b {EXPIRATION_DURATION}
-          &aProtection time:&b {PROTECTION_DURATION}
+    MESSAGE_TEXT: |-
+      {ITEM_NUMBER}) &aOwner:&b {DEATH_CHEST.OWNER} &aKiller:&b {DEATH_CHEST.LOOTER}
+          &aLocation:&b {DEATH_CHEST.LOCATION}
+          &aExpiration time:&b {DEATH_CHEST.EXPIRATION.DURATION}
+          &aProtection time:&b {DEATH_CHEST.PROTECTION.DURATION}
 
   LIST_EMPTY:
     ENABLED: true

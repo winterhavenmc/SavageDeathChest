@@ -1,260 +1,286 @@
 # Language configuration file for ${project.name} v${project.version}
 
-############
-# Chest Info
-############
-CHEST_INFO:
-  # Custom chest inventory name
-  INVENTORY_NAME: '死亡宝箱'
+# constant strings
+CONSTANTS:
+  TIME:
+    LESS_THAN: "少于 {DURATION}"
+    UNLIMITED: "不限时"
 
-##############
-# Time strings
-##############
-TIME_STRINGS:
-  DAY: '天'
-  DAY_PLURAL: '天'
-  HOUR: '时'
-  HOUR_PLURAL: '时'
-  MINUTE: '分'
-  MINUTE_PLURAL: '分'
-  SECOND: '秒'
-  SECOND_PLURAL: '秒'
-  UNLIMITED: '不限时'
-  LESS_THAN_ONE: '小于一'
-
-
-## SIGN_TEXT and DATE_FORMAT have been moved to config.yml
+  CHEST_INFO:
+    # Custom chest inventory name
+    INVENTORY_NAME: "死亡宝箱"
 
 
 #################
 # Custom Messages
 #################
 # Variable substitutions:
-# Variable substitutions:
-# %EXPIRATION_DURATION%           expiration duration with seconds
-# %EXPIRATION_DURATION_MINUTES%   expiration duration without seconds
-# %PROTECTION_DURATION%           protection duration with seconds
-# %PROTECTION_DURATION_MINUTES%   protection duration without seconds
+# {EXPIRATION_DURATION}           expiration duration with seconds
+# {PROTECTION_DURATION}           protection duration with seconds
 
-# %PLAYER%        Player name of message recipient
-# %OWNER%         Chest owner name (only available in messages that reference a valid chest object)
-# %KILLER%        Chest killer name (only available in messages that reference a valid chest object)
-# %VIEWER%        Chest viewer name
-# %PLUGIN%        Protection plugin name
-# %LOCATION%      Chest location formatted: world [x, y, z]
-#   The following substitutions are available in all messages that support %LOCATION%
-# %WORLD%         World name of chest (or player if no chest)
-# %LOC_X%         Chest coordinates (or player if no chest)
-# %LOC_Y%         Chest coordinates (or player if no chest)
-# %LOC_Z%         Chest coordinates (or player if no chest)
+# {PLAYER}          Player name of message recipient
+# {OWNER}           Chest owner name (only available in messages that reference a valid chest object)
+# {KILLER}          Chest killer name (only available in messages that reference a valid chest object)
+# {VIEWER}          Chest viewer name
+# {PLUGIN}          Protection plugin name
+# {LOCATION}        Chest location formatted: world [x, y, z]
+# {LOCATION.WORLD}
+# {LOCATION.X}
+# {LOCATION.Y}
+# {LOCATION.Z}
 
-# %PAGE_NUMBER%   List page number (only available in LIST_HEADER and LIST_FOOTER messages)
-# %PAGE_TOTAL%    List total page count (only available in LIST_HEADER and LIST_FOOTER messages)
-# %ITEM_NUMBER%   List item number (only available in list item messages)
+# {PAGE_NUMBER}   List page number (only available in LIST_HEADER and LIST_FOOTER messages)
+# {PAGE_TOTAL}    List total page count (only available in LIST_HEADER and LIST_FOOTER messages)
+# {ITEM_NUMBER}   List item number (only available in list item messages)
 
 MESSAGES:
   CHEST_SUCCESS:
-    enabled: true
-    string: '&c成功地放置了死亡箱. 你有 %EXPIRATION_DURATION% 来取回你的物品.'
-    # available subs: %PLAYER%, %EXPIRATION_DURATION%, %EXPIRATION_DURATION_MINUTES%, %LOCATION%
+    ENABLED: true
+    MESSAGE_TEXT: '&c成功地放置了死亡箱. 你有 {EXPIRATION_DURATION} 来取回你的物品.'
+    # available subs: {PLAYER}, {EXPIRATION_DURATION}, {LOCATION}
 
   DOUBLECHEST_PARTIAL_SUCCESS:
-    enabled: true
-    string: '&c在你的死亡地点只能放置单个箱子. 一些物品已掉落.'
-    # available subs: %PLAYER%, %EXPIRATION_DURATION%, %EXPIRATION_DURATION_MINUTES%, %LOCATION%
+    ENABLED: true
+    MESSAGE_TEXT: '&c在你的死亡地点只能放置单个箱子. 一些物品已掉落.'
+    # available subs: {PLAYER}, {EXPIRATION_DURATION}, {LOCATION}
 
   CHEST_DEPLOYED_PROTECTION_TIME:
-    enabled: true
-    string: '&c死亡宝箱在 %PROTECTION_DURATION_MINUTES% 内不会被掠夺.'
-    # available subs: %OWNER%, %PROTECTION_DURATION%, %PROTECTION_DURATION_MINUTES%, %LOCATION%
+    ENABLED: true
+    MESSAGE_TEXT: '&c死亡宝箱在 {PROTECTION_DURATION} 内不会被掠夺.'
+    # available subs: {OWNER}, {PROTECTION_DURATION}, {LOCATION}
 
   CHEST_ACCESSED_PROTECTION_TIME:
-    enabled: true
+    ENABLED: true
     repeat-delay: 1
-    string: '&c属于 %OWNER% 的死亡宝箱在 %PROTECTION_DURATION_MINUTES% 内不会被抢劫.'
-    # available subs: %OWNER%, %PROTECTION_DURATION%, %PROTECTION_DURATION_MINUTES%, %LOCATION%
+    MESSAGE_TEXT: '&c属于 {OWNER} 的死亡宝箱在 {PROTECTION_DURATION} 内不会被抢劫.'
+    # available subs: {OWNER}, {PROTECTION_DURATION}, {LOCATION}
 
   CHEST_DENIED_PLUGIN:
-    enabled: true
-    string: '&c死亡箱的部署被 %PLUGIN% 阻止了.'
-    # available subs: %PLAYER%, %PLUGIN%, %LOCATION%
+    ENABLED: true
+    MESSAGE_TEXT: '&c死亡箱的部署被 {PLUGIN} 阻止了.'
+    # available subs: {PLAYER}, {PLUGIN}, {LOCATION}
 
   CHEST_DENIED_DEPLOYMENT_BY_PLUGIN:
-    enabled: true
-    string: '&c死亡箱的部署被 %PLUGIN% 阻止了.'
-    # available subs: %PLAYER%, %PLUGIN%, %LOCATION%
+    ENABLED: true
+    MESSAGE_TEXT: '&c死亡箱的部署被 {PLUGIN} 阻止了.'
+    # available subs: {PLAYER}, {PLUGIN}, {LOCATION}
 
   CHEST_DENIED_ACCESS_BY_PLUGIN:
-    enabled: true
-    string: '&c%PLUGIN% 阻止了对死亡宝箱的访问.'
-    # available subs: %PLAYER%, %PLUGIN%, %LOCATION%
+    ENABLED: true
+    MESSAGE_TEXT: '&c{PLUGIN} 阻止了对死亡宝箱的访问.'
+    # available subs: {PLAYER}, {PLUGIN}, {LOCATION}
 
   CHEST_DENIED_BLOCK:
-    enabled: true
-    string: '&c找不到一个来放置箱子的开放空间.'
-    # available subs: %PLAYER%, %LOCATION%
+    ENABLED: true
+    MESSAGE_TEXT: '&c找不到一个来放置箱子的开放空间.'
+    # available subs: {PLAYER}, {LOCATION}
 
   CHEST_DENIED_PERMISSION:
-    enabled: false
-    string: '&c你没有死亡箱的权限.'
-    # available subs: %PLAYER%, %LOCATION%
+    ENABLED: false
+    MESSAGE_TEXT: '&c你没有死亡箱的权限.'
+    # available subs: {PLAYER}, {LOCATION}
 
   CHEST_DENIED_ADJACENT:
-    enabled: true
-    string: '&c死亡箱的部署被一个已知的相邻箱子阻止了.'
-    # available subs: %PLAYER%, %LOCATION%
+    ENABLED: true
+    MESSAGE_TEXT: '&c死亡箱的部署被一个已知的相邻箱子阻止了.'
+    # available subs: {PLAYER}, {LOCATION}
 
   CHEST_DENIED_SPAWN_RADIUS:
-    enabled: true
-    string: '&c死亡箱的部署被世界出生点保护阻止了.'
-    # available subs: %PLAYER%, %LOCATION%
+    ENABLED: true
+    MESSAGE_TEXT: '&c死亡箱的部署被世界出生点保护阻止了.'
+    # available subs: {PLAYER}, {LOCATION}
 
   CHEST_DENIED_WORLD_DISABLED:
-    enabled: true
-    string: '&c死亡箱没有在该世界启用.'
-    # available subs: %PLAYER%, %LOCATION%
+    ENABLED: true
+    MESSAGE_TEXT: '&c死亡箱没有在该世界启用.'
+    # available subs: {PLAYER}, {LOCATION}
 
   CHEST_DENIED_VOID:
-    enabled: true
-    string: '&c死亡箱无法部署在虚空中.'
-    # available subs: %PLAYER%, %LOCATION%
+    ENABLED: true
+    MESSAGE_TEXT: '&c死亡箱无法部署在虚空中.'
+    # available subs: {PLAYER}, {LOCATION}
 
 
   INVENTORY_EMPTY:
-    enabled: true
-    string: '&c你没有背包可放在死亡箱中.'
-    # available subs: %PLAYER%, %LOCATION%
+    ENABLED: true
+    MESSAGE_TEXT: '&c你没有背包可放在死亡箱中.'
+    # available subs: {PLAYER}, {LOCATION}
 
   INVENTORY_FULL:
-    enabled: true
-    string: '&c因为你的背包满了 一些物品无法被转移.'
-    # available subs: %PLAYER%, %LOCATION%
+    ENABLED: true
+    MESSAGE_TEXT: '&c因为你的背包满了 一些物品无法被转移.'
+    # available subs: {PLAYER}, {LOCATION}
 
   NO_CHEST_IN_INVENTORY:
-    enabled: true
-    string: '&c你的背包中没有任何箱子.'
-    # available subs: %PLAYER%, %LOCATION%
+    ENABLED: true
+    MESSAGE_TEXT: '&c你的背包中没有任何箱子.'
+    # available subs: {PLAYER}, {LOCATION}
 
   NOT_OWNER:
-    enabled: true
-    string: '&c那个死亡箱不属于你.'
-    # available subs: %PLAYER%, %LOCATION%, %OWNER%, %KILLER%
+    ENABLED: true
+    MESSAGE_TEXT: '&c那个死亡箱不属于你.'
+    # available subs: {PLAYER}, {LOCATION}, {OWNER}, {KILLER}
 
   CHEST_EXPIRED:
-    enabled: true
-    string: '&c你的死亡箱已过期.'
+    ENABLED: true
+    MESSAGE_TEXT: '&c你的死亡箱已过期.'
     repeat-delay: 1
-    # available subs: %PLAYER%, %LOCATION%
+    # available subs: {PLAYER}, {LOCATION}
 
   CREATIVE_MODE:
-    enabled: true
-    string: '&c创造模式背包没有保存在死亡箱中.'
-    # available subs: %PLAYER%, %LOCATION%
+    ENABLED: true
+    MESSAGE_TEXT: '&c创造模式背包没有保存在死亡箱中.'
+    # available subs: {PLAYER}, {LOCATION}
 
 
   NO_CREATIVE_ACCESS:
-    enabled: true
-    string: '&c在创造模式下打开死亡箱是不允许的.'
-    # available subs: %PLAYER%, %LOCATION%
+    ENABLED: true
+    MESSAGE_TEXT: '&c在创造模式下打开死亡箱是不允许的.'
+    # available subs: {PLAYER}, {LOCATION}
 
   CHEST_CURRENTLY_OPEN:
-    enabled: true
-    string: '&c死亡箱当前已被其他玩家打开.'
-    # available subs: %PLAYER%, %LOCATION%, %OWNER%, %KILLER%, %VIEWER%
+    ENABLED: true
+    MESSAGE_TEXT: '&c死亡箱当前已被其他玩家打开.'
+    # available subs: {PLAYER}, {LOCATION}, {OWNER}, {KILLER}, {VIEWER}
 
   COMMAND_FAIL_INVALID_COMMAND:
-    enabled: true
-    string: '&c那不是一个有效的命令!'
-    # available subs: %PLAYER%
+    ENABLED: true
+    MESSAGE_TEXT: '&c那不是一个有效的命令!'
+    # available subs: {PLAYER}
 
   COMMAND_FAIL_ARGS_COUNT_OVER:
-    enabled: true
-    string: '&c参数过多!'
-    # available subs: %PLAYER%
+    ENABLED: true
+    MESSAGE_TEXT: '&c参数过多!'
+    # available subs: {PLAYER}
 
   COMMAND_FAIL_HELP_PERMISSION:
-    enabled: true
-    string: '&c你没有权限来显示 DeathChest 帮助!'
-    # available subs: %PLAYER%
+    ENABLED: true
+    MESSAGE_TEXT: '&c你没有权限来显示 DeathChest 帮助!'
+    # available subs: {PLAYER}
 
   COMMAND_FAIL_LIST_PERMISSION:
-    enabled: true
-    string: '&c你没有权限来列出死亡箱!'
-    # available subs: %PLAYER%
+    ENABLED: true
+    MESSAGE_TEXT: '&c你没有权限来列出死亡箱!'
+    # available subs: {PLAYER}
 
   COMMAND_FAIL_LIST_OTHER_PERMISSION:
-    enabled: true
-    string: '&c你没有权限来列出其他玩家的死亡箱!'
-    # available subs: %PLAYER%
+    ENABLED: true
+    MESSAGE_TEXT: '&c你没有权限来列出其他玩家的死亡箱!'
+    # available subs: {PLAYER}
 
   COMMAND_FAIL_RELOAD_PERMISSION:
-    enabled: true
-    string: '&c你没有权限来重载 DeathChest 配置!'
-    # available subs: %PLAYER%
+    ENABLED: true
+    MESSAGE_TEXT: '&c你没有权限来重载 DeathChest 配置!'
+    # available subs: {PLAYER}
 
   COMMAND_FAIL_STATUS_PERMISSION:
-    enabled: true
-    string: '&c你没有权限来查看 DeathChest 设定!'
-    # available subs: %PLAYER%
+    ENABLED: true
+    MESSAGE_TEXT: '&c你没有权限来查看 DeathChest 设定!'
+    # available subs: {PLAYER}
 
   COMMAND_SUCCESS_RELOAD:
-    enabled: true
-    string: '&7DeathChest 配置已重载.'
-    # available subs: %PLAYER%
+    ENABLED: true
+    MESSAGE_TEXT: '&7DeathChest 配置已重载.'
+    # available subs: {PLAYER}
 
 
   COMMAND_HELP_HELP:
-    enabled: true
-    string: '&e列出 DeathChest 命令帮助.'
+    ENABLED: true
+    MESSAGE_TEXT: '&e列出 DeathChest 命令帮助.'
 
   COMMAND_HELP_LIST:
-    enabled: true
-    string: '&e列出所有死亡箱.'
+    ENABLED: true
+    MESSAGE_TEXT: '&e列出所有死亡箱.'
 
   COMMAND_HELP_RELOAD:
-    enabled: true
-    string: '&e重载该插件的配置.'
+    ENABLED: true
+    MESSAGE_TEXT: '&e重载该插件的配置.'
 
   COMMAND_HELP_STATUS:
-    enabled: true
-    string: '&e显示插件配置设定.'
+    ENABLED: true
+    MESSAGE_TEXT: '&e显示插件配置设定.'
 
   COMMAND_HELP_INVALID:
-    enabled: true
-    string: '&e那不是一个有效的命令.'
+    ENABLED: true
+    MESSAGE_TEXT: '&e那不是一个有效的命令.'
 
   COMMAND_HELP_USAGE:
-    enabled: true
-    string: '&e命令用法:'
+    ENABLED: true
+    MESSAGE_TEXT: '&e命令用法:'
 
 
+  #########################
+  # Status command messages
+  #########################
+  COMMAND_STATUS_BANNER:
+    MESSAGE_TEXT: "\n&3&m                    =&r&3[&b {PLUGIN} &3]&m=                    "
+
+  COMMAND_STATUS_PLUGIN_VERSION:
+    MESSAGE_TEXT: '&aVersion:&r {VERSION}'
+
+  COMMAND_STATUS_LANGUAGE:
+    MESSAGE_TEXT: "&aLanguage:&r {LANGUAGE}"
+
+  COMMAND_STATUS_LOCALE:
+    MESSAGE_TEXT: "&aLocale:&r {LOCALE}"
+
+  COMMAND_STATUS_EXPIRATION_TIME:
+    MESSAGE_TEXT: "&aChest Expiration:&r {EXPIRATION_DURATION}"
+
+  COMMAND_STATUS_PROTECTION_TIME:
+    MESSAGE_TEXT: "&aChest Protection:&r {PROTECTION_DURATION}"
+
+  COMMAND_STATUS_SEARCH_DISTANCE:
+    MESSAGE_TEXT: "&aSearch Distance:&r {SEARCH_DISTANCE}"
+
+  COMMAND_STATUS_REQUIRE_CHEST:
+    MESSAGE_TEXT: "&aRequire Chest:&r {REQUIRE_CHEST}"
+
+  COMMAND_STATUS_QUICK_LOOT:
+    MESSAGE_TEXT: "&aQuick Loot:&r {QUICK_LOOT}"
+
+  COMMAND_STATUS_KILLER_LOOTING:
+    MESSAGE_TEXT: "&aKiller looting:&r {KILLER_LOOTING}"
+
+  COMMAND_STATUS_ENABLED_WORLDS:
+    MESSAGE_TEXT: "&aEnabled Worlds:&r {ENABLED_WORLDS}"
+
+  COMMAND_STATUS_PROTECTION_PLUGINS:
+    MESSAGE_TEXT: "&aProtection Plugin Support:"
+
+
+
+  #######################
+  # List Command Elements
+  #######################
   LIST_HEADER:
-    enabled: true
-    string: '&3页面 &b%PAGE_NUMBER%&3 共 &b%PAGE_TOTAL%'
+    ENABLED: true
+    MESSAGE_TEXT: '&3页面 &b{PAGE_NUMBER}&3 共 &b{PAGE_TOTAL}'
 
   LIST_FOOTER:
-    enabled: false
-    string: '&3页面 &b%PAGE_NUMBER%&3 共 &b%PAGE_TOTAL%'
+    ENABLED: false
+    MESSAGE_TEXT: '&3页面 &b{PAGE_NUMBER}&3 共 &b{PAGE_TOTAL}'
 
   LIST_ITEM:
-    enabled: true
-    string: |-
-      %ITEM_NUMBER%) &aLocation:&b %LOCATION% &aKiller:&b %KILLER%
-          &aExpiration time:&b %EXPIRATION_DURATION%
-          &aProtection time:&b %PROTECTION_DURATION%
+    ENABLED: true
+    MESSAGE_TEXT: |-
+      {ITEM_NUMBER}) &aLocation:&b {LOCATION} &aKiller:&b {KILLER}
+          &aExpiration time:&b {EXPIRATION_DURATION}
+          &aProtection time:&b {PROTECTION_DURATION}
 
   LIST_ITEM_ALL:
-    enabled: true
-    string: |-
-      %ITEM_NUMBER%) &aOwner:&b %OWNER% &aKiller:&b %KILLER%
-          &aLocation:&b %LOCATION%
-          &aExpiration time:&b %EXPIRATION_DURATION%
-          &aProtection time:&b %PROTECTION_DURATION%
+    ENABLED: true
+    MESSAGE_TEXT: |-
+      {ITEM_NUMBER}) &aOwner:&b {OWNER} &aKiller:&b {KILLER}
+          &aLocation:&b {LOCATION}
+          &aExpiration time:&b {EXPIRATION_DURATION}
+          &aProtection time:&b {PROTECTION_DURATION}
 
   LIST_EMPTY:
-    enabled: true
-    string: '&b没有死亡箱可被列出!'
+    ENABLED: true
+    MESSAGE_TEXT: '&b没有死亡箱可被列出!'
 
   LIST_PLAYER_NOT_FOUND:
-    enabled: true
-    string: '&3那个玩家无法被找到!'
+    ENABLED: true
+    MESSAGE_TEXT: '&3那个玩家无法被找到!'
+
