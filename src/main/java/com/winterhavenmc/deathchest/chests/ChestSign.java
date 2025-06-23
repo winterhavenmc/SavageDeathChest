@@ -38,7 +38,10 @@ public record ChestSign(PluginMain plugin, Player player, DeathChestRecord death
 	public void place()
 	{
 		// if chest-signs are not enabled in configuration, do nothing and return
-		if (!plugin.getConfig().getBoolean("chest-signs")) { return; }
+		if (!plugin.getConfig().getBoolean("chest-signs"))
+		{
+			return;
+		}
 
 		// get chest block location
 		deathChest.getOptLocation().ifPresent(location -> {
