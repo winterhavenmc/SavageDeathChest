@@ -99,13 +99,13 @@ public class DoubleChestDeployment extends AbstractDeployment implements Deploym
 			{
 				searchResult.setResultCode(SearchResultCode.NO_REQUIRED_CHEST);
 				searchResult.setRemainingItems(remainingItems);
-				this.finalize(searchResult, new DeathChest(player));
+				this.finalize(searchResult, new DeathChestRecord(plugin, player));
 				return searchResult;
 			}
 		}
 
 		// create new deathChest object for player
-		DeathChest deathChest = new DeathChest(player);
+		DeathChestRecord deathChest = new DeathChestRecord(plugin, player);
 
 		// place chest at result location
 		placeChest(player, deathChest, searchResult.getLocation(), ChestBlockType.RIGHT_CHEST);
@@ -133,7 +133,7 @@ public class DoubleChestDeployment extends AbstractDeployment implements Deploym
 			else
 			{
 				searchResult.setResultCode(SearchResultCode.PARTIAL_SUCCESS);
-				searchResult.setRemainingItems(deathChest.fill(remainingItems));
+				searchResult.setRemainingItems(plugin.chestManager.fill(remainingItems, deathChest));
 				this.finalize(searchResult, deathChest);
 				return searchResult;
 			}
@@ -149,7 +149,7 @@ public class DoubleChestDeployment extends AbstractDeployment implements Deploym
 		setChestBlockState(LocationUtilities.getLocationToRight(searchResult.getLocation()).getBlock(), Chest.Type.LEFT);
 
 		// put remaining items in result after filling chest
-		searchResult.setRemainingItems(deathChest.fill(remainingItems));
+		searchResult.setRemainingItems(plugin.chestManager.fill(remainingItems, deathChest));
 
 		// finish deployment
 		this.finalize(searchResult, deathChest);
