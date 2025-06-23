@@ -38,6 +38,31 @@ import java.util.Optional;
 import java.util.UUID;
 
 
+/**
+ * A Java Record used as a data object representing a player's DeathChest.
+ * <p>
+ * A custom constructor is included as well as accessor methods that allow the record to implement a variety
+ * of MessageBuilder interfaces, which facilitates the automatic population of macro replacement fields in messages.
+ *
+ * @param chestUid   a randomly generated UUID used as a key for each unique chest
+ * @param ownerUid   the UUID of the player whose inventory was placed in the DeathChest
+ * @param ownerName  the name of the player at the time of chest deployment, to be used as a fallback if a name
+ *                   cannot be derived from the ownerUid at a later time
+ * @param killerUid  the UUID of the entity that killed the player resulting in the deployment of a DeathChest, typically a player
+ * @param killerName the name of the player's killer, to be used as a fallback if a name cannot be derived from
+ *                   the killerUid at a later time
+ * @param worldUid   the UUID of the world in which the player death occurred for use in constructing a new instance
+ *                   of the DeathChest location
+ * @param worldName  the name of the world, for use in display in the case that a world containing a DeathChest is
+ *                   not currently loaded
+ * @param locationX  the block X coordinate to be used in the construction of a new instance of the DeathChest location
+ * @param locationY  the block Y coordinate to be used in the construction of a new instance of the DeathChest location
+ * @param locationZ  the block Z coordinate to be used in the construction of a new instance of the DeathChest location
+ * @param itemCount  the number of ItemStacks placed in the chest <em>(currently unimplemented)</em>
+ * @param placementTime a timestamp {@code Instant} of when the DeathChest was deployed
+ * @param expirationTime a timestamp {@code Instant} of when the DeathChest will expire, dropping its contents
+ * @param protectionTime a timestamp {@code Instant} of when the DeathChest will be accessible to other players, if so configured
+ */
 public record DeathChestRecord(
 		UUID chestUid,
 		UUID ownerUid,
@@ -54,24 +79,41 @@ public record DeathChestRecord(
 		Instant expirationTime,
 		Instant protectionTime) implements Ownable, Identifiable, Lootable, Locatable, Quantifiable, Expirable, Protectable
 {
+	/**
+	 * Creates a DeathChest record from a player object at time of death. Parameter validation is performed for values
+	 * as appropriate with alternative values substituted via ternary operator.
+	 *
+	 * @param plugin Instance of the plugin main class, used for retrieving configuration values
+	 * @param player Instance of a player, typically at the time of death when a new chest is deployed
+	 */
 	public DeathChestRecord(final Plugin plugin, final Player player)
 	{
 		this(UUID.randomUUID(),
-				player != null ? player.getUniqueId() : new UUID(0, 0),
-				player != null ? player.getName() : "-",
-				player != null && player.getKiller() != null ? player.getKiller().getUniqueId() : new UUID(0, 0),
-				player != null ? player.getName() : "-",
-				player != null && player.getLocation().getWorld() != null ? player.getLocation().getWorld().getUID() : new UUID(0, 0),
-				player != null && player.getLocation().getWorld() != null ? player.getLocation().getWorld().getName() : "-",
-				player != null ? player.getLocation().getBlockX() : 0,
-				player != null ? player.getLocation().getBlockY() : 0,
-				player != null ? player.getLocation().getBlockZ() : 0,
+				(player != null) ? player.getUniqueId() : INVALID_UUID,
+				(player != null) ? player.getName() : UNKNOWN_VALUE,
+				(player != null) && player.getKiller() != null ? player.getKiller().getUniqueId() : INVALID_UUID,
+				(player != null) ? player.getName() : UNKNOWN_VALUE,
+				(player != null && player.getLocation().getWorld() != null)
+						? player.getLocation().getWorld().getUID()
+						: INVALID_UUID,
+				(player != null && player.getLocation().getWorld() != null)
+						? player.getLocation().getWorld().getName()
+						: UNKNOWN_VALUE,
+				(player != null) ? player.getLocation().getBlockX() : 0,
+				(player != null) ? player.getLocation().getBlockY() : 0,
+				(player != null) ? player.getLocation().getBlockZ() : 0,
 				0,
 				Instant.now(),
-				plugin.getConfig().getLong("expire-time") > 0 ? Instant.now().plus(plugin.getConfig().getLong("expire-time"), ChronoUnit.MINUTES) : Instant.EPOCH,
-				plugin.getConfig().getLong("chest-protection-time") > 0 ? Instant.now().plus(plugin.getConfig().getLong("chest-protection-time"), ChronoUnit.MINUTES) : Instant.EPOCH);
+				(plugin.getConfig().getLong("expire-time") > 0)
+						? Instant.now().plus(plugin.getConfig().getLong("expire-time"), ChronoUnit.MINUTES)
+						: Instant.EPOCH,
+				(plugin.getConfig().getLong("chest-protection-time") > 0)
+						? Instant.now().plus(plugin.getConfig().getLong("chest-protection-time"), ChronoUnit.MINUTES)
+						: Instant.EPOCH);
 	}
 
+	private static final UUID INVALID_UUID = new UUID(0,0);
+	private static final String UNKNOWN_VALUE = "-";
 
 	@Override
 	public AnimalTamer getOwner()
