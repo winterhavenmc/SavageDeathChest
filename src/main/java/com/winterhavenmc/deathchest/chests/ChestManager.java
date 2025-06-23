@@ -220,7 +220,6 @@ public final class ChestManager
 	}
 
 
-	//TODO: can this be made optional return value?
 	public DeathChestRecord getChest(final Inventory inventory)
 	{
 		// if inventory is not a death chest, do nothing and return
