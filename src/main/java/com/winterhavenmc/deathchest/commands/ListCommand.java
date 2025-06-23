@@ -18,7 +18,7 @@
 package com.winterhavenmc.deathchest.commands;
 
 import com.winterhavenmc.deathchest.PluginMain;
-import com.winterhavenmc.deathchest.chests.DeathChest;
+import com.winterhavenmc.deathchest.chests.DeathChestRecord;
 import com.winterhavenmc.deathchest.messages.Macro;
 import com.winterhavenmc.deathchest.messages.MessageId;
 import com.winterhavenmc.deathchest.sounds.SoundId;
@@ -27,8 +27,10 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
-import javax.annotation.Nonnull;
 import java.util.*;
+import java.util.function.Predicate;
+
+import javax.annotation.Nonnull;
 
 
 /**
@@ -36,6 +38,7 @@ import java.util.*;
  */
 final class ListCommand extends SubcommandAbstract
 {
+	private final Predicate<List<String>> OVER_MAX_ARGS = stringList -> stringList.size() > this.maxArgs;
 	private final PluginMain plugin;
 
 
@@ -57,7 +60,6 @@ final class ListCommand extends SubcommandAbstract
 	@Override
 	public void displayUsage(final CommandSender sender)
 	{
-
 		if (sender.hasPermission("deathchest.list.other"))
 		{
 			sender.sendMessage("/deathchest list [username] [page]");
@@ -70,13 +72,11 @@ final class ListCommand extends SubcommandAbstract
 
 
 	@Override
-	public List<String> onTabComplete(
-			final @Nonnull CommandSender sender,
-			final @Nonnull Command command,
-			final @Nonnull String alias,
-			final String[] args)
+	public List<String> onTabComplete(final @Nonnull CommandSender sender,
+	                                  final @Nonnull Command command,
+	                                  final @Nonnull String alias,
+	                                  final String[] args)
 	{
-
 		// initialize return list
 		final List<String> returnList = new LinkedList<>();
 
@@ -86,10 +86,10 @@ final class ListCommand extends SubcommandAbstract
 			{
 				// get map of chest ownerUUID,name from all current chests
 				Map<UUID, String> chestOwners = new HashMap<>();
-				for (DeathChest deathChest : plugin.chestManager.getAllChests())
+				for (DeathChestRecord deathChest : plugin.chestManager.getAllChests())
 				{
-					chestOwners.put(deathChest.getOwnerUid(),
-							plugin.getServer().getOfflinePlayer(deathChest.getOwnerUid()).getName());
+					chestOwners.put(deathChest.ownerUid(),
+							plugin.getServer().getOfflinePlayer(deathChest.ownerUid()).getName());
 				}
 				returnList.addAll(chestOwners.values());
 			}
@@ -98,10 +98,10 @@ final class ListCommand extends SubcommandAbstract
 		return returnList;
 	}
 
+
 	@Override
 	public boolean onCommand(final CommandSender sender, final List<String> args)
 	{
-
 		// if command sender does not have permission to list death chests, output error message and return true
 		if (!sender.hasPermission("deathchest.list"))
 		{
@@ -111,7 +111,7 @@ final class ListCommand extends SubcommandAbstract
 		}
 
 		// check if max args exceeded
-		if (args.size() > this.getMaxArgs())
+		if (OVER_MAX_ARGS.test(args))
 		{
 			plugin.messageBuilder.compose(sender, MessageId.COMMAND_FAIL_ARGS_COUNT_OVER).send();
 			displayUsage(sender);
@@ -122,24 +122,17 @@ final class ListCommand extends SubcommandAbstract
 		// get player name string from args, or null if not found
 		String passedPlayerName = getNameFromArgs(args);
 
-		// if sender is player, cast sender to player; else player is null
-		Player player = null;
-		if (sender instanceof Player)
-		{
-			player = (Player) sender;
-		}
-
 		// create empty list of records
-		List<DeathChest> displayRecords = new LinkedList<>();
+		List<DeathChestRecord> displayRecords = new ArrayList<>();
 
-		// should listing include player name
+		// true if listing should include player names
 		boolean displayNames = true;
 
 		// if no target player entered
 		if (passedPlayerName.isEmpty())
 		{
 			// if sender is a player, add all of player's chests to display list
-			if (sender instanceof Player)
+			if (sender instanceof Player player)
 			{
 				displayRecords = getChestsForPlayer(player);
 				displayNames = false;
@@ -147,28 +140,25 @@ final class ListCommand extends SubcommandAbstract
 			// else add all chests to display list
 			else
 			{
-				displayRecords = new LinkedList<>(plugin.chestManager.getAllChests());
+				displayRecords = new ArrayList<>(plugin.chestManager.getAllChests());
 			}
 		}
-
 		else
 		{
 			// if player has deathchest.list.other permission...
 			if (sender.hasPermission("deathchest.list.other"))
 			{
-
 				// if wildcard character entered, add all chest records to display list
 				if (passedPlayerName.equals("*"))
 				{
-					displayRecords = new LinkedList<>(plugin.chestManager.getAllChests());
+					displayRecords = new ArrayList<>(plugin.chestManager.getAllChests());
 				}
-
 				// else match chest records to entered target player name prefix
 				else
 				{
-					for (DeathChest deathChest : plugin.chestManager.getAllChests())
+					for (DeathChestRecord deathChest : plugin.chestManager.getAllChests())
 					{
-						if (deathChest.getOwnerName().toLowerCase().startsWith(passedPlayerName.toLowerCase()))
+						if (deathChest.ownerName().toLowerCase().startsWith(passedPlayerName.toLowerCase()))
 						{
 							displayRecords.add(deathChest);
 						}
@@ -185,6 +175,16 @@ final class ListCommand extends SubcommandAbstract
 			}
 		}
 
+		return displayChestList(sender, args, displayRecords, displayNames);
+	}
+
+
+	@SuppressWarnings("SameReturnValue")
+	private boolean displayChestList(final CommandSender sender,
+	                                 final List<String> args,
+	                                 final List<DeathChestRecord> displayRecords,
+	                                 final boolean displayNames)
+	{
 		// if display list is empty, output list empty message and return
 		if (displayRecords.isEmpty())
 		{
@@ -193,7 +193,7 @@ final class ListCommand extends SubcommandAbstract
 		}
 
 		// sort displayRecords
-		displayRecords.sort(Comparator.comparingLong(DeathChest::getExpirationTime));
+		displayRecords.sort(Comparator.comparing(DeathChestRecord::expirationTime));
 
 		// get list page size from configuration
 		int itemsPerPage = plugin.getConfig().getInt("list-page-size-player");
@@ -214,78 +214,48 @@ final class ListCommand extends SubcommandAbstract
 		int startIndex = ((page - 1) * itemsPerPage);
 		int endIndex = Math.min((page * itemsPerPage), displayRecords.size());
 
-		List<DeathChest> displayRange = displayRecords.subList(startIndex, endIndex);
+		List<DeathChestRecord> displayRange = displayRecords.subList(startIndex, endIndex);
 
 		int listCount = startIndex;
 
 		// display list header
 		displayListHeader(sender, page, pageCount);
 
-		for (DeathChest deathChest : displayRange)
+		for (DeathChestRecord deathChest : displayRange)
 		{
-
 			// increment list counter
 			listCount++;
-
-			String ownerName = "-";
-			if (deathChest.hasValidOwnerUid())
-			{
-				ownerName = plugin.getServer().getOfflinePlayer(deathChest.getOwnerUid()).getName();
-			}
-
-			String killerName = "-";
-			if (deathChest.hasValidKillerUid())
-			{
-				killerName = plugin.getServer().getOfflinePlayer(deathChest.getKillerUid()).getName();
-			}
-
-			// get remaining time
-			Long ExpirationTimeMillis = deathChest.getExpirationTime() - System.currentTimeMillis();
-			Long ProtectionTimeMillis = deathChest.getProtectionTime() - System.currentTimeMillis();
 
 			// if passedPlayerName is wildcard, display LIST_ITEM_ALL
 			if (displayNames)
 			{
 				plugin.messageBuilder.compose(sender, MessageId.LIST_ITEM_ALL)
+						.setMacro(Macro.DEATH_CHEST, deathChest)
 						.setMacro(Macro.ITEM_NUMBER, listCount)
-						.setMacro(Macro.LOCATION, deathChest.getLocation())
-						.setMacro(Macro.OWNER, ownerName)
-						.setMacro(Macro.KILLER, killerName)
-						.setMacro(Macro.EXPIRATION_DURATION, ExpirationTimeMillis)
-						.setMacro(Macro.EXPIRATION_DURATION_MINUTES, ExpirationTimeMillis)
-						.setMacro(Macro.PROTECTION_DURATION, ProtectionTimeMillis)
-						.setMacro(Macro.PROTECTION_DURATION_MINUTES, ProtectionTimeMillis)
 						.send();
 			}
 			else
 			{
 				plugin.messageBuilder.compose(sender, MessageId.LIST_ITEM)
+						.setMacro(Macro.DEATH_CHEST, deathChest)
 						.setMacro(Macro.ITEM_NUMBER, listCount)
-						.setMacro(Macro.LOCATION, deathChest.getLocation())
-						.setMacro(Macro.OWNER, ownerName)
-						.setMacro(Macro.KILLER, killerName)
-						.setMacro(Macro.EXPIRATION_DURATION, ExpirationTimeMillis)
-						.setMacro(Macro.EXPIRATION_DURATION_MINUTES, ExpirationTimeMillis)
-						.setMacro(Macro.PROTECTION_DURATION, ProtectionTimeMillis)
-						.setMacro(Macro.PROTECTION_DURATION_MINUTES, ProtectionTimeMillis)
 						.send();
 			}
 		}
 
 		// display list footer
 		displayListFooter(sender, page, pageCount);
-
 		return true;
 	}
 
 
-	private List<DeathChest> getChestsForPlayer(final Player player)
+	private List<DeathChestRecord> getChestsForPlayer(final Player player)
 	{
-		List<DeathChest> returnList = new LinkedList<>();
+		List<DeathChestRecord> returnList = new ArrayList<>();
 
-		for (DeathChest deathChest : plugin.chestManager.getAllChests())
+		for (DeathChestRecord deathChest : plugin.chestManager.getAllChests())
 		{
-			if (deathChest.getOwnerUid().equals(player.getUniqueId()))
+			if (deathChest.ownerUid().equals(player.getUniqueId()))
 			{
 				returnList.add(deathChest);
 			}
@@ -315,11 +285,11 @@ final class ListCommand extends SubcommandAbstract
 
 	private String getNameFromArgs(final List<String> args)
 	{
-		if (args.size() > 0)
+		if (!args.isEmpty())
 		{
-			if (!isNumeric(args.get(0)))
+			if (!isNumeric(args.getFirst()))
 			{
-				return args.get(0);
+				return args.getFirst();
 			}
 		}
 		return "";
@@ -333,8 +303,9 @@ final class ListCommand extends SubcommandAbstract
 		{
 			try
 			{
-				returnInt = Integer.parseInt(args.get(0));
-			} catch (NumberFormatException nfe)
+				returnInt = Integer.parseInt(args.getFirst());
+			}
+			catch (NumberFormatException nfe)
 			{
 				// not a number
 			}
@@ -344,7 +315,8 @@ final class ListCommand extends SubcommandAbstract
 			try
 			{
 				returnInt = Integer.parseInt(args.get(1));
-			} catch (NumberFormatException nfe)
+			}
+			catch (NumberFormatException nfe)
 			{
 				// not a number
 			}
