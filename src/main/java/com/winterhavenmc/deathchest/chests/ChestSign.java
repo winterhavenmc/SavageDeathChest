@@ -33,22 +33,8 @@ import java.util.List;
 import java.util.Locale;
 
 
-public class ChestSign
+public record ChestSign(PluginMain plugin, Player player, DeathChestRecord deathChest)
 {
-	private final PluginMain plugin;
-	private final Player player;
-	private final DeathChest deathChest;
-
-
-	// new chestSign(plugin, player, deathChest).place();
-	public ChestSign(final PluginMain plugin, final Player player, final DeathChest deathChest)
-	{
-		this.plugin = plugin;
-		this.player = player;
-		this.deathChest = deathChest;
-	}
-
-
 	public void place()
 	{
 		// if chest-signs are not enabled in configuration, do nothing and return
