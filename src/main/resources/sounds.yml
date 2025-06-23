@@ -17,7 +17,7 @@ COMMAND_INVALID:
 COMMAND_RELOAD_SUCCESS:
   enabled: true
   player-only: true
-  sound: minecraft:block.note.block.chime
+  sound: minecraft:block.note_block.chime
   volume: 1
   pitch: 1
 
