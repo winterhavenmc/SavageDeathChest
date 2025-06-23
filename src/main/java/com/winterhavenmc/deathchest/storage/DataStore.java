@@ -19,7 +19,7 @@ package com.winterhavenmc.deathchest.storage;
 
 import com.winterhavenmc.deathchest.PluginMain;
 import com.winterhavenmc.deathchest.chests.ChestBlock;
-import com.winterhavenmc.deathchest.chests.DeathChest;
+import com.winterhavenmc.deathchest.chests.DeathChestRecord;
 
 import java.util.Collection;
 
@@ -43,7 +43,7 @@ public interface DataStore
 	 *
 	 * @return List of DeathChest
 	 */
-	Collection<DeathChest> selectAllChestRecords();
+	Collection<DeathChestRecord> selectAllChestRecords();
 
 
 	/**
@@ -51,7 +51,7 @@ public interface DataStore
 	 *
 	 * @param deathChests a collection of DeathChest objects to insert into the datastore
 	 */
-	int insertChestRecords(final Collection<DeathChest> deathChests);
+	int insertChestRecords(final Collection<DeathChestRecord> deathChests);
 
 
 	/**
@@ -59,7 +59,7 @@ public interface DataStore
 	 *
 	 * @param deathChest the chest to delete
 	 */
-	void deleteChestRecord(final DeathChest deathChest);
+	void deleteChestRecord(final DeathChestRecord deathChest);
 
 
 	/**
