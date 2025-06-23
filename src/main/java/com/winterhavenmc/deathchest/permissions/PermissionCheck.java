@@ -213,9 +213,7 @@ final public class PermissionCheck
 			event.setCancelled(true);
 			String viewerName = plugin.chestManager.getInventory(deathChest).getViewers().getFirst().getName();
 			plugin.messageBuilder.compose(player, MessageId.CHEST_CURRENTLY_OPEN)
-					.setMacro(Macro.LOCATION, plugin.chestManager.getLocation(deathChest))
-					.setMacro(Macro.OWNER, deathChest.ownerName())
-					.setMacro(Macro.KILLER, deathChest.killerName())
+					.setMacro(Macro.DEATH_CHEST, deathChest)
 					.setMacro(Macro.VIEWER, viewerName)
 					.send();
 			plugin.soundConfig.playSound(player, SoundId.CHEST_DENIED_ACCESS);
