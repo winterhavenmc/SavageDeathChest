@@ -624,33 +624,6 @@ public final class ChestManager
 
 
 	/**
-	 * Get chest location. Attempt to get chest location from right chest, left chest or sign in that order.
-	 * Returns null if location could not be derived from chest blocks.
-	 *
-	 * @return Location - the chest location or null if no location found
-	 */
-	public Location getLocation(DeathChestRecord deathChest)
-	{
-		Map<ChestBlockType, ChestBlock> chestBlockMap = this.getBlockMap(deathChest.chestUid());
-
-		if (chestBlockMap.containsKey(ChestBlockType.RIGHT_CHEST))
-		{
-			return chestBlockMap.get(ChestBlockType.RIGHT_CHEST).getLocation();
-		}
-		else if (chestBlockMap.containsKey(ChestBlockType.LEFT_CHEST))
-		{
-			return chestBlockMap.get(ChestBlockType.LEFT_CHEST).getLocation();
-		}
-		else if (chestBlockMap.containsKey(ChestBlockType.SIGN))
-		{
-			return chestBlockMap.get(ChestBlockType.SIGN).getLocation();
-		}
-
-		return null;
-	}
-
-
-	/**
 	 * Expire this death chest, destroying in game chest and dropping contents,
 	 * and sending message to chest owner if online.
 	 */
@@ -666,7 +639,7 @@ public final class ChestManager
 		if (player != null)
 		{
 			plugin.messageBuilder.compose(player, MessageId.CHEST_EXPIRED)
-					.setMacro(Macro.LOCATION, this.getLocation(deathChest))
+					.setMacro(Macro.DEATH_CHEST, deathChest)
 					.send();
 		}
 	}
@@ -680,7 +653,7 @@ public final class ChestManager
 		this.dropContents(deathChest);
 
 		// play chest break sound at chest location
-		plugin.soundConfig.playSound(this.getLocation(deathChest), SoundId.CHEST_BREAK);
+		plugin.soundConfig.playSound(deathChest.getLocation(), SoundId.CHEST_BREAK);
 
 		// get block map for this chest
 		Map<ChestBlockType, ChestBlock> chestBlockMap = plugin.chestManager.getBlockMap(deathChest.chestUid());
@@ -711,7 +684,7 @@ public final class ChestManager
 			return;
 		}
 
-		Location location = this.getLocation(deathChest);
+		Location location = deathChest.getLocation();
 		if (location == null)
 		{
 			return;
