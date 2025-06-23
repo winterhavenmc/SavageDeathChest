@@ -778,34 +778,4 @@ public final class ChestManager
 		}
 	}
 
-
-	public int createExpireTask(DeathChestRecord deathChest)
-	{
-		// create task to expire death chest after ticksRemaining
-		BukkitTask chestExpireTask = new ExpireChestTask(plugin.chestManager, deathChest)
-				.runTaskLater(plugin, ticksUntilExpires(deathChest));
-
-		// return taskId
-		return chestExpireTask.getTaskId();
-	}
-
-
-	public long ticksUntilExpires(DeathChestRecord deathChest)
-	{
-		// if DeathChestBlock expirationTime is zero or less, it is set to never expire
-		if (deathChest.expirationTime().isBefore(Instant.EPOCH))
-		{
-			return -1;
-		}
-
-		// compute ticks remaining until expire time (millisecond interval divided by 50 yields ticks)
-		long ticksRemaining = Duration.between(Instant.now(), deathChest.expirationTime()).toMillis() / 50;
-		if (ticksRemaining < 1)
-		{
-			ticksRemaining = 1L;
-		}
-
-		return ticksRemaining;
-	}
-
 }
