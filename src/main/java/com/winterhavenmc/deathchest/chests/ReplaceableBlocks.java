@@ -29,7 +29,7 @@ import java.util.Set;
 /**
  * A class to manage the configured list of material types that can be replaced by a death chest
  */
-final class ReplaceableBlocks
+public final class ReplaceableBlocks
 {
 	private final PluginMain plugin;
 	private final Set<Material> materialSet;
