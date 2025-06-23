@@ -20,7 +20,7 @@ package com.winterhavenmc.deathchest.chests.deployment;
 import com.winterhavenmc.deathchest.PluginMain;
 import com.winterhavenmc.deathchest.chests.ChestBlock;
 import com.winterhavenmc.deathchest.chests.ChestBlockType;
-import com.winterhavenmc.deathchest.chests.DeathChest;
+import com.winterhavenmc.deathchest.chests.DeathChestRecord;
 import com.winterhavenmc.deathchest.chests.LocationUtilities;
 import com.winterhavenmc.deathchest.chests.search.SearchResult;
 import com.winterhavenmc.deathchest.chests.search.SearchResultCode;
@@ -36,11 +36,7 @@ import org.bukkit.block.data.type.Chest;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import java.time.Duration;
 import java.util.*;
-
-import static com.winterhavenmc.deathchest.messages.MessageId.INVENTORY_NAME;
-import static com.winterhavenmc.library.time.TimeUnit.MINUTES;
 
 
 /**
@@ -144,7 +140,7 @@ public abstract class AbstractDeployment implements Deployment
 	 * @param location       the location to place the chest block
 	 * @param chestBlockType the type of chest block (left or right)
 	 */
-	void placeChest(final Player player, final DeathChest deathChest, final Location location, final ChestBlockType chestBlockType)
+	void placeChest(final Player player, final DeathChestRecord deathChest, final Location location, final ChestBlockType chestBlockType)
 	{
 		// get current block at location
 		Block block = location.getBlock();
@@ -159,7 +155,7 @@ public abstract class AbstractDeployment implements Deployment
 		setChestDirection(block, location);
 
 		// create new ChestBlock object
-		ChestBlock chestBlock = new ChestBlock(deathChest.getChestUid(), block.getLocation());
+		ChestBlock chestBlock = new ChestBlock(deathChest.chestUid(), block.getLocation());
 
 		// add this ChestBlock to block map
 		plugin.chestManager.putBlock(chestBlockType, chestBlock);
@@ -248,7 +244,7 @@ public abstract class AbstractDeployment implements Deployment
 	 * @param searchResult the search result of the deployment
 	 * @param deathChest the death chest object
 	 */
-	void finalize(final SearchResult searchResult, final DeathChest deathChest)
+	void finalize(final SearchResult searchResult, final DeathChestRecord deathChest)
 	{
 		// if debugging, log result
 		if (plugin.getConfig().getBoolean("debug"))
@@ -270,7 +266,7 @@ public abstract class AbstractDeployment implements Deployment
 				&& !searchResult.getResultCode().equals(SearchResultCode.PARTIAL_SUCCESS))
 		{
 			// cancel DeathChest expire task
-			deathChest.cancelExpireTask();
+			plugin.chestManager.cancelExpireTask(deathChest);
 			return;
 		}
 
@@ -287,10 +283,7 @@ public abstract class AbstractDeployment implements Deployment
 		if (plugin.getConfig().getBoolean("chest-protection") && chestProtectionTime > 0)
 		{
 			plugin.messageBuilder.compose(player, MessageId.CHEST_DEPLOYED_PROTECTION_TIME)
-					.setMacro(Macro.OWNER, player.getName())
-					.setMacro(Macro.LOCATION, deathChest.getLocation())
-					.setMacro(Macro.PROTECTION_DURATION, MINUTES.toMillis(chestProtectionTime))
-					.setMacro(Macro.PROTECTION_DURATION_MINUTES, MINUTES.toMillis(chestProtectionTime))
+					.setMacro(Macro.DEATH_CHEST, deathChest)
 					.send();
 		}
 
@@ -298,7 +291,7 @@ public abstract class AbstractDeployment implements Deployment
 		plugin.chestManager.putChest(deathChest);
 
 		// put DeathChest in datastore
-		Set<DeathChest> deathChests = Collections.singleton(deathChest);
+		Set<DeathChestRecord> deathChests = Collections.singleton(deathChest);
 		plugin.chestManager.insertChestRecords(deathChests);
 	}
 
@@ -310,7 +303,7 @@ public abstract class AbstractDeployment implements Deployment
 	 * @param deathChest the death chest object for player
 	 * @param result the search result of the attempted deployment
 	 */
-	private void sendResultMessage(final Player player, final DeathChest deathChest, final SearchResult result)
+	private void sendResultMessage(final Player player, final DeathChestRecord deathChest, final SearchResult result)
 	{
 		// get configured expire-time
 		long expireTime = plugin.getConfig().getLong("expire-time");
@@ -325,14 +318,10 @@ public abstract class AbstractDeployment implements Deployment
 		switch (result.getResultCode())
 		{
 			case SUCCESS -> plugin.messageBuilder.compose(player, MessageId.CHEST_SUCCESS)
-					.setMacro(Macro.LOCATION, result.getLocation())
-					.setMacro(Macro.EXPIRATION_DURATION, Duration.ofMinutes(expireTime))
-					.setMacro(Macro.PROTECTION_DURATION, Duration.ofMinutes(deathChest.getProtectionTime()))
+					.setMacro(Macro.DEATH_CHEST, deathChest)
 					.send();
 			case PARTIAL_SUCCESS -> plugin.messageBuilder.compose(player, MessageId.DOUBLECHEST_PARTIAL_SUCCESS)
-					.setMacro(Macro.LOCATION, result.getLocation())
-					.setMacro(Macro.EXPIRATION_DURATION, Duration.ofMinutes(expireTime))
-					.setMacro(Macro.PROTECTION_DURATION, Duration.ofMinutes(deathChest.getProtectionTime()))
+					.setMacro(Macro.DEATH_CHEST, deathChest)
 					.send();
 			case PROTECTION_PLUGIN -> plugin.messageBuilder.compose(player, MessageId.CHEST_DENIED_DEPLOYMENT_BY_PLUGIN)
 					.setMacro(Macro.LOCATION, result.getLocation())
