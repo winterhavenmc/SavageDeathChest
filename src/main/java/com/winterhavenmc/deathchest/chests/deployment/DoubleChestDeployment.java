@@ -99,13 +99,13 @@ public class DoubleChestDeployment extends AbstractDeployment implements Deploym
 			{
 				searchResult.setResultCode(SearchResultCode.NO_REQUIRED_CHEST);
 				searchResult.setRemainingItems(remainingItems);
-				this.finalize(searchResult, new DeathChestRecord(plugin, player));
+				this.finalize(searchResult, new DeathChestRecord(plugin, player, searchResult.getLocation()));
 				return searchResult;
 			}
 		}
 
 		// create new deathChest object for player
-		DeathChestRecord deathChest = new DeathChestRecord(plugin, player);
+		DeathChestRecord deathChest = new DeathChestRecord(plugin, player, searchResult.getLocation());
 
 		// place chest at result location
 		placeChest(player, deathChest, searchResult.getLocation(), ChestBlockType.RIGHT_CHEST);

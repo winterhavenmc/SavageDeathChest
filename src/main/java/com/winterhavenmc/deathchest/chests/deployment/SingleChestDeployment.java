@@ -75,7 +75,7 @@ public class SingleChestDeployment extends AbstractDeployment implements Deploym
 			else
 			{
 				searchResult = new SearchResult(SearchResultCode.NO_REQUIRED_CHEST, remainingItems);
-				this.finalize(searchResult, new DeathChestRecord(plugin, player));
+				this.finalize(searchResult, new DeathChestRecord(plugin, player, searchResult.getLocation()));
 				return searchResult;
 			}
 		}
@@ -84,7 +84,7 @@ public class SingleChestDeployment extends AbstractDeployment implements Deploym
 		searchResult = new QuadrantSearch(plugin, player, ChestSize.SINGLE).execute();
 
 		// create new deathChest object for player
-		DeathChestRecord deathChest = new DeathChestRecord(plugin, player);
+		DeathChestRecord deathChest = new DeathChestRecord(plugin, player, searchResult.getLocation());
 
 		// if search successful, place chest
 		if (searchResult.getResultCode().equals(SearchResultCode.SUCCESS))

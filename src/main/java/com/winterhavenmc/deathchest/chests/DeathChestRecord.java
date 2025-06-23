@@ -86,22 +86,18 @@ public record DeathChestRecord(
 	 * @param plugin Instance of the plugin main class, used for retrieving configuration values
 	 * @param player Instance of a player, typically at the time of death when a new chest is deployed
 	 */
-	public DeathChestRecord(final Plugin plugin, final Player player)
+	public DeathChestRecord(final Plugin plugin, final Player player, final Location location)
 	{
 		this(UUID.randomUUID(),
 				(player != null) ? player.getUniqueId() : INVALID_UUID,
 				(player != null) ? player.getName() : UNKNOWN_VALUE,
 				(player != null) && player.getKiller() != null ? player.getKiller().getUniqueId() : INVALID_UUID,
 				(player != null) ? player.getName() : UNKNOWN_VALUE,
-				(player != null && player.getLocation().getWorld() != null)
-						? player.getLocation().getWorld().getUID()
-						: INVALID_UUID,
-				(player != null && player.getLocation().getWorld() != null)
-						? player.getLocation().getWorld().getName()
-						: UNKNOWN_VALUE,
-				(player != null) ? player.getLocation().getBlockX() : 0,
-				(player != null) ? player.getLocation().getBlockY() : 0,
-				(player != null) ? player.getLocation().getBlockZ() : 0,
+				(location != null && location.getWorld() != null) ? location.getWorld().getUID() : INVALID_UUID,
+				(location != null && location.getWorld() != null) ? location.getWorld().getName() : UNKNOWN_VALUE,
+				(location != null) ? location.getBlockX() : 0,
+				(location != null) ? location.getBlockY() : 0,
+				(location != null) ? location.getBlockZ() : 0,
 				0,
 				Instant.now(),
 				(plugin.getConfig().getLong("expire-time") > 0)
