@@ -25,7 +25,6 @@ import com.winterhavenmc.deathchest.sounds.SoundId;
 import com.winterhavenmc.deathchest.storage.DataStore;
 import com.winterhavenmc.deathchest.storage.DataStoreType;
 
-import com.winterhavenmc.deathchest.tasks.ExpireChestTask;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -38,9 +37,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.scheduler.BukkitTask;
 
-import java.time.Duration;
 import java.time.Instant;
 import java.util.*;
 
@@ -163,7 +160,6 @@ public final class ChestManager
 			else if (deathChest.expirationTime().isAfter(Instant.EPOCH) && deathChest.expirationTime().isBefore(Instant.now()))
 			{
 				plugin.chestManager.expire(deathChest);
-//				deathChest.expire();
 			}
 			else
 			{
