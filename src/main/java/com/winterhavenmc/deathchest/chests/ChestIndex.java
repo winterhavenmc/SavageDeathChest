@@ -31,7 +31,6 @@ import java.util.concurrent.ConcurrentHashMap;
 
 final class ChestIndex
 {
-	// map of DeathChests
 	private final Map<UUID, DeathChestRecord> deathChestMap;
 	private final Map<UUID, Integer> expireMap;
 
