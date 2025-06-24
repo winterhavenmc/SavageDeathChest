@@ -197,7 +197,7 @@ final public class PermissionCheck {
 		if (isCurrentlyOpen(deathChest)) {
 			event.setCancelled(true);
 			String viewerName = deathChest.getInventory().getViewers().iterator().next().getName();
-			plugin.messageBuilder.build(player, MessageId.CHEST_CURRENTLY_OPEN)
+			plugin.messageBuilder.compose(player, MessageId.CHEST_CURRENTLY_OPEN)
 					.setMacro(Macro.LOCATION, deathChest.getLocation())
 					.setMacro(Macro.OWNER, deathChest.getOwnerName())
 					.setMacro(Macro.KILLER, deathChest.getKillerName())
@@ -211,7 +211,7 @@ final public class PermissionCheck {
 		// and player does not have override permission: cancel event, send message and return
 		if (isCreativeAccessDisabled(player)) {
 			event.setCancelled(true);
-			plugin.messageBuilder.build(player, MessageId.NO_CREATIVE_ACCESS)
+			plugin.messageBuilder.compose(player, MessageId.NO_CREATIVE_ACCESS)
 					.setMacro(Macro.LOCATION, player.getLocation()
 					).send();
 			plugin.soundConfig.playSound(player, SoundId.CHEST_DENIED_ACCESS);
@@ -254,7 +254,7 @@ final public class PermissionCheck {
 		// if chest protection is enabled and has not expired, send message and return
 		if (isProtectionNotExpired(deathChest)) {
 			long protectionTimeRemainingMillis = deathChest.getProtectionTime() - System.currentTimeMillis();
-			plugin.messageBuilder.build(player, MessageId.CHEST_ACCESSED_PROTECTION_TIME)
+			plugin.messageBuilder.compose(player, MessageId.CHEST_ACCESSED_PROTECTION_TIME)
 					.setMacro(Macro.OWNER, deathChest.getOwnerName())
 					.setMacro(Macro.PROTECTION_DURATION, protectionTimeRemainingMillis)
 					.setMacro(Macro.PROTECTION_DURATION_MINUTES, protectionTimeRemainingMillis)
@@ -263,7 +263,7 @@ final public class PermissionCheck {
 		}
 		// else send player not-owner message
 		else {
-			plugin.messageBuilder.build(player, MessageId.NOT_OWNER)
+			plugin.messageBuilder.compose(player, MessageId.NOT_OWNER)
 					.setMacro(Macro.LOCATION, deathChest.getLocation())
 					.setMacro(Macro.OWNER, deathChest.getOwnerName())
 					.setMacro(Macro.KILLER, deathChest.getKillerName())
