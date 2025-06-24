@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.winterhaven-mc</groupId>
 	<artifactId>SavageDeathChest</artifactId>
-	<version>1.18.10</version>
+	<version>1.20.0-SNAPSHOT</version>
 	<name>SavageDeathChest</name>
 
 	<url>https://github.com/tim-savage/SavageDeathChest</url>
@@ -30,43 +30,63 @@
 		<url>https://github.com/tim-savage/SavageDeathChest/issues</url>
 	</issueManagement>
 
-	<distributionManagement>
-		<repository>
-			<id>releases</id>
-			<url>https://maven.winterhaven-mc.com/repository/releases/</url>
-		</repository>
-		<snapshotRepository>
-			<id>snapshots</id>
-			<url>https://maven.winterhaven-mc.com/repository/snapshots/</url>
-		</snapshotRepository>
-	</distributionManagement>
+	<profiles>
+		<profile>
+			<id>github</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<distributionManagement>
+				<repository>
+					<id>github</id>
+					<name>GitHub winterhavenmc Apache Maven Packages</name>
+					<url>https://maven.pkg.github.com/winterhavenmc/MessageBuilderLib/</url>
+				</repository>
+			</distributionManagement>
 
-	<repositories>
-		<repository>
-			<id>public</id>
-			<url>https://maven.winterhaven-mc.com/repository/public/</url>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-		</repository>
-	</repositories>
+			<repositories>
+				<repository>
+					<id>spigot-repo</id>
+					<url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
+				</repository>
+				<repository>
+					<id>world-edit-repo</id>
+					<url>https://maven.enginehub.org/repo/</url>
+				</repository>
+
+				<repository>
+					<id>griefprevention-repo</id>
+					<url>https://repository.liferay.com/nexus/content/repositories/public/</url>
+				</repository>
+				<repository>
+					<id>elMakers-repo</id>
+					<url>http://maven.elmakers.com/repository/</url>
+				</repository>
+			</repositories>
+		</profile>
+	</profiles>
 
 	<dependencies>
-		<!-- MessengerLib -->
+		<!-- Spigot API -->
+		<dependency>
+			<groupId>org.spigotmc</groupId>
+			<artifactId>spigot-api</artifactId>
+			<version>1.21.6-R0.1-SNAPSHOT</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<!-- MessageBuilderLib -->
 		<dependency>
 			<groupId>com.winterhaven-mc</groupId>
 			<artifactId>message-builder-lib</artifactId>
-			<version>1.17.2</version>
+			<version>1.20.0-SNAPSHOT</version>
 		</dependency>
 
 		<!-- SoundConfigLib -->
 		<dependency>
 			<groupId>com.winterhaven-mc</groupId>
 			<artifactId>sound-config-lib</artifactId>
-			<version>1.17.1</version>
+			<version>1.21.0-SNAPSHOT</version>
 		</dependency>
 
 		<!-- WorldManagerLib -->
@@ -74,14 +94,6 @@
 			<groupId>com.winterhaven-mc</groupId>
 			<artifactId>world-manager-lib</artifactId>
 			<version>1.21.0-SNAPSHOT</version>
-		</dependency>
-
-		<!-- Spigot API -->
-		<dependency>
-			<groupId>org.spigotmc</groupId>
-			<artifactId>spigot-api</artifactId>
-			<version>1.21.1-R0.1-SNAPSHOT</version>
-			<scope>provided</scope>
 		</dependency>
 
 		<!-- bStats -->
@@ -110,13 +122,18 @@
 			<scope>provided</scope>
 		</dependency>
 
-		<!-- PreciousStones -->
-		<dependency>
-			<groupId>net.sacredlabyrinth.Phaed</groupId>
-			<artifactId>PreciousStones</artifactId>
-			<version>1.16.1.9</version>
-			<scope>provided</scope>
-		</dependency>
+<!--		&lt;!&ndash; PreciousStones &ndash;&gt;-->
+<!--		<dependency>-->
+<!--			<groupId>net.sacredlabyrinth.Phaed</groupId>-->
+<!--			<artifactId>PreciousStones</artifactId>-->
+<!--			<version>1.16.1.9</version>-->
+<!--		</dependency>-->
+<!--		<dependency>-->
+<!--			<groupId>net.sacredlabyrinth.Phaed</groupId>-->
+<!--			<artifactId>PreciousStones</artifactId>-->
+<!--			<version>1.16.1.9</version>-->
+<!--			<scope>provided</scope>-->
+<!--		</dependency>-->
 
 		<!-- RoadBlock -->
 		<dependency>
@@ -127,18 +144,19 @@
 		</dependency>
 
 		<!-- Towny -->
-		<dependency>
-			<groupId>com.github.TownyAdvanced</groupId>
-			<artifactId>Towny</artifactId>
-			<version>0.96.2.0</version>
-			<scope>provided</scope>
-		</dependency>
+<!--		<dependency>-->
+<!--			<groupId>palmer</groupId>-->
+<!--			<artifactId>towny</artifactId>-->
+<!--			<version></version>-->
+<!--			<scope>provided</scope>-->
+<!--		</dependency>-->
 
 		<!-- WorldEdit Bukkit -->
+		<!-- https://mvnrepository.com/artifact/com.sk89q.worldedit/worldedit-core -->
 		<dependency>
 			<groupId>com.sk89q.worldedit</groupId>
 			<artifactId>worldedit-bukkit</artifactId>
-			<version>7.2.9-SNAPSHOT</version>
+			<version>7.2.13</version>
 			<scope>provided</scope>
 		</dependency>
 
@@ -146,7 +164,7 @@
 		<dependency>
 			<groupId>com.sk89q.worldguard</groupId>
 			<artifactId>worldguard-bukkit</artifactId>
-			<version>7.0.7-SNAPSHOT</version>
+			<version>7.0.7</version>
 			<scope>provided</scope>
 		</dependency>
 
