@@ -52,7 +52,7 @@ final class ReloadCommand extends SubcommandAbstract {
 		Objects.requireNonNull(sender);
 
 		if (!sender.hasPermission("deathchest.reload")) {
-			plugin.messageBuilder.build(sender, MessageId.COMMAND_FAIL_RELOAD_PERMISSION).send();
+			plugin.messageBuilder.compose(sender, MessageId.COMMAND_FAIL_RELOAD_PERMISSION).send();
 			plugin.soundConfig.playSound(sender, SoundId.COMMAND_FAIL);
 			return true;
 		}
@@ -76,7 +76,7 @@ final class ReloadCommand extends SubcommandAbstract {
 		plugin.chestManager.reload();
 
 		// send success message
-		plugin.messageBuilder.build(sender, MessageId.COMMAND_SUCCESS_RELOAD).send();
+		plugin.messageBuilder.compose(sender, MessageId.COMMAND_SUCCESS_RELOAD).send();
 
 		// play success sound
 		plugin.soundConfig.playSound(sender, SoundId.COMMAND_RELOAD_SUCCESS);

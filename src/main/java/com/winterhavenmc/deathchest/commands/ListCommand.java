@@ -94,14 +94,14 @@ final class ListCommand extends SubcommandAbstract {
 
 		// if command sender does not have permission to list death chests, output error message and return true
 		if (!sender.hasPermission("deathchest.list")) {
-			plugin.messageBuilder.build(sender, MessageId.COMMAND_FAIL_LIST_PERMISSION).send();
+			plugin.messageBuilder.compose(sender, MessageId.COMMAND_FAIL_LIST_PERMISSION).send();
 			plugin.soundConfig.playSound(sender, SoundId.COMMAND_FAIL);
 			return true;
 		}
 
 		// check if max args exceeded
 		if (args.size() > this.getMaxArgs()) {
-			plugin.messageBuilder.build(sender, MessageId.COMMAND_FAIL_ARGS_COUNT_OVER).send();
+			plugin.messageBuilder.compose(sender, MessageId.COMMAND_FAIL_ARGS_COUNT_OVER).send();
 			displayUsage(sender);
 			plugin.soundConfig.playSound(sender, SoundId.COMMAND_FAIL);
 			return true;
@@ -156,7 +156,7 @@ final class ListCommand extends SubcommandAbstract {
 
 			// else send permission denied message and return true
 			else {
-				plugin.messageBuilder.build(sender, MessageId.COMMAND_FAIL_LIST_OTHER_PERMISSION).send();
+				plugin.messageBuilder.compose(sender, MessageId.COMMAND_FAIL_LIST_OTHER_PERMISSION).send();
 				plugin.soundConfig.playSound(sender, SoundId.COMMAND_FAIL);
 				return true;
 			}
@@ -164,7 +164,7 @@ final class ListCommand extends SubcommandAbstract {
 
 		// if display list is empty, output list empty message and return
 		if (displayRecords.isEmpty()) {
-			plugin.messageBuilder.build(sender, MessageId.LIST_EMPTY).send();
+			plugin.messageBuilder.compose(sender, MessageId.LIST_EMPTY).send();
 			return true;
 		}
 
@@ -216,7 +216,7 @@ final class ListCommand extends SubcommandAbstract {
 
 			// if passedPlayerName is wildcard, display LIST_ITEM_ALL
 			if (displayNames) {
-				plugin.messageBuilder.build(sender, MessageId.LIST_ITEM_ALL)
+				plugin.messageBuilder.compose(sender, MessageId.LIST_ITEM_ALL)
 						.setMacro(Macro.ITEM_NUMBER, listCount)
 						.setMacro(Macro.LOCATION, deathChest.getLocation())
 						.setMacro(Macro.OWNER, ownerName)
@@ -228,7 +228,7 @@ final class ListCommand extends SubcommandAbstract {
 						.send();
 			}
 			else {
-				plugin.messageBuilder.build(sender, MessageId.LIST_ITEM)
+				plugin.messageBuilder.compose(sender, MessageId.LIST_ITEM)
 						.setMacro(Macro.ITEM_NUMBER, listCount)
 						.setMacro(Macro.LOCATION, deathChest.getLocation())
 						.setMacro(Macro.OWNER, ownerName)
@@ -262,7 +262,7 @@ final class ListCommand extends SubcommandAbstract {
 
 	private void displayListHeader(final CommandSender sender, final int page, final int pageCount) {
 		// display list header
-		plugin.messageBuilder.build(sender, MessageId.LIST_HEADER)
+		plugin.messageBuilder.compose(sender, MessageId.LIST_HEADER)
 				.setMacro(Macro.PAGE_NUMBER, page)
 				.setMacro(Macro.PAGE_TOTAL, pageCount)
 				.send();
@@ -271,7 +271,7 @@ final class ListCommand extends SubcommandAbstract {
 
 	private void displayListFooter(final CommandSender sender, final int page, final int pageCount) {
 		// display list footer
-		plugin.messageBuilder.build(sender, MessageId.LIST_FOOTER)
+		plugin.messageBuilder.compose(sender, MessageId.LIST_FOOTER)
 				.setMacro(Macro.PAGE_NUMBER, page)
 				.setMacro(Macro.PAGE_TOTAL, pageCount)
 				.send();

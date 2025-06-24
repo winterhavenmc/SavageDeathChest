@@ -80,7 +80,7 @@ final class HelpCommand extends SubcommandAbstract {
 
 		// if command sender does not have permission to display help, output error message and return true
 		if (!sender.hasPermission("deathchest.help")) {
-			plugin.messageBuilder.build(sender, MessageId.COMMAND_FAIL_HELP_PERMISSION).send();
+			plugin.messageBuilder.compose(sender, MessageId.COMMAND_FAIL_HELP_PERMISSION).send();
 			plugin.soundConfig.playSound(sender, SoundId.COMMAND_FAIL);
 			return true;
 		}
@@ -111,13 +111,13 @@ final class HelpCommand extends SubcommandAbstract {
 
 		// if subcommand found in map, display help message and usage
 		if (subcommand != null) {
-			plugin.messageBuilder.build(sender, subcommand.getDescription()).send();
+			plugin.messageBuilder.compose(sender, subcommand.getDescription()).send();
 			subcommand.displayUsage(sender);
 		}
 
 		// else display invalid command help message and usage for all commands
 		else {
-			plugin.messageBuilder.build(sender, MessageId.COMMAND_HELP_INVALID).send();
+			plugin.messageBuilder.compose(sender, MessageId.COMMAND_HELP_INVALID).send();
 			plugin.soundConfig.playSound(sender, SoundId.COMMAND_INVALID);
 			displayUsageAll(sender);
 		}
@@ -131,7 +131,7 @@ final class HelpCommand extends SubcommandAbstract {
 	 */
 	void displayUsageAll(final CommandSender sender) {
 
-		plugin.messageBuilder.build(sender, MessageId.COMMAND_HELP_USAGE).send();
+		plugin.messageBuilder.compose(sender, MessageId.COMMAND_HELP_USAGE).send();
 
 		for (String subcommandName : subcommandRegistry.getNames()) {
 			if (subcommandRegistry.getCommand(subcommandName) != null) {

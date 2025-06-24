@@ -359,7 +359,7 @@ public final class DeathChest {
 		}
 
 		// send player message
-		plugin.messageBuilder.build(player, MessageId.INVENTORY_FULL)
+		plugin.messageBuilder.compose(player, MessageId.INVENTORY_FULL)
 				.setMacro(Macro.LOCATION, player.getLocation())
 				.send();
 
@@ -390,7 +390,7 @@ public final class DeathChest {
 
 		// if player is not null, send player message
 		if (player != null) {
-			plugin.messageBuilder.build(player, MessageId.CHEST_EXPIRED)
+			plugin.messageBuilder.compose(player, MessageId.CHEST_EXPIRED)
 					.setMacro(Macro.LOCATION, this.getLocation())
 					.send();
 		}

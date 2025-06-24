@@ -48,7 +48,7 @@ final class StatusCommand extends SubcommandAbstract {
 	@Override
 	public boolean onCommand(final CommandSender sender, final List<String> args) {
 		if (!sender.hasPermission("deathchest.status")) {
-			plugin.messageBuilder.build(sender, MessageId.COMMAND_FAIL_STATUS_PERMISSION).send();
+			plugin.messageBuilder.compose(sender, MessageId.COMMAND_FAIL_STATUS_PERMISSION).send();
 			plugin.soundConfig.playSound(sender, SoundId.COMMAND_FAIL);
 			return true;
 		}
