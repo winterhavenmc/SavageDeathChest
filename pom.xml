@@ -62,6 +62,12 @@
 					<id>elMakers-repo</id>
 					<url>http://maven.elmakers.com/repository/</url>
 				</repository>
+
+				<repository>
+					<id>nexus</id>
+					<name>Towny</name>
+					<url>https://repo.glaremasters.me/repository/towny/</url>
+				</repository>
 			</repositories>
 		</profile>
 	</profiles>
@@ -144,12 +150,11 @@
 		</dependency>
 
 		<!-- Towny -->
-<!--		<dependency>-->
-<!--			<groupId>palmer</groupId>-->
-<!--			<artifactId>towny</artifactId>-->
-<!--			<version></version>-->
-<!--			<scope>provided</scope>-->
-<!--		</dependency>-->
+		<dependency>
+			<groupId>com.palmergames.bukkit.towny</groupId>
+			<artifactId>towny</artifactId>
+			<version>0.101.1.14</version>
+		</dependency>
 
 		<!-- WorldEdit Bukkit -->
 		<!-- https://mvnrepository.com/artifact/com.sk89q.worldedit/worldedit-core -->
