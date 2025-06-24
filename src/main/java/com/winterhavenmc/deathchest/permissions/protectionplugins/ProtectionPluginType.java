@@ -43,6 +43,13 @@ public enum ProtectionPluginType {
 		}
 	},
 
+	TOWNY("Towny") {
+		@Override
+		ProtectionPlugin create(final JavaPlugin plugin, final String version) {
+			return new Towny(plugin, getName(), version);
+		}
+	},
+
 	WORLDGUARD("WorldGuard") {
 		@Override
 		ProtectionPlugin create(final JavaPlugin plugin, final String version) {
