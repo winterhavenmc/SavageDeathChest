@@ -3,41 +3,41 @@
 COMMAND_FAIL:
   enabled: true
   player-only: true
-  sound: ENTITY_VILLAGER_NO
+  sound: minecraft:entity.villager.no
   volume: 1
   pitch: 1
 
 COMMAND_INVALID:
   enabled: true
   player-only: true
-  sound: ENTITY_WANDERING_TRADER_AMBIENT
+  sound: minecraft:entity.wandering_trader.ambient
   volume: 1
   pitch: 1
 
 COMMAND_RELOAD_SUCCESS:
   enabled: true
   player-only: true
-  sound: BLOCK_NOTE_BLOCK_CHIME
+  sound: minecraft:block.note_block.chime
   volume: 1
   pitch: 1
 
 CHEST_DENIED_ACCESS:
   enabled: true
   player-only: true
-  sound: ENTITY_VILLAGER_NO
+  sound: minecraft:entity.villager.no
   volume: 1
   pitch: 1
 
 CHEST_BREAK:
   enabled: true
   player-only: true
-  sound: BLOCK_WOOD_BREAK
+  sound: minecraft:block.wood.break
   volume: 2
   pitch: 1
 
 INVENTORY_ADD_ITEM:
   enabled: true
   player-only: true
-  sound: ENTITY_ITEM_PICKUP
+  sound: minecraft:entity.item.pickup
   volume: 1
   pitch: 1
