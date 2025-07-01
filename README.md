@@ -2,6 +2,8 @@
 [![Spigot Version](https://badgen.net/static/spigot-api/1.21.7?color=yellow)](https://spigotmc.org)
 &nbsp;[![License](https://badgen.net/static/license/GPLv3)](https://www.gnu.org/licenses/gpl-3.0)
 
+# SavageDeathChest
+
 ### Description
 
 This plugin stores a player's inventory in a chest on death for later retrieval. 
