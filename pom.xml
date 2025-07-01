@@ -85,7 +85,7 @@
 		<dependency>
 			<groupId>com.winterhaven-mc</groupId>
 			<artifactId>message-builder-lib</artifactId>
-			<version>1.20.0-SNAPSHOT</version>
+			<version>1.21.0-SNAPSHOT</version>
 		</dependency>
 
 		<!-- SoundConfigLib -->
