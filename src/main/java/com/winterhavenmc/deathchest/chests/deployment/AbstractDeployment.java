@@ -38,7 +38,7 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
 
-import static com.winterhavenmc.util.TimeUnit.MINUTES;
+import static com.winterhavenmc.library.TimeUnit.MINUTES;
 
 
 /**
