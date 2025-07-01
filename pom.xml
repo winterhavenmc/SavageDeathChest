@@ -287,7 +287,7 @@
 							</artifactSet>
 							<relocations>
 								<relocation>
-									<pattern>com.winterhavenmc.util</pattern>
+									<pattern>com.winterhavenmc.library</pattern>
 									<shadedPattern>com.winterhavenmc.deathchest.shaded</shadedPattern>
 								</relocation>
 								<relocation>
