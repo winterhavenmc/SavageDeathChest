@@ -128,19 +128,6 @@
 			<scope>provided</scope>
 		</dependency>
 
-<!--		&lt;!&ndash; PreciousStones &ndash;&gt;-->
-<!--		<dependency>-->
-<!--			<groupId>net.sacredlabyrinth.Phaed</groupId>-->
-<!--			<artifactId>PreciousStones</artifactId>-->
-<!--			<version>1.16.1.9</version>-->
-<!--		</dependency>-->
-<!--		<dependency>-->
-<!--			<groupId>net.sacredlabyrinth.Phaed</groupId>-->
-<!--			<artifactId>PreciousStones</artifactId>-->
-<!--			<version>1.16.1.9</version>-->
-<!--			<scope>provided</scope>-->
-<!--		</dependency>-->
-
 		<!-- RoadBlock -->
 		<dependency>
 			<groupId>com.winterhaven-mc</groupId>
