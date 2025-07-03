@@ -26,9 +26,9 @@ import com.winterhavenmc.deathchest.util.MetricsHandler;
 import com.winterhavenmc.deathchest.permissions.protectionplugins.ProtectionPluginRegistry;
 
 import com.winterhavenmc.library.messagebuilder.MessageBuilder;
-import com.winterhavenmc.util.soundconfig.SoundConfiguration;
-import com.winterhavenmc.util.soundconfig.YamlSoundConfiguration;
-import com.winterhavenmc.util.worldmanager.WorldManager;
+import com.winterhavenmc.library.soundconfig.SoundConfiguration;
+import com.winterhavenmc.library.soundconfig.YamlSoundConfiguration;
+import com.winterhavenmc.library.worldmanager.WorldManager;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
