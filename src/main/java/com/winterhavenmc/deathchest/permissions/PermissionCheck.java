@@ -209,7 +209,7 @@ final public class PermissionCheck
 		if (isCurrentlyOpen(deathChest))
 		{
 			event.setCancelled(true);
-			String viewerName = deathChest.getInventory().getViewers().iterator().next().getName();
+			String viewerName = deathChest.getInventory().getViewers().getFirst().getName();
 			plugin.messageBuilder.compose(player, MessageId.CHEST_CURRENTLY_OPEN)
 					.setMacro(Macro.LOCATION, deathChest.getLocation())
 					.setMacro(Macro.OWNER, deathChest.getOwnerName())
