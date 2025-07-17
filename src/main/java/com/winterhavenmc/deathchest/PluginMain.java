@@ -22,24 +22,22 @@ import com.winterhavenmc.deathchest.commands.CommandManager;
 import com.winterhavenmc.deathchest.listeners.BlockEventListener;
 import com.winterhavenmc.deathchest.listeners.InventoryEventListener;
 import com.winterhavenmc.deathchest.listeners.PlayerEventListener;
-import com.winterhavenmc.deathchest.messages.MessageId;
 import com.winterhavenmc.deathchest.messages.Macro;
-import com.winterhavenmc.deathchest.util.MetricsHandler;
+import com.winterhavenmc.deathchest.messages.MessageId;
 import com.winterhavenmc.deathchest.permissions.protectionplugins.ProtectionPluginRegistry;
-
+import com.winterhavenmc.deathchest.util.MetricsHandler;
 import com.winterhavenmc.library.messagebuilder.MessageBuilder;
 import com.winterhavenmc.library.soundconfig.SoundConfiguration;
 import com.winterhavenmc.library.soundconfig.YamlSoundConfiguration;
 import com.winterhavenmc.library.worldmanager.WorldManager;
-
 import org.bukkit.plugin.java.JavaPlugin;
 
 
 /**
  * The main class for SavageDeathChest plugin
  */
-public final class PluginMain extends JavaPlugin {
-
+public final class PluginMain extends JavaPlugin
+{
 	public MessageBuilder<MessageId, Macro> messageBuilder;
 	public WorldManager worldManager;
 	public SoundConfiguration soundConfig;
@@ -49,8 +47,8 @@ public final class PluginMain extends JavaPlugin {
 
 
 	@Override
-	public void onEnable() {
-
+	public void onEnable()
+	{
 		// copy default config from jar if it doesn't exist
 		saveDefaultConfig();
 
@@ -86,8 +84,8 @@ public final class PluginMain extends JavaPlugin {
 
 
 	@Override
-	public void onDisable() {
-
+	public void onDisable()
+	{
 		// close datastore
 		chestManager.closeDataStore();
 	}
