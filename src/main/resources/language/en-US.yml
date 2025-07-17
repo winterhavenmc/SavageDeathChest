@@ -1,254 +1,260 @@
-# Language configuration file for ${project.name} v${project.version}
+# Language configuration file for SavageDeathChest v1.21.0-SNAPSHOT
 
-############
-# Chest Info
-############
-CHEST_INFO:
+# constant strings
+CONSTANTS:
+  TIME:
+    LESS_THAN: "less than {DURATION}"
+    UNLIMITED: "unlimited"
+
   # Custom chest inventory name
-  INVENTORY_NAME: "%PLAYER%'s Death Chest"
-
-##############
-# Time strings
-##############
-TIME_STRINGS:
-  DAY: 'day'
-  DAY_PLURAL: 'days'
-  HOUR: 'hour'
-  HOUR_PLURAL: 'hours'
-  MINUTE: 'minute'
-  MINUTE_PLURAL: 'minutes'
-  SECOND: 'second'
-  SECOND_PLURAL: 'seconds'
-  UNLIMITED: 'unlimited time'
-  LESS_THAN_ONE: 'less than one'
-
-
-## SIGN_TEXT and DATE_FORMAT have been moved to config.yml
+  CHEST_INFO:
+    INVENTORY_NAME: "{OWNER}'s Death Chest"
 
 
 #################
 # Custom Messages
 #################
 # Variable substitutions:
-# %EXPIRATION_DURATION%           expiration duration with seconds
-# %EXPIRATION_DURATION_MINUTES%   expiration duration without seconds
-# %PROTECTION_DURATION%           protection duration with seconds
-# %PROTECTION_DURATION_MINUTES%   protection duration without seconds
 
-# %PLAYER%        Player name of message recipient
-# %OWNER%         Chest owner name (only available in messages that reference a valid chest object)
-# %KILLER%        Chest killer name (only available in messages that reference a valid chest object)
-# %VIEWER%        Chest viewer name
-# %PLUGIN%        Protection plugin name
-# %LOCATION%      Chest location formatted: world [x, y, z]
-#   The following substitutions are available in all messages that support %LOCATION%
-# %WORLD%         World name of chest (or player if no chest)
-# %LOC_X%         Chest coordinates (or player if no chest)
-# %LOC_Y%         Chest coordinates (or player if no chest)
-# %LOC_Z%         Chest coordinates (or player if no chest)
+# {RECIPIENT}       Player name of message recipient
+# {PLUGIN}          Protection plugin name
 
-# %PAGE_NUMBER%   List page number (only available in LIST_HEADER and LIST_FOOTER messages)
-# %PAGE_TOTAL%    List total page count (only available in LIST_HEADER and LIST_FOOTER messages)
-# %ITEM_NUMBER%   List item number (only available in list item messages)
+# {DEATH_CHEST} subfields:
+# {DEATH_CHEST.OWNER}                Chest owner name (only available in messages that reference a valid chest object)
+# {DEATH_CHEST.LOOTER}               Chest looter name (only available in messages that reference a valid chest object)
+# {DEATH_CHEST.LOCATION}             Chest location formatted: world [x, y, z]
+# {DEATH_CHEST.LOCATION.WORLD}       World name of chest (or player if no chest)
+# {DEATH_CHEST.LOCATION.X}           Chest coordinates (or player if no chest)
+# {DEATH_CHEST.LOCATION.Y}           Chest coordinates (or player if no chest)
+# {DEATH_CHEST.LOCATION.Z}           Chest coordinates (or player if no chest)
+# {DEATH_CHEST.EXPIRATION.DURATION}  Time remaining until chest expires and drops contents
+# {DEATH_CHEST.EXPIRATION.INSTANT}   Date/time when chest expires and drops contents
+# {DEATH_CHEST.PROTECTION.DURATION}  Remaining time before non-owners may access chest contents
+# {DEATH_CHEST.PROTECTION.INSTANT}   Date/time when non-owners may access chest contents
+
+# List fields:
+# {PAGE_NUMBER}   List page number (only available in LIST_HEADER and LIST_FOOTER messages)
+# {PAGE_TOTAL}    List total page count (only available in LIST_HEADER and LIST_FOOTER messages)
+# {ITEM_NUMBER}   List item number (only available in list item messages)
+
 
 MESSAGES:
   CHEST_SUCCESS:
-    enabled: true
-    string: '&cSuccessfully placed death chest. You have %EXPIRATION_DURATION% to retrieve your items.'
-    # available subs: %PLAYER%, %EXPIRATION_DURATION%, %EXPIRATION_DURATION_MINUTES%, %LOCATION%
+    ENABLED: true
+    MESSAGE_TEXT: '&cSuccessfully placed death chest. You have {DEATH_CHEST.EXPIRATION.DURATION} to retrieve your items.'
 
   DOUBLECHEST_PARTIAL_SUCCESS:
-    enabled: true
-    string: '&cOnly a single chest could be placed at your death location. Some items were dropped.'
-    # available subs: %PLAYER%, %EXPIRATION_DURATION%, %EXPIRATION_DURATION_MINUTES%, %LOCATION%
+    ENABLED: true
+    MESSAGE_TEXT: '&cOnly a single chest could be placed at your death location. Some items were dropped.'
 
   CHEST_DEPLOYED_PROTECTION_TIME:
-    enabled: true
-    string: '&cDeath chest is protected from looting for %PROTECTION_DURATION_MINUTES%.'
-    # available subs: %OWNER%, %PROTECTION_DURATION%, %PROTECTION_DURATION_MINUTES%, %LOCATION%
+    ENABLED: true
+    MESSAGE_TEXT: '&cDeath chest is protected from looting for {DEATH_CHEST.PROTECTION.DURATION}.'
 
   CHEST_ACCESSED_PROTECTION_TIME:
-    enabled: true
+    ENABLED: true
     repeat-delay: 1
-    string: '&cDeath chest belonging to %OWNER% is protected from looting for %PROTECTION_DURATION_MINUTES%.'
-    # available subs: %OWNER%, %PROTECTION_DURATION%, %PROTECTION_DURATION_MINUTES%, %LOCATION%
+    MESSAGE_TEXT: '&cDeath chest belonging to {DEATH_CHEST.OWNER} is protected from looting for {DEATH_CHEST.PROTECTION.DURATION}.'
 
   CHEST_DENIED_DEPLOYMENT_BY_PLUGIN:
-    enabled: true
-    string: '&cDeath chest deployment was prevented by %PLUGIN%.'
-    # available subs: %PLAYER%, %PLUGIN%, %LOCATION%
+    ENABLED: true
+    MESSAGE_TEXT: '&cDeath chest deployment was prevented by {PLUGIN}.'
 
   CHEST_DENIED_ACCESS_BY_PLUGIN:
-    enabled: true
-    string: '&cDeath chest access was prevented by %PLUGIN%.'
-    # available subs: %PLAYER%, %PLUGIN%, %LOCATION%
+    ENABLED: true
+    MESSAGE_TEXT: '&cDeath chest access was prevented by {PLUGIN}.'
 
   CHEST_DENIED_BLOCK:
-    enabled: true
-    string: '&cAn open space could not be found to place a chest.'
-    # available subs: %PLAYER%, %LOCATION%
+    ENABLED: true
+    MESSAGE_TEXT: '&cAn open space could not be found to place a chest.'
 
   CHEST_DENIED_PERMISSION:
-    enabled: false
-    string: '&cYou do not have permission for death chests.'
-    # available subs: %PLAYER%, %LOCATION%
+    ENABLED: false
+    MESSAGE_TEXT: '&cYou do not have permission for death chests.'
 
   CHEST_DENIED_ADJACENT:
-    enabled: true
-    string: '&cDeath chest deployment was prevented by an existing adjacent chest.'
-    # available subs: %PLAYER%, %LOCATION%
+    ENABLED: true
+    MESSAGE_TEXT: '&cDeath chest deployment was prevented by an existing adjacent chest.'
 
   CHEST_DENIED_SPAWN_RADIUS:
-    enabled: true
-    string: '&cDeath chest deployment was prevented by world spawn protection.'
-    # available subs: %PLAYER%, %LOCATION%
+    ENABLED: true
+    MESSAGE_TEXT: '&cDeath chest deployment was prevented by world spawn protection.'
 
   CHEST_DENIED_WORLD_DISABLED:
-    enabled: true
-    string: '&cDeath chests are not enabled in this world.'
-    # available subs: %PLAYER%, %LOCATION%
+    ENABLED: true
+    MESSAGE_TEXT: '&cDeath chests are not enabled in this world.'
 
   CHEST_DENIED_VOID:
-    enabled: true
-    string: '&cDeath chest cannot be deployed in the void.'
-    # available subs: %PLAYER%, %LOCATION%
+    ENABLED: true
+    MESSAGE_TEXT: '&cDeath chest cannot be deployed in the void.'
 
 
   INVENTORY_EMPTY:
-    enabled: true
-    string: '&cYou had no inventory to place in a death chest.'
-    # available subs: %PLAYER%, %LOCATION%
+    ENABLED: true
+    MESSAGE_TEXT: '&cYou had no inventory to place in a death chest.'
 
   INVENTORY_FULL:
-    enabled: true
-    string: '&cSome items could not be transferred because your inventory is full.'
-    # available subs: %PLAYER%, %LOCATION%
+    ENABLED: true
+    MESSAGE_TEXT: '&cSome items could not be transferred because your inventory is full.'
 
   NO_CHEST_IN_INVENTORY:
-    enabled: true
-    string: '&cYou did not have any chests in your inventory.'
-    # available subs: %PLAYER%, %LOCATION%
+    ENABLED: true
+    MESSAGE_TEXT: '&cYou did not have any chests in your inventory.'
 
   NOT_OWNER:
-    enabled: true
-    string: '&cThat death chest does not belong to you.'
-    # available subs: %PLAYER%, %LOCATION%, %OWNER%, %KILLER%
+    ENABLED: true
+    MESSAGE_TEXT: '&cThat death chest does not belong to you. It belongs to {DEATH_CHEST.OWNER}.'
 
   CHEST_EXPIRED:
-    enabled: true
-    string: '&cYour death chest has expired.'
+    ENABLED: true
+    MESSAGE_TEXT: '&cYour death chest has expired.'
     repeat-delay: 1
-    # available subs: %PLAYER%, %LOCATION%
 
   CREATIVE_MODE:
-    enabled: true
-    string: '&cCreative mode inventory is not saved in death chests.'
-    # available subs: %PLAYER%, %LOCATION%
+    ENABLED: true
+    MESSAGE_TEXT: '&cCreative mode inventory is not saved in death chests.'
 
 
   NO_CREATIVE_ACCESS:
-    enabled: true
-    string: '&cAccess to death chests in creative mode is not allowed.'
-    # available subs: %PLAYER%, %LOCATION%
+    ENABLED: true
+    MESSAGE_TEXT: '&cAccess to death chests in creative mode is not allowed.'
 
   CHEST_CURRENTLY_OPEN:
-    enabled: true
-    string: '&cDeath chest is currently being accessed by another player.'
-    # available subs: %PLAYER%, %LOCATION%, %OWNER%, %KILLER%, %VIEWER%
+    ENABLED: true
+    MESSAGE_TEXT: '&cDeath chest is currently being accessed by another player.'
 
   COMMAND_FAIL_INVALID_COMMAND:
-    enabled: true
-    string: '&cThat is not a valid command!'
-    # available subs: %PLAYER%
+    ENABLED: true
+    MESSAGE_TEXT: '&cThat is not a valid command!'
 
   COMMAND_FAIL_ARGS_COUNT_OVER:
-    enabled: true
-    string: '&cToo many arguments!'
-    # available subs: %PLAYER%
+    ENABLED: true
+    MESSAGE_TEXT: '&cToo many arguments!'
 
   COMMAND_FAIL_HELP_PERMISSION:
-    enabled: true
-    string: '&cYou do not have permission to display DeathChest help!'
-    # available subs: %PLAYER%
+    ENABLED: true
+    MESSAGE_TEXT: '&cYou do not have permission to display DeathChest help!'
 
   COMMAND_FAIL_LIST_PERMISSION:
-    enabled: true
-    string: '&cYou do not have permission to list DeathChests!'
-    # available subs: %PLAYER%
+    ENABLED: true
+    MESSAGE_TEXT: '&cYou do not have permission to list DeathChests!'
 
   COMMAND_FAIL_LIST_OTHER_PERMISSION:
-    enabled: true
-    string: '&cYou do not have permission to list other player''s DeathChests!'
-    # available subs: %PLAYER%
+    ENABLED: true
+    MESSAGE_TEXT: '&cYou do not have permission to list other player''s DeathChests!'
 
   COMMAND_FAIL_RELOAD_PERMISSION:
-    enabled: true
-    string: '&cYou do not have permission to reload DeathChest configuration!'
-    # available subs: %PLAYER%
+    ENABLED: true
+    MESSAGE_TEXT: '&cYou do not have permission to reload DeathChest configuration!'
 
   COMMAND_FAIL_STATUS_PERMISSION:
-    enabled: true
-    string: '&cYou do not have permission to view DeathChest settings!'
-    # available subs: %PLAYER%
+    ENABLED: true
+    MESSAGE_TEXT: '&cYou do not have permission to view DeathChest settings!'
 
   COMMAND_SUCCESS_RELOAD:
-    enabled: true
-    string: '&7DeathChest configuration reloaded.'
-    # available subs: %PLAYER%
+    ENABLED: true
+    MESSAGE_TEXT: '&7DeathChest configuration reloaded.'
 
 
   COMMAND_HELP_HELP:
-    enabled: true
-    string: '&eDisplays help for DeathChest commands.'
+    ENABLED: true
+    MESSAGE_TEXT: '&eDisplays help for DeathChest commands.'
 
   COMMAND_HELP_LIST:
-    enabled: true
-    string: '&eDisplays a list of all DeathChests.'
+    ENABLED: true
+    MESSAGE_TEXT: '&eDisplays a list of all DeathChests.'
 
   COMMAND_HELP_RELOAD:
-    enabled: true
-    string: '&eReloads the plugin configuration.'
+    ENABLED: true
+    MESSAGE_TEXT: '&eReloads the plugin configuration.'
 
   COMMAND_HELP_STATUS:
-    enabled: true
-    string: '&eDisplays plugin configuration settings.'
+    ENABLED: true
+    MESSAGE_TEXT: '&eDisplays plugin configuration settings.'
 
   COMMAND_HELP_INVALID:
-    enabled: true
-    string: '&eThat is not a valid command.'
+    ENABLED: true
+    MESSAGE_TEXT: '&eThat is not a valid command.'
 
   COMMAND_HELP_USAGE:
-    enabled: true
-    string: '&eCommand usage:'
+    ENABLED: true
+    MESSAGE_TEXT: '&eCommand usage:'
+
+
+  #########################
+  # Status command messages
+  #########################
+  COMMAND_STATUS_BANNER:
+    MESSAGE_TEXT: "\n&3&m                    =&r&3[&b {PLUGIN} &3]&m=                    "
+
+  COMMAND_STATUS_FOOTER:
+    MESSAGE_TEXT: "\n&3Proudly Uses MessageBuilderLib  &6❖&r  {URL}"
+
+  COMMAND_STATUS_PLUGIN_VERSION:
+    MESSAGE_TEXT: '&aVersion:&r {VERSION}'
+
+  COMMAND_STATUS_LANGUAGE:
+    MESSAGE_TEXT: "&aLanguage:&r {LANGUAGE}"
+
+  COMMAND_STATUS_LOCALE:
+    MESSAGE_TEXT: "&aLocale:&r {LOCALE}"
+
+  COMMAND_STATUS_TIMEZONE:
+    MESSAGE_TEXT: "&aTimezone:&r {TIMEZONE}"
+
+  COMMAND_STATUS_EXPIRATION_TIME:
+    MESSAGE_TEXT: "&aChest Expiration:&r {EXPIRATION_DURATION}"
+
+  COMMAND_STATUS_PROTECTION_TIME:
+    MESSAGE_TEXT: "&aChest Protection:&r {PROTECTION_DURATION}"
+
+  COMMAND_STATUS_SEARCH_DISTANCE:
+    MESSAGE_TEXT: "&aSearch Distance:&r {SEARCH_DISTANCE}"
+
+  COMMAND_STATUS_REQUIRE_CHEST:
+    MESSAGE_TEXT: "&aRequire Chest:&r {REQUIRE_CHEST}"
+
+  COMMAND_STATUS_QUICK_LOOT:
+    MESSAGE_TEXT: "&aQuick Loot:&r {QUICK_LOOT}"
+
+  COMMAND_STATUS_KILLER_LOOTING:
+    MESSAGE_TEXT: "&aKiller looting:&r {KILLER_LOOTING}"
+
+  COMMAND_STATUS_ENABLED_WORLDS:
+    MESSAGE_TEXT: "&aEnabled Worlds:&r {ENABLED_WORLDS}"
+
+  COMMAND_STATUS_PROTECTION_PLUGINS:
+    MESSAGE_TEXT: "&aProtection Plugin Support:"
 
 
   LIST_HEADER:
-    enabled: true
-    string: '&3Page &b%PAGE_NUMBER%&3 of &b%PAGE_TOTAL%'
+    ENABLED: true
+    MESSAGE_TEXT: '&3Page &b{PAGE_NUMBER}&3 of &b{PAGE_TOTAL}'
 
   LIST_FOOTER:
-    enabled: false
-    string: '&3Page &b%PAGE_NUMBER%&3 of &b%PAGE_TOTAL%'
+    ENABLED: false
+    MESSAGE_TEXT: '&3Page &b{PAGE_NUMBER}&3 of &b{PAGE_TOTAL}'
 
   LIST_ITEM:
-    enabled: true
-    string: |-
-      %ITEM_NUMBER%) &aLocation:&b %LOCATION% &aKiller:&b %KILLER%
-          &aExpiration time:&b %EXPIRATION_DURATION%
-          &aProtection time:&b %PROTECTION_DURATION%
+    ENABLED: true
+    MESSAGE_TEXT: |-
+      {ITEM_NUMBER}) &aKiller:&b {DEATH_CHEST.LOOTER}
+          &aLocation:&b {DEATH_CHEST.LOCATION}
+          &aExpiration time:&b {DEATH_CHEST.EXPIRATION.DURATION}
+          &aProtection time:&b {DEATH_CHEST.PROTECTION.DURATION}
 
   LIST_ITEM_ALL:
-    enabled: true
-    string: |- 
-      %ITEM_NUMBER%) &aOwner:&b %OWNER% &aKiller:&b %KILLER%
-          &aLocation:&b %LOCATION%
-          &aExpiration time:&b %EXPIRATION_DURATION%
-          &aProtection time:&b %PROTECTION_DURATION%
+    ENABLED: true
+    MESSAGE_TEXT: |-
+      {ITEM_NUMBER}) &aOwner:&b {DEATH_CHEST.OWNER} &aKiller:&b {DEATH_CHEST.LOOTER}
+          &aLocation:&b {DEATH_CHEST.LOCATION}
+          &aExpiration time:&b {DEATH_CHEST.EXPIRATION.DURATION}
+          &aProtection time:&b {DEATH_CHEST.PROTECTION.DURATION}
 
   LIST_EMPTY:
-    enabled: true
-    string: '&bThere are no DeathChests to list!'
+    ENABLED: true
+    MESSAGE_TEXT: '&bThere are no DeathChests to list!'
 
   LIST_PLAYER_NOT_FOUND:
-    enabled: true
-    string: '&3That player could not be found!'
+    ENABLED: true
+    MESSAGE_TEXT: '&3That player could not be found!'

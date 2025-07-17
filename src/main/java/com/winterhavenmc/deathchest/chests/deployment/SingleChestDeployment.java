@@ -18,10 +18,7 @@
 package com.winterhavenmc.deathchest.chests.deployment;
 
 import com.winterhavenmc.deathchest.PluginMain;
-import com.winterhavenmc.deathchest.chests.ChestBlockType;
-import com.winterhavenmc.deathchest.chests.ChestSign;
-import com.winterhavenmc.deathchest.chests.ChestSize;
-import com.winterhavenmc.deathchest.chests.DeathChest;
+import com.winterhavenmc.deathchest.chests.*;
 import com.winterhavenmc.deathchest.chests.search.QuadrantSearch;
 import com.winterhavenmc.deathchest.chests.search.SearchResult;
 import com.winterhavenmc.deathchest.chests.search.SearchResultCode;
@@ -77,7 +74,7 @@ public class SingleChestDeployment extends AbstractDeployment implements Deploym
 			else
 			{
 				searchResult = new SearchResult(SearchResultCode.NO_REQUIRED_CHEST, remainingItems);
-				this.finish(searchResult, new DeathChest(player));
+				this.finalize(searchResult, new DeathChestRecord(plugin, player, searchResult.getLocation()));
 				return searchResult;
 			}
 		}
@@ -86,7 +83,7 @@ public class SingleChestDeployment extends AbstractDeployment implements Deploym
 		searchResult = new QuadrantSearch(plugin, player, ChestSize.SINGLE).execute();
 
 		// create new deathChest object for player
-		DeathChest deathChest = new DeathChest(player);
+		DeathChestRecord deathChest = new DeathChestRecord(plugin, player, searchResult.getLocation());
 
 		// if search successful, place chest
 		if (searchResult.getResultCode().equals(SearchResultCode.SUCCESS))
@@ -98,7 +95,7 @@ public class SingleChestDeployment extends AbstractDeployment implements Deploym
 			setChestBlockState(searchResult.getLocation().getBlock(), Chest.Type.SINGLE);
 
 			// fill chest
-			remainingItems = deathChest.fill(remainingItems);
+			remainingItems = plugin.chestManager.fill(remainingItems, deathChest);
 
 			// place sign on chest
 			new ChestSign(plugin, player, deathChest).place();
@@ -108,7 +105,7 @@ public class SingleChestDeployment extends AbstractDeployment implements Deploym
 		searchResult.setRemainingItems(remainingItems);
 
 		// finish deployment
-		this.finish(searchResult, deathChest);
+		this.finalize(searchResult, deathChest);
 
 		// return result
 		return searchResult;

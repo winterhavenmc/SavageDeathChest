@@ -18,7 +18,7 @@
 package com.winterhavenmc.deathchest.listeners;
 
 import com.winterhavenmc.deathchest.PluginMain;
-import com.winterhavenmc.deathchest.chests.DeathChest;
+import com.winterhavenmc.deathchest.chests.DeathChestRecord;
 import com.winterhavenmc.deathchest.messages.Macro;
 import com.winterhavenmc.deathchest.messages.MessageId;
 import com.winterhavenmc.deathchest.permissions.InventoryOpenAction;
@@ -26,7 +26,6 @@ import com.winterhavenmc.deathchest.permissions.PermissionCheck;
 import com.winterhavenmc.deathchest.permissions.QuickLootAction;
 import com.winterhavenmc.deathchest.permissions.ResultAction;
 import com.winterhavenmc.deathchest.tasks.DeployChestTask;
-
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -159,7 +158,7 @@ public final class PlayerEventListener implements Listener
 	public void onPlayerInteract(final PlayerInteractEvent event)
 	{
 		// get DeathChest from event clicked block
-		final DeathChest deathChest = plugin.chestManager.getChest(event.getClickedBlock());
+		final DeathChestRecord deathChest = plugin.chestManager.getChest(event.getClickedBlock());
 
 		// if DeathChest is null, do nothing and return
 		if (deathChest == null)
