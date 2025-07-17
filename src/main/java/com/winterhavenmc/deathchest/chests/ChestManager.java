@@ -236,9 +236,8 @@ public final class ChestManager
 		Block block = null;
 
 		// if inventory is a chest, get chest block
-		if (inventory.getHolder() instanceof Chest)
+		if (inventory.getHolder() instanceof Chest chest)
 		{
-			Chest chest = (Chest) inventory.getHolder();
 			block = chest.getBlock();
 		}
 
