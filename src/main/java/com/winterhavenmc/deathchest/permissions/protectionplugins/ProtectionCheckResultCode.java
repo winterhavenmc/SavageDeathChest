@@ -17,9 +17,8 @@
 
 package com.winterhavenmc.deathchest.permissions.protectionplugins;
 
-public enum ProtectionCheckResultCode {
-
+public enum ProtectionCheckResultCode
+{
 	ALLOWED,
 	BLOCKED,
-
 }

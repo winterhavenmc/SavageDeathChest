@@ -19,11 +19,9 @@ package com.winterhavenmc.deathchest.permissions.protectionplugins.plugins;
 
 import com.winterhavenmc.deathchest.permissions.protectionplugins.ProtectionPlugin;
 import com.winterhavenmc.deathchest.permissions.protectionplugins.ProtectionPluginAbstract;
-
+import me.angeschossen.lands.api.flags.Flags;
 import me.angeschossen.lands.api.integration.LandsIntegration;
 import me.angeschossen.lands.api.land.Area;
-import me.angeschossen.lands.api.flags.Flags;
-
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -34,8 +32,8 @@ import javax.annotation.Nullable;
 /**
  * Class that implements protection plugin checks for Lands
  */
-public final class Lands extends ProtectionPluginAbstract implements ProtectionPlugin {
-
+public final class Lands extends ProtectionPluginAbstract implements ProtectionPlugin
+{
 	// reference to LandsIntegration instance
 	LandsIntegration landsIntegration;
 
@@ -43,11 +41,12 @@ public final class Lands extends ProtectionPluginAbstract implements ProtectionP
 	/**
 	 * Class constructor
 	 *
-	 * @param plugin reference to SavageDeathChest plugin main class instance
-	 * @param name name of the protection plugin
+	 * @param plugin  reference to SavageDeathChest plugin main class instance
+	 * @param name    name of the protection plugin
 	 * @param version version of the protection plugin
 	 */
-	public Lands(final JavaPlugin plugin, final String name, final String version) {
+	public Lands(final JavaPlugin plugin, final String name, final String version)
+	{
 		this.plugin = plugin;
 		this.name = name;
 		this.version = version;
@@ -60,23 +59,27 @@ public final class Lands extends ProtectionPluginAbstract implements ProtectionP
 	/**
 	 * Check if Lands plugin will allow chest placement at location by player
 	 *
-	 * @param player the player whose death chest will be placed
+	 * @param player   the player whose death chest will be placed
 	 * @param location the location where the death chest will be placed
 	 * @return boolean - true if placement is allowed by plugin, false if not
 	 */
 	@Override
-	public boolean allowChestPlacement(final Player player, final Location location) {
-
-		try {
+	public boolean allowChestPlacement(final Player player, final Location location)
+	{
+		try
+		{
 			final @Nullable Area area = landsIntegration.getAreaByLoc(location);
-			if (area != null) {
+			if (area != null)
+			{
 				// this query should return true if placement is allowed, false if placement is denied
 				return area.hasFlag(player, Flags.BLOCK_PLACE, false);
 			}
 		}
-		catch (Error | Exception e) {
+		catch (Error | Exception e)
+		{
 			logPlaceError(e.getLocalizedMessage());
-			if (plugin.getConfig().getBoolean("debug")) {
+			if (plugin.getConfig().getBoolean("debug"))
+			{
 				e.printStackTrace();
 			}
 		}
@@ -88,23 +91,27 @@ public final class Lands extends ProtectionPluginAbstract implements ProtectionP
 	/**
 	 * Check if Lands plugin will allow chest access at location by player
 	 *
-	 * @param player the player who is trying to access a death chest
+	 * @param player   the player who is trying to access a death chest
 	 * @param location the location where the death chest is being accessed
 	 * @return boolean - true if access is allowed by plugin, false if not
 	 */
 	@Override
-	public boolean allowChestAccess(final Player player, final Location location) {
-
-		try {
+	public boolean allowChestAccess(final Player player, final Location location)
+	{
+		try
+		{
 			final @Nullable Area area = landsIntegration.getAreaByLoc(location);
-			if (area != null) {
+			if (area != null)
+			{
 				// this query should return true if access is allowed, false if access is denied
 				return area.hasFlag(player, Flags.INTERACT_CONTAINER, false);
 			}
 		}
-		catch (Error | Exception e) {
+		catch (Error | Exception e)
+		{
 			logAccessError(e.getLocalizedMessage());
-			if (plugin.getConfig().getBoolean("debug")) {
+			if (plugin.getConfig().getBoolean("debug"))
+			{
 				e.printStackTrace();
 			}
 		}

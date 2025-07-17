@@ -26,8 +26,8 @@ import org.bukkit.block.data.BlockData;
 /**
  * An enum whose values represent the different types of chest blocks
  */
-public enum ChestBlockType {
-
+public enum ChestBlockType
+{
 	SIGN,
 	LEFT_CHEST,
 	RIGHT_CHEST;
@@ -39,21 +39,23 @@ public enum ChestBlockType {
 	 * @param block block to determine chest type
 	 * @return ChestBlockType enum value, or null if block is not a chest or sign
 	 */
-	static ChestBlockType getType(final Block block) {
-
+	static ChestBlockType getType(final Block block)
+	{
 		// check for null parameter
-		if (block == null) {
+		if (block == null)
+		{
 			return null;
 		}
 
 		// if block material is SIGN or WALL_SIGN, return ChestBlockType.SIGN
-		if (block.getType().equals(Material.OAK_SIGN) || block.getType().equals(Material.OAK_WALL_SIGN)) {
+		if (block.getType().equals(Material.OAK_SIGN) || block.getType().equals(Material.OAK_WALL_SIGN))
+		{
 			return ChestBlockType.SIGN;
 		}
 
 		// if block material is CHEST, determine if it is LEFT or RIGHT chest (single chest returns RIGHT)
-		else if (block.getType().equals(Material.CHEST)) {
-
+		else if (block.getType().equals(Material.CHEST))
+		{
 			// cast block state to chest
 			Chest chest = (Chest) block.getState();
 
@@ -62,7 +64,8 @@ public enum ChestBlockType {
 
 			// if chest is left chest, return LEFT_CHEST
 			if (((org.bukkit.block.data.type.Chest) blockData).getType()
-					.equals(org.bukkit.block.data.type.Chest.Type.LEFT)) {
+					.equals(org.bukkit.block.data.type.Chest.Type.LEFT))
+			{
 				return ChestBlockType.LEFT_CHEST;
 			}
 

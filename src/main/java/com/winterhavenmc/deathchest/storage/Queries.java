@@ -26,34 +26,38 @@ import java.util.Properties;
 /**
  * A utility class that contains static methods for retrieving database queries from the queries properties file.
  */
-final class Queries {
-
+final class Queries
+{
 	private static final String propFileName = "queries.properties";
 	private static Properties properties;
 
 	/**
 	 * Private constructor to prevent instantiation of class
 	 */
-	private Queries() {
+	private Queries()
+	{
 		throw new AssertionError();
 	}
 
 
-	private static Properties getQueries() throws SQLException {
-
+	private static Properties getQueries() throws SQLException
+	{
 		// singleton
-		if (properties == null) {
+		if (properties == null)
+		{
 			properties = new Properties();
-			try {
-
+			try
+			{
 				InputStream inputStream = Queries.class.getResourceAsStream("/" + propFileName);
 
-				if (inputStream == null) {
+				if (inputStream == null)
+				{
 					throw new SQLException("Unable to load property file: " + propFileName);
 				}
 				properties.load(inputStream);
 			}
-			catch (IOException e) {
+			catch (IOException e)
+			{
 				throw new SQLException("Unable to load property file: " + propFileName);
 			}
 		}
@@ -62,7 +66,8 @@ final class Queries {
 	}
 
 
-	static String getQuery(final String query) throws SQLException {
+	static String getQuery(final String query) throws SQLException
+	{
 		return getQueries().getProperty(query);
 	}
 

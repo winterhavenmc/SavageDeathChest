@@ -34,17 +34,17 @@ import java.util.Objects;
 /**
  * Class that implements protection plugin checks for Towny
  */
-public final class Towny extends ProtectionPluginAbstract implements ProtectionPlugin {
-
-
+public final class Towny extends ProtectionPluginAbstract implements ProtectionPlugin
+{
 	/**
 	 * Class constructor
 	 *
-	 * @param plugin reference to SavageDeathChest plugin main class instance
-	 * @param name name of the protection plugin
+	 * @param plugin  reference to SavageDeathChest plugin main class instance
+	 * @param name    name of the protection plugin
 	 * @param version version of the protection plugin
 	 */
-	public Towny(final JavaPlugin plugin, final String name, final String version) {
+	public Towny(final JavaPlugin plugin, final String name, final String version)
+	{
 		this.plugin = plugin;
 		this.name = name;
 		this.version = version;
@@ -52,16 +52,18 @@ public final class Towny extends ProtectionPluginAbstract implements ProtectionP
 
 
 	@Override
-	public boolean allowChestPlacement(final Player player, final Location location) {
-
-		// use try...catch block to gracefully handle exceptions thrown by protection plugin
-		try {
+	public boolean allowChestPlacement(final Player player, final Location location)
+	{
+		try
+		{
 			return PlayerCacheUtil.getCachePermission(player, location,
 					Material.CHEST, TownyPermission.ActionType.BUILD);
 		}
-		catch (Error | Exception e) {
+		catch (Error | Exception e)
+		{
 			logPlaceError(e.getLocalizedMessage());
-			if (plugin.getConfig().getBoolean("debug")) {
+			if (plugin.getConfig().getBoolean("debug"))
+			{
 				e.printStackTrace();
 			}
 		}
@@ -71,16 +73,19 @@ public final class Towny extends ProtectionPluginAbstract implements ProtectionP
 
 
 	@Override
-	public boolean allowChestAccess(final Player player, final Location location) {
-
-		try {
+	public boolean allowChestAccess(final Player player, final Location location)
+	{
+		try
+		{
 			LandsIntegration landsIntegration = new LandsIntegration(plugin);
 			final Area area = landsIntegration.getAreaByLoc(location);
 			return Objects.requireNonNull(area).hasFlag(player, me.angeschossen.lands.api.flags.Flags.INTERACT_CONTAINER, false);
 		}
-		catch (Error | Exception e) {
+		catch (Error | Exception e)
+		{
 			logAccessError(e.getLocalizedMessage());
-			if (plugin.getConfig().getBoolean("debug")) {
+			if (plugin.getConfig().getBoolean("debug"))
+			{
 				e.printStackTrace();
 			}
 		}

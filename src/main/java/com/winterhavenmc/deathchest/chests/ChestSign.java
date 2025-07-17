@@ -30,31 +30,34 @@ import org.bukkit.entity.Player;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
-public class ChestSign {
-
+public class ChestSign
+{
 	private final PluginMain plugin;
 	private final Player player;
 	private final DeathChest deathChest;
 
 
 	// new chestSign(plugin, player, deathChest).place();
-	public ChestSign(final PluginMain plugin, final Player player, final DeathChest deathChest) {
+	public ChestSign(final PluginMain plugin, final Player player, final DeathChest deathChest)
+	{
 		this.plugin = plugin;
 		this.player = player;
 		this.deathChest = deathChest;
 	}
 
-	public void place() {
-
+	public void place()
+	{
 		// if chest-signs are not enabled in configuration, do nothing and return
-		if (!plugin.getConfig().getBoolean("chest-signs")) {
+		if (!plugin.getConfig().getBoolean("chest-signs"))
+		{
 			return;
 		}
 
 		// get chest block location
 		Location chestBlockLocation = deathChest.getLocation();
 
-		if (chestBlockLocation == null) {
+		if (chestBlockLocation == null)
+		{
 			return;
 		}
 
@@ -65,7 +68,8 @@ public class ChestSign {
 		BlockState chestState = chestBlock.getState();
 
 		// if block state is not chest, do nothing and return
-		if (!(chestState.getBlockData() instanceof Chest)) {
+		if (!(chestState.getBlockData() instanceof Chest))
+		{
 			return;
 		}
 
@@ -73,18 +77,20 @@ public class ChestSign {
 		BlockFace blockFace = ((Chest) chestState.getBlockData()).getFacing();
 
 		// if chest face is valid location, create wall sign
-		if (isValidSignLocation(chestBlock.getRelative(blockFace).getLocation())) {
+		if (isValidSignLocation(chestBlock.getRelative(blockFace).getLocation()))
+		{
 			placeFrontSign(chestBlock, player, deathChest);
 		}
 		// if front sign could not be placed and holograms are not enabled, place top sign
-		else if (!plugin.getConfig().getBoolean("holograms-enabled")) {
+		else if (!plugin.getConfig().getBoolean("holograms-enabled"))
+		{
 			placeTopSign(chestBlock, player, deathChest);
 		}
 	}
 
 
-	private void placeFrontSign(final Block chestBlock, final Player player, final DeathChest deathChest) {
-
+	private void placeFrontSign(final Block chestBlock, final Player player, final DeathChest deathChest)
+	{
 		// get block adjacent to chest facing player direction
 		Block signBlock = chestBlock.getRelative(LocationUtilities.getCardinalBlockFace(player));
 
@@ -101,8 +107,8 @@ public class ChestSign {
 	}
 
 
-	private void placeTopSign(final Block chestBlock, final Player player, final DeathChest deathChest) {
-
+	private void placeTopSign(final Block chestBlock, final Player player, final DeathChest deathChest)
+	{
 		// get block on top of chest
 		Block signBlock = chestBlock.getRelative(BlockFace.UP);
 
@@ -119,8 +125,8 @@ public class ChestSign {
 	}
 
 
-	private void finalizeSign(final Block signBlock, final Player player, final DeathChest deathChest) {
-
+	private void finalizeSign(final Block signBlock, final Player player, final DeathChest deathChest)
+	{
 		// put configured text on sign
 		setSignText(signBlock, player);
 
@@ -135,25 +141,23 @@ public class ChestSign {
 	}
 
 
-	private void setSignText(final Block signBlock, final Player player) {
-
+	private void setSignText(final Block signBlock, final Player player)
+	{
 		// get block state of sign block
 		BlockState signBlockState = signBlock.getState();
 
 		// if block has not been successfully transformed into a sign, return false
-		if (!(signBlockState instanceof org.bukkit.block.Sign)) {
+		if (!(signBlockState instanceof org.bukkit.block.Sign sign))
+		{
 			return;
 		}
-
-		// Place text on sign with player name and death date
-		// cast signBlockState to org.bukkit.block.Sign type object
-		org.bukkit.block.Sign sign = (org.bukkit.block.Sign) signBlockState;
 
 		// get configured date format from config file
 		String dateFormat = plugin.getConfig().getString("DATE_FORMAT");
 
 		// if configured date format is null or empty, use default format
-		if (dateFormat == null || dateFormat.isEmpty()) {
+		if (dateFormat == null || dateFormat.isEmpty())
+		{
 			dateFormat = "MMM d, yyyy";
 		}
 
@@ -164,10 +168,11 @@ public class ChestSign {
 		List<String> lines = plugin.getConfig().getStringList("SIGN_TEXT");
 
 		int lineCount = 0;
-		for (String line : lines) {
-
+		for (String line : lines)
+		{
 			// stop after four lines (zero indexed)
-			if (lineCount > 3) {
+			if (lineCount > 3)
+			{
 				break;
 			}
 
@@ -193,10 +198,11 @@ public class ChestSign {
 	 * @param location Location to check
 	 * @return boolean {@code true} if location is valid for sign placement, {@code false} if not
 	 */
-	private boolean isValidSignLocation(final Location location) {
-
+	private boolean isValidSignLocation(final Location location)
+	{
 		// check for null parameter
-		if (location == null) {
+		if (location == null)
+		{
 			return false;
 		}
 
@@ -204,7 +210,8 @@ public class ChestSign {
 		Block block = location.getBlock();
 
 		// check if block is above path
-		if (LocationUtilities.isAbovePath(block)) {
+		if (LocationUtilities.isAbovePath(block))
+		{
 			return false;
 		}
 

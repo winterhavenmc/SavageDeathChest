@@ -19,7 +19,6 @@ package com.winterhavenmc.deathchest.chests;
 
 import com.winterhavenmc.deathchest.PluginMain;
 import com.winterhavenmc.deathchest.sounds.SoundId;
-
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -35,15 +34,18 @@ import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.LinkedList;
+import java.util.UUID;
 
 
 /**
  * A class that represents a single block that is a component of a death chest.
  * Block may be a left chest, a right chest, or an attached sign
  */
-public final class ChestBlock {
-
+public final class ChestBlock
+{
 	// reference to main class
 	private final PluginMain plugin = JavaPlugin.getPlugin(PluginMain.class);
 
@@ -66,18 +68,20 @@ public final class ChestBlock {
 	 * @param chestUUID the UUID of the chest that this ChestBlock is member
 	 * @param location  the location of the in game block this ChestBlock object represents
 	 */
-	public ChestBlock(final UUID chestUUID, final Location location) {
-
+	public ChestBlock(final UUID chestUUID, final Location location)
+	{
 		// set ChestUUID for this ChestBlock
 		this.chestUUID = chestUUID;
 
 		World world = location.getWorld();
 
-		if (world == null) {
+		if (world == null)
+		{
 			this.worldName = "unknown";
 			this.worldUid = null;
 		}
-		else {
+		else
+		{
 			this.worldName = world.getName();
 			this.worldUid = world.getUID();
 		}
@@ -95,12 +99,12 @@ public final class ChestBlock {
 	 *
 	 * @param chestUUID the UUID of the chest that this ChestBlock is member
 	 * @param worldName the string name of the world for this chest location
-	 * @param worldUid the Uid of the world for this chest location
-	 * @param x int the x block location for this chest location
-	 * @param y int the y block location for this chest location
-	 * @param z int the z block location for this chest location
-	 * @param yaw float the yaw for this chest location
-	 * @param pitch float the pitch for this chest location
+	 * @param worldUid  the Uid of the world for this chest location
+	 * @param x         int the x block location for this chest location
+	 * @param y         int the y block location for this chest location
+	 * @param z         int the z block location for this chest location
+	 * @param yaw       float the yaw for this chest location
+	 * @param pitch     float the pitch for this chest location
 	 */
 	public ChestBlock(final UUID chestUUID,
 	                  final String worldName,
@@ -109,18 +113,20 @@ public final class ChestBlock {
 	                  final int y,
 	                  final int z,
 	                  final float yaw,
-	                  final float pitch) {
-
+	                  final float pitch)
+	{
 		// set ChestUUID for this ChestBlock
 		this.chestUUID = chestUUID;
 
 		World world = plugin.getServer().getWorld(worldUid);
 
 		// if world is invalid, set name unknown
-		if (world == null) {
+		if (world == null)
+		{
 			this.worldName = worldName;
 		}
-		else {
+		else
+		{
 			this.worldName = world.getName();
 		}
 
@@ -138,11 +144,12 @@ public final class ChestBlock {
 	 *
 	 * @return Location - the in game location of this chest block
 	 */
-	public Location getLocation() {
-
+	public Location getLocation()
+	{
 		World world = plugin.getServer().getWorld(this.worldUid);
 
-		if (world == null) {
+		if (world == null)
+		{
 			return null;
 		}
 
@@ -161,23 +168,28 @@ public final class ChestBlock {
 	 *
 	 * @return String - the name of the world for the location of this chest block
 	 */
-	public String getWorldName() {
+	public String getWorldName()
+	{
 		return this.worldName;
 	}
 
-	public UUID getWorldUid() {
+	public UUID getWorldUid()
+	{
 		return this.worldUid;
 	}
 
-	public int getX() {
+	public int getX()
+	{
 		return this.x;
 	}
 
-	public int getY() {
+	public int getY()
+	{
 		return this.y;
 	}
 
-	public int getZ() {
+	public int getZ()
+	{
 		return this.z;
 	}
 
@@ -186,7 +198,8 @@ public final class ChestBlock {
 	 *
 	 * @return UUID - the UUID of the chest that this chest block is a member
 	 */
-	public UUID getChestUid() {
+	public UUID getChestUid()
+	{
 		return chestUUID;
 	}
 
@@ -197,10 +210,11 @@ public final class ChestBlock {
 	 * @return Block - DeathChest chest block;
 	 * returns null if sign is not a DeathChest sign or attached block is not a DeathChest chest block
 	 */
-	private Block getAttachedBlock() {
-
+	private Block getAttachedBlock()
+	{
 		// if DeathChestBlock location is null, return null
-		if (this.getLocation() == null) {
+		if (this.getLocation() == null)
+		{
 			return null;
 		}
 
@@ -208,25 +222,28 @@ public final class ChestBlock {
 		final Block block = this.getLocation().getBlock();
 
 		// if block is not a DeathSign, return null
-		if (!plugin.chestManager.isChestBlockSign(block)) {
+		if (!plugin.chestManager.isChestBlockSign(block))
+		{
 			return null;
 		}
 
 		Block returnBlock = null;
 
 		// if block is a wall sign, get block behind
-		if (block.getBlockData() instanceof WallSign) {
-			WallSign wallSign = (WallSign) block.getBlockData();
+		if (block.getBlockData() instanceof WallSign wallSign)
+		{
 			returnBlock = block.getRelative(wallSign.getFacing().getOppositeFace());
 		}
 
 		// else if block is a sign post, get block below
-		else if (block.getBlockData() instanceof Sign) {
+		else if (block.getBlockData() instanceof Sign)
+		{
 			returnBlock = block.getRelative(0, 1, 0);
 		}
 
 		// if attached block is not a DeathChest, return null
-		if (!plugin.chestManager.isChestBlockChest(returnBlock)) {
+		if (!plugin.chestManager.isChestBlockChest(returnBlock))
+		{
 			return null;
 		}
 
@@ -241,10 +258,12 @@ public final class ChestBlock {
 	 * if ChestBlock is a sign, return inventory of attached ChestBlock;
 	 * returns null if this ChestBlock (or attached block) is not a chest
 	 */
-	Inventory getInventory() {
+	Inventory getInventory()
+	{
 
 		// if this ChestBlock location is null, return null
-		if (this.getLocation() == null) {
+		if (this.getLocation() == null)
+		{
 			return null;
 		}
 
@@ -252,22 +271,26 @@ public final class ChestBlock {
 		BlockState blockState = this.getLocation().getBlock().getState();
 
 		// if block is a sign or wall sign, get attached block
-		if (blockState.getType().equals(Material.OAK_SIGN) || blockState.getType().equals((Material.OAK_WALL_SIGN))) {
+		if (blockState.getType().equals(Material.OAK_SIGN) || blockState.getType().equals((Material.OAK_WALL_SIGN)))
+		{
 
 			// get attached block
 			Block block = this.getAttachedBlock();
 
 			// if attached block returned null, do nothing and return
-			if (block != null) {
+			if (block != null)
+			{
 				blockState = this.getAttachedBlock().getState();
 			}
-			else {
+			else
+			{
 				return null;
 			}
 		}
 
 		// if blockState is a chest object, open inventory for player
-		if (blockState instanceof Chest) {
+		if (blockState instanceof Chest)
+		{
 			return ((Chest) blockState).getInventory();
 		}
 
@@ -280,18 +303,21 @@ public final class ChestBlock {
 	 *
 	 * @param player the player whose inventory chest items will be placed
 	 */
-	Collection<ItemStack> transferContents(final Player player) {
+	Collection<ItemStack> transferContents(final Player player)
+	{
 
 		// create empty list to contain items that did not fit in chest
 		Collection<ItemStack> remainingItems = new LinkedList<>();
 
 		// if player is null, return empty list
-		if (player == null) {
+		if (player == null)
+		{
 			return remainingItems;
 		}
 
 		// if DeathBlock location is null, return empty list
-		if (this.getLocation() == null) {
+		if (this.getLocation() == null)
+		{
 			return remainingItems;
 		}
 
@@ -299,7 +325,8 @@ public final class ChestBlock {
 		Block block = this.getLocation().getBlock();
 
 		// confirm block is still death chest block
-		if (plugin.chestManager.isChestBlockChest(block)) {
+		if (plugin.chestManager.isChestBlockChest(block))
+		{
 
 			// get player inventory object
 			final PlayerInventory playerInventory = player.getInventory();
@@ -311,10 +338,12 @@ public final class ChestBlock {
 			final Collection<ItemStack> chestInventory = new LinkedList<>(Arrays.asList(chest.getInventory().getContents()));
 
 			// iterate through all inventory slots in chest inventory
-			for (ItemStack itemStack : chestInventory) {
+			for (ItemStack itemStack : chestInventory)
+			{
 
 				// if inventory slot item is not null...
-				if (itemStack != null) {
+				if (itemStack != null)
+				{
 
 					// remove item from chest inventory
 					chest.getInventory().removeItem(itemStack);
@@ -336,15 +365,18 @@ public final class ChestBlock {
 	 *
 	 * @param deathChest the DeathChest whose metadata will be set on this chest block
 	 */
-	public void setMetadata(final DeathChest deathChest) {
+	public void setMetadata(final DeathChest deathChest)
+	{
 
 		// check for null object
-		if (deathChest == null || deathChest.getChestUid() == null) {
+		if (deathChest == null || deathChest.getChestUid() == null)
+		{
 			return;
 		}
 
 		// if DeathBlock location is null, do nothing and return
-		if (this.getLocation() == null) {
+		if (this.getLocation() == null)
+		{
 			return;
 		}
 
@@ -352,7 +384,8 @@ public final class ChestBlock {
 		Block block = this.getLocation().getBlock();
 
 		// if block is not death chest material, do nothing and return
-		if (!ChestManager.deathChestMaterials.contains(block.getType())) {
+		if (!ChestManager.deathChestMaterials.contains(block.getType()))
+		{
 			return;
 		}
 
@@ -360,12 +393,14 @@ public final class ChestBlock {
 		block.setMetadata("deathchest-uuid", new FixedMetadataValue(plugin, deathChest.getChestUid()));
 
 		// set owner uuid metadata
-		if (deathChest.hasValidOwnerUid()) {
+		if (deathChest.hasValidOwnerUid())
+		{
 			block.setMetadata("deathchest-owner", new FixedMetadataValue(plugin, deathChest.getOwnerUid()));
 		}
 
 		// set killer uuid metadata
-		if (deathChest.hasValidKillerUid()) {
+		if (deathChest.hasValidKillerUid())
+		{
 			block.setMetadata("deathchest-killer", new FixedMetadataValue(plugin, deathChest.getKillerUid()));
 		}
 	}
@@ -374,10 +409,12 @@ public final class ChestBlock {
 	/**
 	 * Remove metadata from this chest block
 	 */
-	private void removeMetadata() {
+	private void removeMetadata()
+	{
 
 		// if ChestBlock location is null, do nothing and return
-		if (this.getLocation() == null) {
+		if (this.getLocation() == null)
+		{
 			return;
 		}
 
@@ -394,10 +431,12 @@ public final class ChestBlock {
 	 * Destroy chest block, dropping any contents on ground.
 	 * Removes block metadata and deletes corresponding block record from block index and datastore.
 	 */
-	void destroy() {
+	void destroy()
+	{
 
 		// if ChestBlock location is null, do nothing and return
-		if (this.getLocation() == null) {
+		if (this.getLocation() == null)
+		{
 			return;
 		}
 
@@ -405,7 +444,8 @@ public final class ChestBlock {
 		Block block = this.getLocation().getBlock();
 
 		// load chunk if necessary
-		if (!block.getChunk().isLoaded()) {
+		if (!block.getChunk().isLoaded())
+		{
 			block.getChunk().load();
 		}
 

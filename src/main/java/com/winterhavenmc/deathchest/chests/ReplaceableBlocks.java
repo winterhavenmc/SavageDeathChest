@@ -29,8 +29,8 @@ import java.util.Set;
 /**
  * A class to manage the configured list of material types that can be replaced by a death chest
  */
-final class ReplaceableBlocks {
-
+final class ReplaceableBlocks
+{
 	// reference to main class
 	private final PluginMain plugin;
 
@@ -42,8 +42,8 @@ final class ReplaceableBlocks {
 	 * Class Constructor<br>
 	 * populates set of replaceable blocks from config file
 	 */
-	ReplaceableBlocks(final PluginMain plugin) {
-
+	ReplaceableBlocks(final PluginMain plugin)
+	{
 		this.plugin = plugin;
 
 		this.materialSet = Collections.synchronizedSet(new LinkedHashSet<>());
@@ -55,8 +55,8 @@ final class ReplaceableBlocks {
 	/**
 	 * Load list of replaceable blocks from config file
 	 */
-	void reload() {
-
+	void reload()
+	{
 		// clear replaceable blocks
 		materialSet.clear();
 
@@ -64,10 +64,12 @@ final class ReplaceableBlocks {
 		Collection<String> materialStringList = plugin.getConfig().getStringList("replaceable-blocks");
 
 		// iterate over string list
-		for (String materialString : materialStringList) {
+		for (String materialString : materialStringList)
+		{
 
 			// if material string matches a valid material type, add to replaceableBlocks set
-			if (Material.matchMaterial(materialString) != null) {
+			if (Material.matchMaterial(materialString) != null)
+			{
 				materialSet.add(Material.matchMaterial(materialString));
 			}
 		}
@@ -80,10 +82,11 @@ final class ReplaceableBlocks {
 	 * @param material the material the test for
 	 * @return true if replaceBlocks set contains material, false if it does not
 	 */
-	boolean contains(final Material material) {
-
+	boolean contains(final Material material)
+	{
 		// check for null parameter
-		if (material == null) {
+		if (material == null)
+		{
 			return false;
 		}
 
@@ -97,7 +100,8 @@ final class ReplaceableBlocks {
 	 * @return Formatted string list of materials in replaceableBlocks set
 	 */
 	@Override
-	public String toString() {
+	public String toString()
+	{
 		return this.materialSet.toString();
 	}
 }

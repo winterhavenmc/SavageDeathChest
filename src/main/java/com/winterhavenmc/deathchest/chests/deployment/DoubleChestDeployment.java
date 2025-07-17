@@ -22,7 +22,6 @@ import com.winterhavenmc.deathchest.chests.*;
 import com.winterhavenmc.deathchest.chests.search.QuadrantSearch;
 import com.winterhavenmc.deathchest.chests.search.SearchResult;
 import com.winterhavenmc.deathchest.chests.search.SearchResultCode;
-
 import org.bukkit.block.data.type.Chest;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -31,16 +30,17 @@ import java.util.Collection;
 import java.util.LinkedList;
 
 
-public class DoubleChestDeployment extends AbstractDeployment implements Deployment {
-
+public class DoubleChestDeployment extends AbstractDeployment implements Deployment
+{
 	/**
 	 * Class constructor
 	 *
-	 * @param plugin reference to plugin main class
-	 * @param player the player for whom a death chest is being deployed
+	 * @param plugin       reference to plugin main class
+	 * @param player       the player for whom a death chest is being deployed
 	 * @param droppedItems the player's death drops
 	 */
-	public DoubleChestDeployment(final PluginMain plugin, final Player player, final Collection<ItemStack> droppedItems) {
+	public DoubleChestDeployment(final PluginMain plugin, final Player player, final Collection<ItemStack> droppedItems)
+	{
 		super(plugin, player, droppedItems);
 	}
 
@@ -51,8 +51,8 @@ public class DoubleChestDeployment extends AbstractDeployment implements Deploym
 	 * @return the result of the attempted death chest deployment
 	 */
 	@Override
-	public SearchResult deploy() {
-
+	public SearchResult deploy()
+	{
 		// make copy of dropped items
 		Collection<ItemStack> remainingItems = new LinkedList<>(droppedItems);
 
@@ -60,11 +60,13 @@ public class DoubleChestDeployment extends AbstractDeployment implements Deploym
 		SearchResult searchResult = new QuadrantSearch(plugin, player, ChestSize.DOUBLE).execute();
 
 		// if only single chest location found, deploy single chest
-		if (searchResult.getResultCode().equals(SearchResultCode.PARTIAL_SUCCESS)) {
+		if (searchResult.getResultCode().equals(SearchResultCode.PARTIAL_SUCCESS))
+		{
 			searchResult = new SingleChestDeployment(plugin, player, remainingItems).deploy();
 
 			// if single chest deployment was successful, set PARTIAL_SUCCESS result
-			if (searchResult.getResultCode().equals(SearchResultCode.SUCCESS)) {
+			if (searchResult.getResultCode().equals(SearchResultCode.SUCCESS))
+			{
 				searchResult.setResultCode(SearchResultCode.PARTIAL_SUCCESS);
 			}
 
@@ -73,25 +75,28 @@ public class DoubleChestDeployment extends AbstractDeployment implements Deploym
 		}
 
 		// if search failed, return result with remaining items
-		if (!searchResult.getResultCode().equals(SearchResultCode.SUCCESS)) {
+		if (!searchResult.getResultCode().equals(SearchResultCode.SUCCESS))
+		{
 			searchResult.setRemainingItems(remainingItems);
 			return searchResult;
 		}
 
 		// if require-chest option is enabled
 		// and player does not have permission override
-		if (chestRequired()) {
-
+		if (chestRequired())
+		{
 			// check that player has chest in inventory
-			if (containsChest(remainingItems)) {
-
+			if (containsChest(remainingItems))
+			{
 				// if consume-required-chest configured true: remove one chest from remaining items
-				if (plugin.getConfig().getBoolean("consume-required-chest")) {
+				if (plugin.getConfig().getBoolean("consume-required-chest"))
+				{
 					remainingItems = removeOneChest(remainingItems);
 				}
 			}
 			// else return NO_CHEST result
-			else {
+			else
+			{
 				searchResult.setResultCode(SearchResultCode.NO_REQUIRED_CHEST);
 				searchResult.setRemainingItems(remainingItems);
 				this.finish(searchResult, new DeathChest(player));
@@ -113,18 +118,20 @@ public class DoubleChestDeployment extends AbstractDeployment implements Deploym
 		// if require-chest option is enabled
 		// and player does not have permission override
 		if (plugin.getConfig().getBoolean("require-chest")
-				&& !player.hasPermission("deathchest.freechest")) {
-
+				&& !player.hasPermission("deathchest.freechest"))
+		{
 			// check that player has chest in inventory
-			if (containsChest(remainingItems)) {
-
+			if (containsChest(remainingItems))
+			{
 				// if consume-required-chest configured true: remove one chest from remaining items
-				if (plugin.getConfig().getBoolean("consume-required-chest")) {
+				if (plugin.getConfig().getBoolean("consume-required-chest"))
+				{
 					remainingItems = removeOneChest(remainingItems);
 				}
 			}
 			// else return new PARTIAL_SUCCESS result with location and remaining items after filling chest
-			else {
+			else
+			{
 				searchResult.setResultCode(SearchResultCode.PARTIAL_SUCCESS);
 				searchResult.setRemainingItems(deathChest.fill(remainingItems));
 				this.finish(searchResult, deathChest);

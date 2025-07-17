@@ -22,7 +22,6 @@ import com.winterhavenmc.deathchest.messages.Macro;
 import com.winterhavenmc.deathchest.messages.MessageId;
 import com.winterhavenmc.deathchest.sounds.SoundId;
 import com.winterhavenmc.deathchest.tasks.ExpireChestTask;
-
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -31,7 +30,10 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitTask;
 
 import javax.annotation.concurrent.Immutable;
-import java.util.*;
+import java.util.Collection;
+import java.util.LinkedList;
+import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 
@@ -39,8 +41,8 @@ import java.util.concurrent.TimeUnit;
  * A class that represents a death chest, which comprises a collection of chest blocks
  */
 @Immutable
-public final class DeathChest {
-
+public final class DeathChest
+{
 	// reference to main class
 	private final PluginMain plugin = JavaPlugin.getPlugin(PluginMain.class);
 
@@ -71,22 +73,22 @@ public final class DeathChest {
 	/**
 	 * Class constructor used to create a DeathChest object from an existing record read from the datastore.
 	 *
-	 * @param chestUId      the chest UUID
-	 * @param ownerUid      the chest owner UUID
-	 * @param killerUid     the chest killer UUID
-	 * @param itemCount      the chest item count
-	 * @param placementTime  the chest placement time
+	 * @param chestUId                 the chest UUID
+	 * @param ownerUid                 the chest owner UUID
+	 * @param killerUid                the chest killer UUID
+	 * @param itemCount                the chest item count
+	 * @param placementTime            the chest placement time
 	 * @param protectionExpirationTime the chest protection expiration time
-	 * @param expirationTime the chest expiration time
+	 * @param expirationTime           the chest expiration time
 	 */
 	public DeathChest(final UUID chestUId,
-					  final UUID ownerUid,
-					  final UUID killerUid,
-					  final int itemCount,
-					  final long placementTime,
-					  final long expirationTime,
-	                  final long protectionExpirationTime) {
-
+	                  final UUID ownerUid,
+	                  final UUID killerUid,
+	                  final int itemCount,
+	                  final long placementTime,
+	                  final long expirationTime,
+	                  final long protectionExpirationTime)
+	{
 		this.chestUId = chestUId;
 		this.ownerUid = ownerUid;
 		this.killerUid = killerUid;
@@ -103,25 +105,29 @@ public final class DeathChest {
 	 *
 	 * @param player the death chest owner
 	 */
-	public DeathChest(final Player player) {
-
+	public DeathChest(final Player player)
+	{
 		// create random chestUUID
 		this.chestUId = UUID.randomUUID();
 
 		// set playerUUID
-		if (player != null) {
+		if (player != null)
+		{
 			this.ownerUid = player.getUniqueId();
 		}
-		else {
+		else
+		{
 			this.ownerUid = null;
 		}
 
 		// set killerUUID
-		if (player != null && player.getKiller() != null) {
+		if (player != null && player.getKiller() != null)
+		{
 			this.killerUid = player.getKiller().getUniqueId();
 		}
-		else {
-			this.killerUid = new UUID(0,0);
+		else
+		{
+			this.killerUid = new UUID(0, 0);
 		}
 
 		// set item count
@@ -132,10 +138,12 @@ public final class DeathChest {
 
 		// set expirationTime timestamp
 		// if configured expiration is zero, set expiration to negative to signify no expiration
-		if (plugin.getConfig().getLong("expire-time") <= 0) {
+		if (plugin.getConfig().getLong("expire-time") <= 0)
+		{
 			this.expirationTime = -1;
 		}
-		else {
+		else
+		{
 			// set expiration field based on config setting (converting from minutes to milliseconds)
 			this.expirationTime = System.currentTimeMillis()
 					+ TimeUnit.MINUTES.toMillis(plugin.getConfig().getLong("expire-time"));
@@ -146,10 +154,12 @@ public final class DeathChest {
 
 		// set protectionExpirationTime timestamp
 		// if configured protection expiration is zero, set protection expiration to negative to signify no expiration
-		if (plugin.getConfig().getLong("chest-protection-time") <= 0) {
+		if (plugin.getConfig().getLong("chest-protection-time") <= 0)
+		{
 			this.protectionExpirationTime = expirationTime;
 		}
-		else {
+		else
+		{
 			// set protection expiration field based on config setting (converting from minutes to milliseconds)
 			this.protectionExpirationTime = System.currentTimeMillis()
 					+ TimeUnit.MINUTES.toMillis(plugin.getConfig().getLong("chest-protection-time"));
@@ -162,7 +172,8 @@ public final class DeathChest {
 	 *
 	 * @return UUID
 	 */
-	public UUID getChestUid() {
+	public UUID getChestUid()
+	{
 		return chestUId;
 	}
 
@@ -172,7 +183,8 @@ public final class DeathChest {
 	 *
 	 * @return UUID
 	 */
-	public UUID getOwnerUid() {
+	public UUID getOwnerUid()
+	{
 		return ownerUid;
 	}
 
@@ -182,7 +194,8 @@ public final class DeathChest {
 	 *
 	 * @return UUID
 	 */
-	public UUID getKillerUid() {
+	public UUID getKillerUid()
+	{
 		return killerUid;
 	}
 
@@ -192,9 +205,11 @@ public final class DeathChest {
 	 *
 	 * @return String - chest owner name
 	 */
-	public String getOwnerName() {
+	public String getOwnerName()
+	{
 		String returnName = "???";
-		if (ownerUid != null && plugin.getServer().getOfflinePlayer(ownerUid).getName() != null) {
+		if (ownerUid != null && plugin.getServer().getOfflinePlayer(ownerUid).getName() != null)
+		{
 			returnName = plugin.getServer().getOfflinePlayer(ownerUid).getName();
 		}
 		return returnName;
@@ -206,9 +221,11 @@ public final class DeathChest {
 	 *
 	 * @return String - chest owner name
 	 */
-	public String getKillerName() {
+	public String getKillerName()
+	{
 		String returnName = "???";
-		if (killerUid != null && plugin.getServer().getOfflinePlayer(killerUid).getName() != null) {
+		if (killerUid != null && plugin.getServer().getOfflinePlayer(killerUid).getName() != null)
+		{
 			returnName = plugin.getServer().getOfflinePlayer(killerUid).getName();
 		}
 		return returnName;
@@ -220,7 +237,8 @@ public final class DeathChest {
 	 *
 	 * @return integer - itemCount
 	 */
-	public int getItemCount() {
+	public int getItemCount()
+	{
 		return itemCount;
 	}
 
@@ -230,7 +248,8 @@ public final class DeathChest {
 	 *
 	 * @return long placementTime timestamp
 	 */
-	public long getPlacementTime() {
+	public long getPlacementTime()
+	{
 		return this.placementTime;
 	}
 
@@ -240,7 +259,8 @@ public final class DeathChest {
 	 *
 	 * @return long expirationTime timestamp
 	 */
-	public long getExpirationTime() {
+	public long getExpirationTime()
+	{
 		return this.expirationTime;
 	}
 
@@ -250,7 +270,8 @@ public final class DeathChest {
 	 *
 	 * @return long expirationTime timestamp
 	 */
-	public long getProtectionTime() {
+	public long getProtectionTime()
+	{
 		return this.protectionExpirationTime;
 	}
 
@@ -260,7 +281,8 @@ public final class DeathChest {
 	 *
 	 * @return the value of the expireTaskId field in the DeathChest object
 	 */
-	private int getExpireTaskId() {
+	private int getExpireTaskId()
+	{
 		return this.expireTaskId;
 	}
 
@@ -271,17 +293,20 @@ public final class DeathChest {
 	 *
 	 * @return Location - the chest location or null if no location found
 	 */
-	public Location getLocation() {
-
+	public Location getLocation()
+	{
 		Map<ChestBlockType, ChestBlock> chestBlockMap = plugin.chestManager.getBlockMap(this.chestUId);
 
-		if (chestBlockMap.containsKey(ChestBlockType.RIGHT_CHEST)) {
+		if (chestBlockMap.containsKey(ChestBlockType.RIGHT_CHEST))
+		{
 			return chestBlockMap.get(ChestBlockType.RIGHT_CHEST).getLocation();
 		}
-		else if (chestBlockMap.containsKey(ChestBlockType.LEFT_CHEST)) {
+		else if (chestBlockMap.containsKey(ChestBlockType.LEFT_CHEST))
+		{
 			return chestBlockMap.get(ChestBlockType.LEFT_CHEST).getLocation();
 		}
-		else if (chestBlockMap.containsKey(ChestBlockType.SIGN)) {
+		else if (chestBlockMap.containsKey(ChestBlockType.SIGN))
+		{
 			return chestBlockMap.get(ChestBlockType.SIGN).getLocation();
 		}
 
@@ -292,12 +317,14 @@ public final class DeathChest {
 	/**
 	 * Set chest metadata on all component blocks
 	 */
-	void setMetadata() {
-
+	void setMetadata()
+	{
 		// set metadata on blocks in set
-		for (ChestBlock chestBlock : plugin.chestManager.getBlocks(this.chestUId)) {
+		for (ChestBlock chestBlock : plugin.chestManager.getBlocks(this.chestUId))
+		{
 			chestBlock.setMetadata(this);
-			if (plugin.getConfig().getBoolean("debug")) {
+			if (plugin.getConfig().getBoolean("debug"))
+			{
 				plugin.getLogger().info("Metadata set on chest block " + this.chestUId);
 			}
 		}
@@ -310,10 +337,11 @@ public final class DeathChest {
 	 * @param player The player to test for DeathChest ownership
 	 * @return {@code true} if the player is the DeathChest owner, false if not
 	 */
-	public boolean isOwner(final Player player) {
-
+	public boolean isOwner(final Player player)
+	{
 		// if ownerUUID is null, return false
-		if (this.getOwnerUid() == null) {
+		if (this.getOwnerUid() == null)
+		{
 			return false;
 		}
 		return this.getOwnerUid().equals(player.getUniqueId());
@@ -326,7 +354,8 @@ public final class DeathChest {
 	 * @param player The player to test for DeathChest killer
 	 * @return {@code true} if the player is the killer of the DeathChest owner, false if not
 	 */
-	public boolean isKiller(final Player player) {
+	public boolean isKiller(final Player player)
+	{
 		return this.hasValidKillerUid() && this.getKillerUid().equals(player.getUniqueId());
 	}
 
@@ -337,10 +366,11 @@ public final class DeathChest {
 	 *
 	 * @param player the player whose inventory the chest contents will be transferred
 	 */
-	public void autoLoot(final Player player) {
-
+	public void autoLoot(final Player player)
+	{
 		// if passed player is null, do nothing and return
-		if (player == null) {
+		if (player == null)
+		{
 			return;
 		}
 
@@ -348,12 +378,14 @@ public final class DeathChest {
 		Collection<ItemStack> remainingItems = new LinkedList<>();
 
 		// transfer contents of any chest blocks to player, putting any items that did not fit in remainingItems
-		for (ChestBlock chestBlock : plugin.chestManager.getBlocks(this.chestUId)) {
+		for (ChestBlock chestBlock : plugin.chestManager.getBlocks(this.chestUId))
+		{
 			remainingItems.addAll(chestBlock.transferContents(player));
 		}
 
 		// if remainingItems is empty, all chest items fit in player inventory so destroy chest and return
-		if (remainingItems.isEmpty()) {
+		if (remainingItems.isEmpty())
+		{
 			this.destroy();
 			return;
 		}
@@ -368,8 +400,10 @@ public final class DeathChest {
 
 		// if remainingItems is still not empty, items could not be placed back in chest, so drop items at player location
 		// this should never actually occur, but let's play it safe just in case
-		if (!remainingItems.isEmpty()) {
-			for (ItemStack itemStack : remainingItems) {
+		if (!remainingItems.isEmpty())
+		{
+			for (ItemStack itemStack : remainingItems)
+			{
 				player.getWorld().dropItem(player.getLocation(), itemStack);
 			}
 		}
@@ -380,8 +414,8 @@ public final class DeathChest {
 	 * Expire this death chest, destroying in game chest and dropping contents,
 	 * and sending message to chest owner if online.
 	 */
-	public void expire() {
-
+	public void expire()
+	{
 		// get player from ownerUUID
 		final Player player = plugin.getServer().getPlayer(this.ownerUid);
 
@@ -389,23 +423,26 @@ public final class DeathChest {
 		this.destroy();
 
 		// if player is not null, send player message
-		if (player != null) {
+		if (player != null)
+		{
 			plugin.messageBuilder.compose(player, MessageId.CHEST_EXPIRED)
 					.setMacro(Macro.LOCATION, this.getLocation())
 					.send();
 		}
 	}
 
-	public void dropContents() {
-
-		if (this.getLocation() !=null && this.getLocation().getWorld() != null) {
-
+	public void dropContents()
+	{
+		if (this.getLocation() != null && this.getLocation().getWorld() != null)
+		{
 			ItemStack[] contents = this.getInventory().getStorageContents();
 
 			this.getInventory().clear();
 
-			for (ItemStack stack : contents) {
-				if (stack !=null) {
+			for (ItemStack stack : contents)
+			{
+				if (stack != null)
+				{
 					this.getLocation().getWorld().dropItemNaturally(this.getLocation(), stack);
 				}
 			}
@@ -415,8 +452,8 @@ public final class DeathChest {
 	/**
 	 * Destroy this death chest, dropping chest contents
 	 */
-	public void destroy() {
-
+	public void destroy()
+	{
 		dropContents();
 
 		// play chest break sound at chest location
@@ -426,7 +463,8 @@ public final class DeathChest {
 		Map<ChestBlockType, ChestBlock> chestBlockMap = plugin.chestManager.getBlockMap(this.chestUId);
 
 		// destroy DeathChest blocks (sign gets destroyed first due to enum order, preventing detach before being destroyed)
-		for (ChestBlock chestBlock : chestBlockMap.values()) {
+		for (ChestBlock chestBlock : chestBlockMap.values())
+		{
 			chestBlock.destroy();
 		}
 
@@ -434,7 +472,8 @@ public final class DeathChest {
 		plugin.chestManager.deleteChestRecord(this);
 
 		// cancel expire block task
-		if (this.getExpireTaskId() > 0) {
+		if (this.getExpireTaskId() > 0)
+		{
 			plugin.getServer().getScheduler().cancelTask(this.getExpireTaskId());
 		}
 
@@ -449,8 +488,8 @@ public final class DeathChest {
 	 * @return Inventory - the inventory associated with this death chest;
 	 * returns null if both right and left chest block inventories are invalid
 	 */
-	public Inventory getInventory() {
-
+	public Inventory getInventory()
+	{
 		// get chest block map
 		Map<ChestBlockType, ChestBlock> chestBlocks = plugin.chestManager.getBlockMap(this.chestUId);
 
@@ -458,7 +497,8 @@ public final class DeathChest {
 		Inventory inventory = chestBlocks.get(ChestBlockType.RIGHT_CHEST).getInventory();
 
 		// if right chest inventory is null, try left chest
-		if (inventory == null) {
+		if (inventory == null)
+		{
 			inventory = chestBlocks.get(ChestBlockType.LEFT_CHEST).getInventory();
 		}
 
@@ -472,16 +512,18 @@ public final class DeathChest {
 	 *
 	 * @return The number of inventory viewers
 	 */
-	public int getViewerCount() {
-
+	public int getViewerCount()
+	{
 		// get chest inventory
 		Inventory inventory = this.getInventory();
 
 		// if inventory is not null, return viewer count
-		if (inventory != null) {
+		if (inventory != null)
+		{
 			return inventory.getViewers().size();
 		}
-		else {
+		else
+		{
 			// inventory is null, so return 0 for viewer count
 			return 0;
 		}
@@ -491,10 +533,11 @@ public final class DeathChest {
 	/**
 	 * Create expire chest task
 	 */
-	private int createExpireTask() {
-
+	private int createExpireTask()
+	{
 		// if DeathChestBlock expirationTime is zero or less, it is set to never expire
-		if (this.getExpirationTime() < 1) {
+		if (this.getExpirationTime() < 1)
+		{
 			return -1;
 		}
 
@@ -503,7 +546,8 @@ public final class DeathChest {
 
 		// compute ticks remaining until expire time (millisecond interval divided by 50 yields ticks)
 		long ticksRemaining = (this.expirationTime - currentTime) / 50;
-		if (ticksRemaining < 1) {
+		if (ticksRemaining < 1)
+		{
 			ticksRemaining = 1L;
 		}
 
@@ -518,10 +562,11 @@ public final class DeathChest {
 	/**
 	 * Cancel expire task for this death chest
 	 */
-	public void cancelExpireTask() {
-
+	public void cancelExpireTask()
+	{
 		// if task id is positive integer, cancel task
-		if (this.expireTaskId > 0) {
+		if (this.expireTaskId > 0)
+		{
 			plugin.getServer().getScheduler().cancelTask(this.expireTaskId);
 		}
 	}
@@ -533,8 +578,8 @@ public final class DeathChest {
 	 * @param itemStacks Collection of ItemStacks to place in chest
 	 * @return Collection of ItemStacks that did not fit in chest
 	 */
-	public Collection<ItemStack> fill(final Collection<ItemStack> itemStacks) {
-
+	public Collection<ItemStack> fill(final Collection<ItemStack> itemStacks)
+	{
 		// create empty list for return
 		Collection<ItemStack> remainingItems = new LinkedList<>();
 
@@ -542,7 +587,8 @@ public final class DeathChest {
 		Inventory inventory = this.getInventory();
 
 		// if inventory is not null, add itemStacks to inventory and put leftovers in remainingItems
-		if (inventory != null) {
+		if (inventory != null)
+		{
 			remainingItems = new LinkedList<>(inventory.addItem(itemStacks.toArray(new ItemStack[0])).values());
 		}
 
@@ -553,24 +599,27 @@ public final class DeathChest {
 
 	/**
 	 * Check if protection is enabled and has expired
+	 *
 	 * @return boolean - true if protection has expired, false if not
 	 */
-	public boolean protectionExpired() {
+	public boolean protectionExpired()
+	{
 		return this.getProtectionTime() > 0 &&
 				this.getProtectionTime() < System.currentTimeMillis();
 	}
 
 
-	public boolean hasValidOwnerUid() {
+	public boolean hasValidOwnerUid()
+	{
 		return this.ownerUid != null &&
 				(this.ownerUid.getMostSignificantBits() != 0 && this.ownerUid.getLeastSignificantBits() != 0);
 	}
 
 
-	public boolean hasValidKillerUid() {
+	public boolean hasValidKillerUid()
+	{
 		return this.killerUid != null &&
 				(this.killerUid.getMostSignificantBits() != 0 && this.killerUid.getLeastSignificantBits() != 0);
 	}
-
 
 }

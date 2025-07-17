@@ -26,7 +26,6 @@ import com.winterhavenmc.deathchest.chests.search.SearchResult;
 import com.winterhavenmc.deathchest.chests.search.SearchResultCode;
 import com.winterhavenmc.deathchest.messages.Macro;
 import com.winterhavenmc.deathchest.messages.MessageId;
-
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -44,8 +43,8 @@ import static com.winterhavenmc.library.TimeUnit.MINUTES;
 /**
  * Abstract class with common methods required for the deployment of a death chest
  */
-public abstract class AbstractDeployment implements Deployment {
-
+public abstract class AbstractDeployment implements Deployment
+{
 	protected final PluginMain plugin;
 	protected final Player player;
 	protected final Collection<ItemStack> droppedItems;
@@ -54,11 +53,12 @@ public abstract class AbstractDeployment implements Deployment {
 	/**
 	 * Class constructor
 	 *
-	 * @param plugin reference to plugin main class
-	 * @param player the player for whom chest is being deployed
+	 * @param plugin       reference to plugin main class
+	 * @param player       the player for whom chest is being deployed
 	 * @param droppedItems the player's death drops
 	 */
-	public AbstractDeployment(final PluginMain plugin, final Player player, final Collection<ItemStack> droppedItems) {
+	public AbstractDeployment(final PluginMain plugin, final Player player, final Collection<ItemStack> droppedItems)
+	{
 		this.plugin = plugin;
 		this.player = player;
 		this.droppedItems = droppedItems;
@@ -79,16 +79,19 @@ public abstract class AbstractDeployment implements Deployment {
 	 * @param itemStacks Collection of ItemStack to check for chest
 	 * @return boolean - {@code true} if collection contains at least one chest, {@code false} if not
 	 */
-	boolean containsChest(final Collection<ItemStack> itemStacks) {
-
+	boolean containsChest(final Collection<ItemStack> itemStacks)
+	{
 		// check for null parameter
-		if (itemStacks == null) {
+		if (itemStacks == null)
+		{
 			return false;
 		}
 
 		boolean result = false;
-		for (ItemStack itemStack : itemStacks) {
-			if (itemStack.getType().equals(Material.CHEST)) {
+		for (ItemStack itemStack : itemStacks)
+		{
+			if (itemStack.getType().equals(Material.CHEST))
+			{
 				result = true;
 				break;
 			}
@@ -105,21 +108,24 @@ public abstract class AbstractDeployment implements Deployment {
 	 * @return Collection of ItemStacks with one chest item removed. If passed collection contained no chest items,
 	 * the returned collection will be a copy of the passed collection.
 	 */
-	Collection<ItemStack> removeOneChest(final Collection<ItemStack> itemStacks) {
-
+	Collection<ItemStack> removeOneChest(final Collection<ItemStack> itemStacks)
+	{
 		Collection<ItemStack> remainingItems = new LinkedList<>(itemStacks);
 
 		Iterator<ItemStack> iterator = remainingItems.iterator();
 
-		while (iterator.hasNext()) {
-
+		while (iterator.hasNext())
+		{
 			ItemStack itemStack = iterator.next();
 
-			if (itemStack.getType().equals(Material.CHEST) && !itemStack.hasItemMeta()) {
-				if (itemStack.getAmount() == 1) {
+			if (itemStack.getType().equals(Material.CHEST) && !itemStack.hasItemMeta())
+			{
+				if (itemStack.getAmount() == 1)
+				{
 					iterator.remove();
 				}
-				else {
+				else
+				{
 					itemStack.setAmount(itemStack.getAmount() - 1);
 				}
 				break;
@@ -135,8 +141,8 @@ public abstract class AbstractDeployment implements Deployment {
 	 * @param location       the location to place the chest block
 	 * @param chestBlockType the type of chest block (left or right)
 	 */
-	void placeChest(final Player player, final DeathChest deathChest, final Location location, final ChestBlockType chestBlockType) {
-
+	void placeChest(final Player player, final DeathChest deathChest, final Location location, final ChestBlockType chestBlockType)
+	{
 		// get current block at location
 		Block block = location.getBlock();
 
@@ -165,7 +171,8 @@ public abstract class AbstractDeployment implements Deployment {
 	 *
 	 * @return boolean - true if chest is required, false if not
 	 */
-	boolean chestRequired() {
+	boolean chestRequired()
+	{
 		return plugin.getConfig().getBoolean("require-chest")
 				&& !player.hasPermission("deathchest.freechest");
 	}
@@ -175,25 +182,28 @@ public abstract class AbstractDeployment implements Deployment {
 	 * Set custom inventory name for chest
 	 *
 	 * @param player the owner of the chest
-	 * @param block the chest block
+	 * @param block  the chest block
 	 */
-	private void setCustomInventoryName(final Player player, final Block block) {
-
+	private void setCustomInventoryName(final Player player, final Block block)
+	{
 		// get custom inventory name from language file
 		Optional<String> optionalInventoryName = plugin.messageBuilder.getString("CHEST_INFO.INVENTORY_NAME");
 
-		if (optionalInventoryName.isEmpty()) {
+		if (optionalInventoryName.isEmpty())
+		{
 			return;
 		}
 
 		String customInventoryName = optionalInventoryName.get();
 
 		// if custom inventory name is not blank, do substitutions for player name
-		if (!customInventoryName.isEmpty()) {
+		if (!customInventoryName.isEmpty())
+		{
 			customInventoryName = customInventoryName.replace("%PLAYER%", player.getDisplayName());
 			customInventoryName = customInventoryName.replace("%OWNER%", player.getDisplayName());
 		}
-		else {
+		else
+		{
 			// set default custom inventory name
 			customInventoryName = "Death Chest";
 		}
@@ -208,11 +218,11 @@ public abstract class AbstractDeployment implements Deployment {
 	/**
 	 * Set the block state for a death chest block
 	 *
-	 * @param block the chest block
+	 * @param block     the chest block
 	 * @param chestType the chest block type ( SINGLE, LEFT, RIGHT )
 	 */
-	void setChestBlockState(Block block, Chest.Type chestType) {
-
+	void setChestBlockState(Block block, Chest.Type chestType)
+	{
 		// get chest block state
 		BlockState chestBlockState = block.getState();
 
@@ -233,10 +243,11 @@ public abstract class AbstractDeployment implements Deployment {
 	/**
 	 * Set chest facing direction from player death location
 	 *
-	 * @param block the chest block
+	 * @param block    the chest block
 	 * @param location the player death location
 	 */
-	private void setChestDirection(final Block block, final Location location) {
+	private void setChestDirection(final Block block, final Location location)
+	{
 		// get block direction data
 		Directional blockData = (Directional) block.getBlockData();
 
@@ -252,12 +263,13 @@ public abstract class AbstractDeployment implements Deployment {
 	 * Finish a death chest deployment by sending messages and storing death chest in datastore
 	 *
 	 * @param searchResult the search result of the deployment
-	 * @param deathChest the death chest object
+	 * @param deathChest   the death chest object
 	 */
-	void finish(final SearchResult searchResult, final DeathChest deathChest) {
-
+	void finish(final SearchResult searchResult, final DeathChest deathChest)
+	{
 		// if debugging, log result
-		if (plugin.getConfig().getBoolean("debug")) {
+		if (plugin.getConfig().getBoolean("debug"))
+		{
 			logResult(searchResult);
 		}
 
@@ -265,13 +277,15 @@ public abstract class AbstractDeployment implements Deployment {
 		sendResultMessage(player, deathChest, searchResult);
 
 		// drop any remaining items that were not placed in a chest
-		for (ItemStack item : searchResult.getRemainingItems()) {
+		for (ItemStack item : searchResult.getRemainingItems())
+		{
 			player.getWorld().dropItemNaturally(player.getLocation(), item);
 		}
 
 		// if result is negative cancel expire task and return
 		if (!searchResult.getResultCode().equals(SearchResultCode.SUCCESS)
-				&& !searchResult.getResultCode().equals(SearchResultCode.PARTIAL_SUCCESS)) {
+				&& !searchResult.getResultCode().equals(SearchResultCode.PARTIAL_SUCCESS))
+		{
 
 			// cancel DeathChest expire task
 			deathChest.cancelExpireTask();
@@ -282,12 +296,14 @@ public abstract class AbstractDeployment implements Deployment {
 		long chestProtectionTime = plugin.getConfig().getLong("chest-protection-time");
 
 		// protection time is zero, set to negative to display infinite time in message
-		if (chestProtectionTime == 0) {
+		if (chestProtectionTime == 0)
+		{
 			chestProtectionTime = -1;
 		}
 
 		// if chest protection is enabled and chest-protection-time is set (non-zero), send message
-		if (plugin.getConfig().getBoolean("chest-protection") && chestProtectionTime > 0) {
+		if (plugin.getConfig().getBoolean("chest-protection") && chestProtectionTime > 0)
+		{
 			plugin.messageBuilder.compose(player, MessageId.CHEST_DEPLOYED_PROTECTION_TIME)
 					.setMacro(Macro.OWNER, player.getName())
 					.setMacro(Macro.LOCATION, deathChest.getLocation())
@@ -308,22 +324,24 @@ public abstract class AbstractDeployment implements Deployment {
 	/**
 	 * Send player message with result of death chest deployment
 	 *
-	 * @param player the player to send message
+	 * @param player     the player to send message
 	 * @param deathChest the death chest object for player
-	 * @param result the search result of the attempted deployment
+	 * @param result     the search result of the attempted deployment
 	 */
-	private void sendResultMessage(final Player player, final DeathChest deathChest, final SearchResult result) {
-
+	private void sendResultMessage(final Player player, final DeathChest deathChest, final SearchResult result)
+	{
 		// get configured expire-time
 		long expireTime = plugin.getConfig().getLong("expire-time");
 
 		// if configured expire-time is zero, set to negative to display infinite time in messages
-		if (expireTime == 0) {
+		if (expireTime == 0)
+		{
 			expireTime = -1;
 		}
 
 		// send message based on result
-		switch (result.getResultCode()) {
+		switch (result.getResultCode())
+		{
 			case SUCCESS:
 				plugin.messageBuilder.compose(player, MessageId.CHEST_SUCCESS)
 						.setMacro(Macro.LOCATION, result.getLocation())
@@ -388,23 +406,28 @@ public abstract class AbstractDeployment implements Deployment {
 	 *
 	 * @param result the search result of a death chest deployment
 	 */
-	private void logResult(final SearchResult result) {
-
-		if (result == null) {
+	private void logResult(final SearchResult result)
+	{
+		if (result == null)
+		{
 			plugin.getLogger().info("SearchResult is null!");
 			return;
 		}
 
-		if (result.getResultCode() != null) {
+		if (result.getResultCode() != null)
+		{
 			plugin.getLogger().info("SearchResult Code: " + result.getResultCode());
 		}
-		if (result.getLocation() != null) {
+		if (result.getLocation() != null)
+		{
 			plugin.getLogger().info("Location: " + result.getLocation());
 		}
-		if (result.getProtectionPlugin() != null) {
+		if (result.getProtectionPlugin() != null)
+		{
 			plugin.getLogger().info("Protection Plugin: " + result.getProtectionPlugin());
 		}
-		if (result.getRemainingItems() != null) {
+		if (result.getRemainingItems() != null)
+		{
 			plugin.getLogger().info("Remaining Items: " + result.getRemainingItems());
 		}
 	}

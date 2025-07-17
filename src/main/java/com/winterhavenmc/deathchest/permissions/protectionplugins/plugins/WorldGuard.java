@@ -32,8 +32,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 /**
  * Class that implements protection plugin checks for WorldGuard
  */
-public final class WorldGuard extends ProtectionPluginAbstract implements ProtectionPlugin {
-
+public final class WorldGuard extends ProtectionPluginAbstract implements ProtectionPlugin
+{
 	// reference to worldguard region container
 	final RegionContainer regionContainer;
 
@@ -41,11 +41,12 @@ public final class WorldGuard extends ProtectionPluginAbstract implements Protec
 	/**
 	 * Class constructor
 	 *
-	 * @param plugin reference to SavageDeathChest plugin main class instance
-	 * @param name name of the protection plugin
+	 * @param plugin  reference to SavageDeathChest plugin main class instance
+	 * @param name    name of the protection plugin
 	 * @param version version of the protection plugin
 	 */
-	public WorldGuard(final JavaPlugin plugin, final String name, final String version) {
+	public WorldGuard(final JavaPlugin plugin, final String name, final String version)
+	{
 		this.plugin = plugin;
 		this.name = name;
 		this.version = version;
@@ -55,15 +56,19 @@ public final class WorldGuard extends ProtectionPluginAbstract implements Protec
 
 
 	@Override
-	public boolean allowChestPlacement(final Player player, final Location location) {
-		try {
+	public boolean allowChestPlacement(final Player player, final Location location)
+	{
+		try
+		{
 			RegionQuery query = regionContainer.createQuery();
 			// this query returns true if placement is allowed, false if placement denied
 			return query.testState(BukkitAdapter.adapt(location), WorldGuardPlugin.inst().wrapPlayer(player), Flags.BUILD);
 		}
-		catch (Error | Exception e) {
+		catch (Error | Exception e)
+		{
 			logPlaceError(e.getLocalizedMessage());
-			if (plugin.getConfig().getBoolean("debug")) {
+			if (plugin.getConfig().getBoolean("debug"))
+			{
 				e.printStackTrace();
 			}
 		}
@@ -73,15 +78,19 @@ public final class WorldGuard extends ProtectionPluginAbstract implements Protec
 
 
 	@Override
-	public boolean allowChestAccess(final Player player, final Location location) {
-		try {
+	public boolean allowChestAccess(final Player player, final Location location)
+	{
+		try
+		{
 			RegionQuery query = regionContainer.createQuery();
 			// this query returns true if access allowed, false if access denied
 			return query.testState(BukkitAdapter.adapt(location), WorldGuardPlugin.inst().wrapPlayer(player), Flags.CHEST_ACCESS);
 		}
-		catch (Error | Exception e) {
+		catch (Error | Exception e)
+		{
 			logAccessError(e.getLocalizedMessage());
-			if (plugin.getConfig().getBoolean("debug")) {
+			if (plugin.getConfig().getBoolean("debug"))
+			{
 				e.printStackTrace();
 			}
 		}

@@ -18,7 +18,6 @@
 package com.winterhavenmc.deathchest.tasks;
 
 import com.winterhavenmc.deathchest.PluginMain;
-
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -26,20 +25,22 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.util.Collection;
 
 
-public class DeployChestTask extends BukkitRunnable {
-
+public class DeployChestTask extends BukkitRunnable
+{
 	private final PluginMain plugin;
 	private final Player player;
 	private final Collection<ItemStack> droppedItems;
 
 
-	public DeployChestTask(final PluginMain plugin, final Player player, final Collection<ItemStack> droppedItems) {
+	public DeployChestTask(final PluginMain plugin, final Player player, final Collection<ItemStack> droppedItems)
+	{
 		this.plugin = plugin;
 		this.player = player;
 		this.droppedItems = droppedItems;
 	}
 
-	public void run() {
+	public void run()
+	{
 		plugin.chestManager.getDeploymentFactory().createDeployment(plugin, player, droppedItems).deploy();
 	}
 

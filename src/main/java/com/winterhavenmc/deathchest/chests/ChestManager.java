@@ -21,7 +21,6 @@ import com.winterhavenmc.deathchest.PluginMain;
 import com.winterhavenmc.deathchest.chests.deployment.DeploymentFactory;
 import com.winterhavenmc.deathchest.storage.DataStore;
 import com.winterhavenmc.deathchest.storage.DataStoreType;
-
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -33,14 +32,17 @@ import org.bukkit.block.data.type.WallSign;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
 
 
 /**
  * A class that tracks the state of death chests and their component blocks
  */
-public final class ChestManager {
-
+public final class ChestManager
+{
 	// reference to main class
 	private final PluginMain plugin;
 
@@ -60,7 +62,7 @@ public final class ChestManager {
 	final static Collection<Material> deathChestMaterials = Set.of(
 			Material.CHEST,
 			Material.OAK_WALL_SIGN,
-			Material.OAK_SIGN );
+			Material.OAK_SIGN);
 
 	private final DeploymentFactory deploymentFactory;
 
@@ -70,8 +72,8 @@ public final class ChestManager {
 	 *
 	 * @param plugin reference to main class
 	 */
-	public ChestManager(final PluginMain plugin) {
-
+	public ChestManager(final PluginMain plugin)
+	{
 		// set reference to main class
 		this.plugin = plugin;
 
@@ -90,7 +92,8 @@ public final class ChestManager {
 		deploymentFactory = new DeploymentFactory();
 	}
 
-	public DeploymentFactory getDeploymentFactory() {
+	public DeploymentFactory getDeploymentFactory()
+	{
 		return this.deploymentFactory;
 	}
 
@@ -99,23 +102,27 @@ public final class ChestManager {
 	 * Expire death chest blocks whose time has passed.
 	 * schedule tasks to expire remaining loaded chests.
 	 */
-	public void loadChests() {
-
-		if (plugin.getConfig().getBoolean("debug")) {
+	public void loadChests()
+	{
+		if (plugin.getConfig().getBoolean("debug"))
+		{
 			plugin.getLogger().info("Loading Death Chests...");
 		}
 
 		// populate chestIndex with all death chest records retrieved from datastore
-		for (DeathChest deathChest : dataStore.selectAllChestRecords()) {
+		for (DeathChest deathChest : dataStore.selectAllChestRecords())
+		{
 			this.putChest(deathChest);
 		}
 
 		// populate chest block map with all valid chest blocks retrieved from datastore
-		for (ChestBlock chestBlock : dataStore.selectAllBlockRecords()) {
-
+		for (ChestBlock chestBlock : dataStore.selectAllBlockRecords())
+		{
 			// if chest block location is null, continue to next chest block
-			if (chestBlock.getLocation() == null) {
-				if (plugin.getConfig().getBoolean("debug")) {
+			if (chestBlock.getLocation() == null)
+			{
+				if (plugin.getConfig().getBoolean("debug"))
+				{
 					plugin.getLogger().info("chest block " + chestBlock.getChestUid() + " has null location.");
 				}
 				continue;
@@ -125,10 +132,12 @@ public final class ChestManager {
 			ChestBlockType chestBlockType = ChestBlockType.getType(chestBlock.getLocation().getBlock());
 
 			// if chest block type is null or parent chest not in chest map, delete block record
-			if (chestBlockType == null || !chestIndex.containsKey(chestBlock.getChestUid())) {
+			if (chestBlockType == null || !chestIndex.containsKey(chestBlock.getChestUid()))
+			{
 				dataStore.deleteBlockRecord(chestBlock);
 			}
-			else {
+			else
+			{
 				// add chestBlock to block index
 				this.blockIndex.put(chestBlockType, chestBlock);
 			}
@@ -138,21 +147,25 @@ public final class ChestManager {
 		long currentTime = System.currentTimeMillis();
 
 		// expire chests with no blocks or past expiration
-		for (DeathChest deathChest : chestIndex.values()) {
-
+		for (DeathChest deathChest : chestIndex.values())
+		{
 			// if DeathChest has no children, remove from index and datastore
-			if (this.getBlocks(deathChest.getChestUid()).isEmpty()) {
+			if (this.getBlocks(deathChest.getChestUid()).isEmpty())
+			{
 				chestIndex.remove(deathChest);
 				dataStore.deleteChestRecord(deathChest);
 			}
 			// if DeathChest is past expiration (not infinite, denoted by zero or less expiration time), expire chest
-			else if (deathChest.getExpirationTime() > 0 && deathChest.getExpirationTime() < currentTime) {
+			else if (deathChest.getExpirationTime() > 0 && deathChest.getExpirationTime() < currentTime)
+			{
 				deathChest.expire();
 			}
-			else {
+			else
+			{
 				// set chest metadata
 				deathChest.setMetadata();
-				if (plugin.getConfig().getBoolean("debug")) {
+				if (plugin.getConfig().getBoolean("debug"))
+				{
 					plugin.getLogger().info("[loadDeathChests] Setting metadata for chest " + deathChest.getChestUid());
 				}
 			}
@@ -165,7 +178,8 @@ public final class ChestManager {
 	 *
 	 * @param deathChest the DeathChest object to put in map
 	 */
-	public void putChest(final DeathChest deathChest) {
+	public void putChest(final DeathChest deathChest)
+	{
 		this.chestIndex.put(deathChest);
 	}
 
@@ -176,7 +190,8 @@ public final class ChestManager {
 	 * @param chestUUID UUID of DeathChest object to retrieve
 	 * @return DeathChest object, or null if no DeathChest exists in map with passed chestUUID
 	 */
-	public DeathChest getChest(final UUID chestUUID) {
+	public DeathChest getChest(final UUID chestUUID)
+	{
 		return this.chestIndex.get(chestUUID);
 	}
 
@@ -187,10 +202,11 @@ public final class ChestManager {
 	 * @param block the block to retrieve DeathChest object
 	 * @return DeathChest object, or null if no DeathChest exists in map that contains passed block location
 	 */
-	public DeathChest getChest(final Block block) {
-
+	public DeathChest getChest(final Block block)
+	{
 		// if passed block is null, return null
-		if (block == null) {
+		if (block == null)
+		{
 			return null;
 		}
 
@@ -198,7 +214,8 @@ public final class ChestManager {
 		ChestBlock chestBlock = this.blockIndex.get(block.getLocation());
 
 		// if returned chest block is null, return null
-		if (chestBlock == null) {
+		if (chestBlock == null)
+		{
 			return null;
 		}
 
@@ -207,10 +224,11 @@ public final class ChestManager {
 	}
 
 
-	public DeathChest getChest(final Inventory inventory) {
-
+	public DeathChest getChest(final Inventory inventory)
+	{
 		// if inventory is not a death chest, do nothing and return
-		if (!plugin.chestManager.isDeathChestInventory(inventory)) {
+		if (!plugin.chestManager.isDeathChestInventory(inventory))
+		{
 			return null;
 		}
 
@@ -218,7 +236,8 @@ public final class ChestManager {
 		Block block = null;
 
 		// if inventory is a chest, get chest block
-		if (inventory.getHolder() instanceof Chest) {
+		if (inventory.getHolder() instanceof Chest)
+		{
 			Chest chest = (Chest) inventory.getHolder();
 			block = chest.getBlock();
 		}
@@ -233,7 +252,8 @@ public final class ChestManager {
 	 *
 	 * @param deathChest the DeathChest object to remove from map
 	 */
-	void removeChest(final DeathChest deathChest) {
+	void removeChest(final DeathChest deathChest)
+	{
 		this.chestIndex.remove(deathChest);
 	}
 
@@ -243,7 +263,8 @@ public final class ChestManager {
 	 *
 	 * @param chestBlock the ChestBlock to put in map
 	 */
-	public void putBlock(final ChestBlockType chestBlockType, final ChestBlock chestBlock) {
+	public void putBlock(final ChestBlockType chestBlockType, final ChestBlock chestBlock)
+	{
 		this.blockIndex.put(chestBlockType, chestBlock);
 	}
 
@@ -255,7 +276,8 @@ public final class ChestManager {
 	 * @return ChestBlock object, or null if no ChestBlock exists in map with passed location
 	 */
 	@SuppressWarnings("unused")
-	public ChestBlock getBlock(final Location location) {
+	public ChestBlock getBlock(final Location location)
+	{
 		return this.blockIndex.get(location);
 	}
 
@@ -266,7 +288,8 @@ public final class ChestManager {
 	 * @param chestUid the UUID of the chest of which to retrieve a set of chest blocks
 	 * @return Set of Blocks in uuidBlockMap, or empty set if no blocks exist for chest UUID
 	 */
-	public Collection<ChestBlock> getBlocks(final UUID chestUid) {
+	public Collection<ChestBlock> getBlocks(final UUID chestUid)
+	{
 		return this.blockIndex.getBlocks(chestUid);
 	}
 
@@ -277,7 +300,8 @@ public final class ChestManager {
 	 * @param chestUid the UUID of the chest of which to retrieve a map of chest blocks
 	 * @return Map of Blocks in uuidBlockMap, or empty map if no blocks exist for chest UUID
 	 */
-	Map<ChestBlockType, ChestBlock> getBlockMap(final UUID chestUid) {
+	Map<ChestBlockType, ChestBlock> getBlockMap(final UUID chestUid)
+	{
 		return this.blockIndex.getBlockMap(chestUid);
 	}
 
@@ -287,7 +311,8 @@ public final class ChestManager {
 	 *
 	 * @param chestBlock the ChestBlock object to remove from map
 	 */
-	void removeBlock(final ChestBlock chestBlock) {
+	void removeBlock(final ChestBlock chestBlock)
+	{
 		this.blockIndex.remove(chestBlock);
 	}
 
@@ -299,15 +324,17 @@ public final class ChestManager {
 	 * @return {@code true} if a ChestBlock exists in map with passed block location,
 	 * {@code false} if no ChestBlock exists in map with passed block location
 	 */
-	public boolean isChestBlock(final Block block) {
-
+	public boolean isChestBlock(final Block block)
+	{
 		// if passed block is null, return false
-		if (block == null) {
+		if (block == null)
+		{
 			return false;
 		}
 
 		// confirm block is death chest material
-		if (!deathChestMaterials.contains(block.getType())) {
+		if (!deathChestMaterials.contains(block.getType()))
+		{
 			return false;
 		}
 
@@ -322,10 +349,11 @@ public final class ChestManager {
 	 * @param block The block to test
 	 * @return {@code true} if block is Material.CHEST and block location exists in block index, {@code false} if not
 	 */
-	public boolean isChestBlockChest(final Block block) {
-
+	public boolean isChestBlockChest(final Block block)
+	{
 		// if passed block is null return false
-		if (block == null) {
+		if (block == null)
+		{
 			return false;
 		}
 
@@ -341,10 +369,11 @@ public final class ChestManager {
 	 * @return {@code true} if block is Material.SIGN or Material.WALL_SIGN and block location exists in block index,
 	 * {@code false} if not
 	 */
-	public boolean isChestBlockSign(final Block block) {
-
+	public boolean isChestBlockSign(final Block block)
+	{
 		// if passed block is null return false
-		if (block == null) {
+		if (block == null)
+		{
 			return false;
 		}
 
@@ -364,37 +393,43 @@ public final class ChestManager {
 	 * @param inventory The inventory whose holder will be tested to see if it is a DeathChest
 	 * @return {@code true} if the inventory's holder is a DeathChest, {@code false} if not
 	 */
-	public boolean isDeathChestInventory(final Inventory inventory) {
-
+	public boolean isDeathChestInventory(final Inventory inventory)
+	{
 		// if passed inventory is null, return false
-		if (inventory == null) {
+		if (inventory == null)
+		{
 			return false;
 		}
 
 		// if inventory type is not a chest inventory, return false
-		if (!inventory.getType().equals(InventoryType.CHEST)) {
+		if (!inventory.getType().equals(InventoryType.CHEST))
+		{
 			return false;
 		}
 
 		// if inventory holder is null, return false
-		if (inventory.getHolder() == null) {
+		if (inventory.getHolder() == null)
+		{
 			return false;
 		}
 
 		// try to get inventory holder block
 		Block block;
 
-		if (inventory.getHolder() instanceof Chest) {
+		if (inventory.getHolder() instanceof Chest)
+		{
 			Chest chest;
 			chest = (Chest) inventory.getHolder();
 			block = chest.getBlock();
 		}
-		else if (inventory.getHolder() instanceof DoubleChest) {
+		else if (inventory.getHolder() instanceof DoubleChest)
+		{
 			DoubleChest doubleChest;
 			doubleChest = (DoubleChest) inventory.getHolder();
 			block = doubleChest.getLocation().getBlock();
 		}
-		else {
+		else
+		{
 			return false;
 		}
 
@@ -405,40 +440,48 @@ public final class ChestManager {
 
 	/**
 	 * Get all death chests in chest index
+	 *
 	 * @return Collection of DeathChest - all death chests in the chest index
 	 */
-	public Collection<DeathChest> getAllChests() {
+	public Collection<DeathChest> getAllChests()
+	{
 		return this.chestIndex.values();
 	}
 
 
-	public void insertChestRecords(final Collection<DeathChest> deathChests) {
+	public void insertChestRecords(final Collection<DeathChest> deathChests)
+	{
 		dataStore.insertChestRecords(deathChests);
 	}
 
 
-	public void deleteBlockRecord(final ChestBlock chestBlock) {
+	public void deleteBlockRecord(final ChestBlock chestBlock)
+	{
 		dataStore.deleteBlockRecord(chestBlock);
 	}
 
 
-	public void deleteChestRecord(final DeathChest deathChest) {
+	public void deleteChestRecord(final DeathChest deathChest)
+	{
 		dataStore.deleteChestRecord(deathChest);
 	}
 
 
-	public void closeDataStore() {
+	public void closeDataStore()
+	{
 		dataStore.close();
 	}
 
 
 	@SuppressWarnings("unused")
-	public String getDataStoreType() {
+	public String getDataStoreType()
+	{
 		return dataStore.getType().toString();
 	}
 
 
-	public void reload() {
+	public void reload()
+	{
 		replaceableBlocks.reload();
 
 		// get current datastore type
@@ -448,7 +491,8 @@ public final class ChestManager {
 		DataStoreType newType = DataStoreType.match(plugin.getConfig().getString("storage-type"));
 
 		// if current datastore type does not match configured datastore type, create new datastore
-		if (!currentType.equals(newType)) {
+		if (!currentType.equals(newType))
+		{
 
 			// create new datastore
 			dataStore = DataStore.connect(plugin);
@@ -456,19 +500,23 @@ public final class ChestManager {
 	}
 
 	@SuppressWarnings("unused")
-	public boolean isReplaceableBlock(final Material material) {
+	public boolean isReplaceableBlock(final Material material)
+	{
 		return replaceableBlocks.contains(material);
 	}
 
-	public boolean isReplaceableBlock(final Block block) {
+	public boolean isReplaceableBlock(final Block block)
+	{
 		return replaceableBlocks.contains(block.getType());
 	}
 
-	public ReplaceableBlocks getReplaceableBlocks() {
+	public ReplaceableBlocks getReplaceableBlocks()
+	{
 		return replaceableBlocks;
 	}
 
-	public int getChestCount() {
+	public int getChestCount()
+	{
 		return this.dataStore.getChestCount();
 	}
 

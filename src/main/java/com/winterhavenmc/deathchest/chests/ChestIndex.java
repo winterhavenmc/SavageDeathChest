@@ -23,8 +23,8 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 
-final class ChestIndex {
-
+final class ChestIndex
+{
 	// map of DeathChests
 	private final Map<UUID, DeathChest> deathChestMap;
 
@@ -32,7 +32,8 @@ final class ChestIndex {
 	/**
 	 * Constructor
 	 */
-	ChestIndex() {
+	ChestIndex()
+	{
 		deathChestMap = new ConcurrentHashMap<>();
 	}
 
@@ -43,10 +44,11 @@ final class ChestIndex {
 	 * @param chestUUID UUID of DeathChest object to retrieve
 	 * @return DeathChest object, or null if no DeathChest exists in map with passed chestUUID
 	 */
-	DeathChest get(final UUID chestUUID) {
-
+	DeathChest get(final UUID chestUUID)
+	{
 		// check for null key
-		if (chestUUID == null) {
+		if (chestUUID == null)
+		{
 			return null;
 		}
 
@@ -59,10 +61,11 @@ final class ChestIndex {
 	 *
 	 * @param deathChest the DeathChest object to put in map
 	 */
-	void put(final DeathChest deathChest) {
-
+	void put(final DeathChest deathChest)
+	{
 		// check for null key
-		if (deathChest == null || deathChest.getChestUid() == null) {
+		if (deathChest == null || deathChest.getChestUid() == null)
+		{
 			return;
 		}
 
@@ -75,10 +78,11 @@ final class ChestIndex {
 	 *
 	 * @param deathChest the DeathChest object to remove from map
 	 */
-	void remove(final DeathChest deathChest) {
-
+	void remove(final DeathChest deathChest)
+	{
 		// check for null key
-		if (deathChest == null || deathChest.getChestUid() == null) {
+		if (deathChest == null || deathChest.getChestUid() == null)
+		{
 			return;
 		}
 
@@ -92,10 +96,11 @@ final class ChestIndex {
 	 * @param chestUUID the chest UUID to check
 	 * @return {@code true} if key exists in map, {@code false} if it does not
 	 */
-	boolean containsKey(final UUID chestUUID) {
-
+	boolean containsKey(final UUID chestUUID)
+	{
 		// check for null chestUUID
-		if (chestUUID == null) {
+		if (chestUUID == null)
+		{
 			return false;
 		}
 
@@ -108,7 +113,8 @@ final class ChestIndex {
 	 *
 	 * @return Collection of DeathChests in map
 	 */
-	Collection<DeathChest> values() {
+	Collection<DeathChest> values()
+	{
 		return deathChestMap.values();
 	}
 

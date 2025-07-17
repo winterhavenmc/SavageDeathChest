@@ -21,8 +21,8 @@ package com.winterhavenmc.deathchest.chests;
 /**
  * An enum whose values represent the different sizes of death chests
  */
-public enum ChestSize {
-
+public enum ChestSize
+{
 	SINGLE(27),
 	DOUBLE(54);
 
@@ -34,7 +34,8 @@ public enum ChestSize {
 	 *
 	 * @param size the chest inventory size
 	 */
-	ChestSize(final int size) {
+	ChestSize(final int size)
+	{
 		this.size = size;
 	}
 
@@ -45,9 +46,10 @@ public enum ChestSize {
 	 * @param itemCount the number of ItemStacks to be considered for chest size
 	 * @return ChestSize enum value, SINGLE or DOUBLE
 	 */
-	public static ChestSize selectFor(final int itemCount) {
-
-		if (itemCount > SINGLE.size) {
+	public static ChestSize selectFor(final int itemCount)
+	{
+		if (itemCount > SINGLE.size)
+		{
 			return DOUBLE;
 		}
 		return SINGLE;

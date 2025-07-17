@@ -21,8 +21,8 @@ package com.winterhavenmc.deathchest.chests.search;
 /**
  * An enum whose values represent the possible results of a death chest location search
  */
-public enum SearchResultCode {
-
+public enum SearchResultCode
+{
 	SUCCESS,
 	PARTIAL_SUCCESS,
 	PROTECTION_PLUGIN,
@@ -32,5 +32,4 @@ public enum SearchResultCode {
 	ADJACENT_CHEST,
 	NO_REQUIRED_CHEST,
 	VOID,
-
 }

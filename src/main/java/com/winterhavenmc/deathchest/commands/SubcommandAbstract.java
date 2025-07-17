@@ -22,11 +22,12 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
 import javax.annotation.Nonnull;
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
 
 
-abstract class SubcommandAbstract implements Subcommand {
-
+abstract class SubcommandAbstract implements Subcommand
+{
 	protected String name;
 	protected String usageString;
 	protected MessageId description;
@@ -34,32 +35,38 @@ abstract class SubcommandAbstract implements Subcommand {
 	protected int maxArgs;
 
 	@Override
-	public String getName() {
+	public String getName()
+	{
 		return name;
 	}
 
 	@Override
-	public String getUsage() {
+	public String getUsage()
+	{
 		return usageString;
 	}
 
 	@Override
-	public void displayUsage(final CommandSender sender) {
+	public void displayUsage(final CommandSender sender)
+	{
 		sender.sendMessage(usageString);
 	}
 
 	@Override
-	public MessageId getDescription() {
+	public MessageId getDescription()
+	{
 		return description;
 	}
 
 	@Override
-	public int getMinArgs() {
+	public int getMinArgs()
+	{
 		return this.minArgs;
 	}
 
 	@Override
-	public int getMaxArgs() {
+	public int getMaxArgs()
+	{
 		return this.maxArgs;
 	}
 
@@ -67,8 +74,8 @@ abstract class SubcommandAbstract implements Subcommand {
 	public List<String> onTabComplete(final @Nonnull CommandSender sender,
 	                                  final @Nonnull Command command,
 	                                  final @Nonnull String alias,
-	                                  final String[] args) {
-
+	                                  final String[] args)
+	{
 		return Collections.emptyList();
 	}
 

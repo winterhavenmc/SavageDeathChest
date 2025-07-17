@@ -20,13 +20,12 @@ package com.winterhavenmc.deathchest.permissions.protectionplugins;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
-public interface ProtectionPlugin {
-
-
+public interface ProtectionPlugin
+{
 	/**
 	 * Check if plugin will allow chest placement at location by player
 	 *
-	 * @param player the player whose death chest will be placed
+	 * @param player   the player whose death chest will be placed
 	 * @param location the location where the death chest will be placed
 	 * @return boolean - true if placement is allowed by plugin, false if not
 	 */
@@ -36,7 +35,7 @@ public interface ProtectionPlugin {
 	/**
 	 * Check if plugin will allow chest access at location by player
 	 *
-	 * @param player the player who is trying to access a death chest
+	 * @param player   the player who is trying to access a death chest
 	 * @param location the location where the death chest is being accessed
 	 * @return boolean - true if access is allowed by plugin, false if not
 	 */

@@ -26,10 +26,10 @@ import java.util.Collection;
 import java.util.LinkedList;
 
 
-public class DeploymentFactory {
-
-	public Deployment createDeployment(final PluginMain plugin, final Player player, final Collection<ItemStack> droppedItems) {
-
+public class DeploymentFactory
+{
+	public Deployment createDeployment(final PluginMain plugin, final Player player, final Collection<ItemStack> droppedItems)
+	{
 		// combine stacks of same items where possible
 		Collection<ItemStack> consolidatedItems = consolidateItemStacks(droppedItems);
 
@@ -37,10 +37,12 @@ public class DeploymentFactory {
 		ChestSize chestSize = ChestSize.selectFor(consolidatedItems.size());
 
 		// deploy appropriately sized chest
-		if (chestSize.equals(ChestSize.SINGLE) || !player.hasPermission("deathchest.doublechest")) {
+		if (chestSize.equals(ChestSize.SINGLE) || !player.hasPermission("deathchest.doublechest"))
+		{
 			return new SingleChestDeployment(plugin, player, consolidatedItems);
 		}
-		else {
+		else
+		{
 			return new DoubleChestDeployment(plugin, player, consolidatedItems);
 		}
 	}
@@ -52,26 +54,32 @@ public class DeploymentFactory {
 	 * @param itemStacks Collection of ItemStacks to combine
 	 * @return Collection of ItemStack with same materials combined
 	 */
-	private Collection<ItemStack> consolidateItemStacks(final Collection<ItemStack> itemStacks) {
-
+	private Collection<ItemStack> consolidateItemStacks(final Collection<ItemStack> itemStacks)
+	{
 		final Collection<ItemStack> returnList = new LinkedList<>();
 
-		for (ItemStack itemStack : itemStacks) {
-			if (itemStack == null) {
+		for (ItemStack itemStack : itemStacks)
+		{
+			if (itemStack == null)
+			{
 				continue;
 			}
 
-			for (ItemStack checkStack : returnList) {
-				if (checkStack == null) {
+			for (ItemStack checkStack : returnList)
+			{
+				if (checkStack == null)
+				{
 					continue;
 				}
-				if (checkStack.isSimilar(itemStack)) {
+				if (checkStack.isSimilar(itemStack))
+				{
 					int transferAmount = Math.min(itemStack.getAmount(), checkStack.getMaxStackSize() - checkStack.getAmount());
 					itemStack.setAmount(itemStack.getAmount() - transferAmount);
 					checkStack.setAmount(checkStack.getAmount() + transferAmount);
 				}
 			}
-			if (itemStack.getAmount() > 0) {
+			if (itemStack.getAmount() > 0)
+			{
 				returnList.add(itemStack);
 			}
 		}

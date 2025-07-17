@@ -17,25 +17,29 @@
 
 package com.winterhavenmc.deathchest.permissions.protectionplugins;
 
-public class ProtectionCheckResult {
-
+public class ProtectionCheckResult
+{
 	ProtectionCheckResultCode resultCode = ProtectionCheckResultCode.ALLOWED;
 	ProtectionPlugin protectionPlugin = null;
 
 
-	public ProtectionCheckResultCode getResultCode() {
+	public ProtectionCheckResultCode getResultCode()
+	{
 		return resultCode;
 	}
 
-	public void setResultCode(final ProtectionCheckResultCode resultCode) {
+	public void setResultCode(final ProtectionCheckResultCode resultCode)
+	{
 		this.resultCode = resultCode;
 	}
 
-	public ProtectionPlugin getProtectionPlugin() {
+	public ProtectionPlugin getProtectionPlugin()
+	{
 		return protectionPlugin;
 	}
 
-	public void setProtectionPlugin(final ProtectionPlugin protectionPlugin) {
+	public void setProtectionPlugin(final ProtectionPlugin protectionPlugin)
+	{
 		this.protectionPlugin = protectionPlugin;
 	}
 
