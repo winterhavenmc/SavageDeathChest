@@ -51,9 +51,7 @@ public enum DataStoreType
 			};
 
 	private final String displayName;
-
 	private final String storageName;
-
 	private final static DataStoreType defaultType = DataStoreType.SQLITE;
 
 
@@ -147,7 +145,6 @@ public enum DataStoreType
 		// if old datastore file exists, attempt to read all records
 		if (oldDataStore.getType().storageObjectExists(plugin))
 		{
-
 			plugin.getLogger().info("Converting existing " + oldDataStore + " datastore to "
 					+ newDataStore + " datastore...");
 
@@ -157,11 +154,12 @@ public enum DataStoreType
 				try
 				{
 					oldDataStore.initialize();
-				} catch (Exception e)
+				}
+				catch (Exception exception)
 				{
 					plugin.getLogger().warning("Could not initialize "
 							+ oldDataStore + " datastore for conversion.");
-					plugin.getLogger().warning(e.getLocalizedMessage());
+					plugin.getLogger().warning(exception.getLocalizedMessage());
 					return;
 				}
 			}

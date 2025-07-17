@@ -19,7 +19,6 @@ package com.winterhavenmc.deathchest.util;
 
 import com.winterhavenmc.deathchest.PluginMain;
 import com.winterhavenmc.deathchest.permissions.protectionplugins.ProtectionPlugin;
-
 import org.bstats.bukkit.Metrics;
 import org.bstats.charts.AdvancedPie;
 import org.bstats.charts.SimplePie;
@@ -29,10 +28,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-public class MetricsHandler {
+public class MetricsHandler
+{
 
-	public MetricsHandler(PluginMain plugin) {
-
+	public MetricsHandler(PluginMain plugin)
+	{
 		Metrics metrics = new Metrics(plugin, 13916);
 
 		// pie chart of configured language
@@ -65,7 +65,8 @@ public class MetricsHandler {
 		// pie chart of detected protection plugins
 		metrics.addCustomChart(new AdvancedPie("protection_plugins", () -> {
 			Map<String, Integer> valueMap = new HashMap<>();
-			for (ProtectionPlugin protectionPlugin : plugin.protectionPluginRegistry.getAll()) {
+			for (ProtectionPlugin protectionPlugin : plugin.protectionPluginRegistry.getAll())
+			{
 				valueMap.put(protectionPlugin.getPluginName(), 1);
 			}
 			return valueMap;
