@@ -1,4 +1,4 @@
-# Language configuration file for ${project.name} v${project.version}
+# Language configuration file for SavageDeathChest v2.0.0
 
 
 # constant strings
@@ -9,7 +9,7 @@ CONSTANTS:
 
   # Custom chest inventory name
   CHEST_INFO:
-    INVENTORY_NAME: "{OWNER}'s Cofre de la muerte"
+    INVENTORY_NAME: "Cofre de la muerte de {OWNER}"
 
 
 #################
@@ -41,185 +41,190 @@ CONSTANTS:
 MESSAGES:
   CHEST_SUCCESS:
     ENABLED: true
-    MESSAGE_TEXT: '&cCofre de la muerte se ha desplegado con éxito. Usted tiene {EXPIRATION_DURATION} para recuperar tu artículos.'
+    MESSAGE_TEXT: '<green>Cofre de la muerte se ha desplegado con éxito. Usted tiene {EXPIRATION_DURATION} para recuperar tu artículos.</green>'
 
   DOUBLECHEST_PARTIAL_SUCCESS:
     ENABLED: true
-    MESSAGE_TEXT: '&cSólo se podía colocar un solo cofre del punto muerte.'
+    MESSAGE_TEXT: '<red>Sólo se podía colocar un solo cofre del punto muerte.</red>'
     # available subs: {PLAYER}, {EXPIRATION_DURATION}, {EXPIRATION_DURATION_MINUTES}, {LOCATION}
 
   CHEST_DEPLOYED_PROTECTION_TIME:
     ENABLED: true
-    MESSAGE_TEXT: '&cEl cofre de la muerte está protegido del saqueo durante {PROTECTION_DURATION_MINUTES}.'
+    MESSAGE_TEXT: '<red>El cofre de la muerte está protegido del saqueo durante {PROTECTION_DURATION_MINUTES}.</red>'
     # available subs: {OWNER}, {PROTECTION_DURATION}, {PROTECTION_DURATION_MINUTES}, {LOCATION}
 
   CHEST_ACCESSED_PROTECTION_TIME:
     ENABLED: true
     repeat-delay: 1
-    MESSAGE_TEXT: '&cEl cofre de la muerte que pertenece a {OWNER} está protegido contra el saqueo durante {PROTECTION_DURATION_MINUTES}.'
+    MESSAGE_TEXT: '<red>El cofre de la muerte que pertenece a {OWNER} está protegido contra el saqueo durante {PROTECTION_DURATION_MINUTES}.</red>'
     # available subs: {OWNER}, {PROTECTION_DURATION}, {PROTECTION_DURATION_MINUTES}, {LOCATION}
 
   CHEST_DENIED_DEPLOYMENT_BY_PLUGIN:
     ENABLED: true
-    MESSAGE_TEXT: '&cEl despliegue del cofre de la muerte fue prevenido por {PLUGIN}.'
+    MESSAGE_TEXT: '<red>El despliegue del cofre de la muerte fue prevenido por {PLUGIN}.</red>'
     # available subs: {PLAYER}, {PLUGIN}, {LOCATION}
 
   CHEST_DENIED_ACCESS_BY_PLUGIN:
     ENABLED: true
-    MESSAGE_TEXT: '&cEl acceso al cofre de la muerte fue impedido por {PLUGIN}.'
+    MESSAGE_TEXT: '<red>El acceso al cofre de la muerte fue impedido por {PLUGIN}.</red>'
     # available subs: {PLAYER}, {PLUGIN}, {LOCATION}
 
   CHEST_DENIED_BLOCK:
     ENABLED: true
-    MESSAGE_TEXT: '&cNo se pudo colocar el cofre de la muerte.'
+    MESSAGE_TEXT: '<red>No se pudo colocar el cofre de la muerte.</red>'
 
   CHEST_DENIED_PERMISSION:
     ENABLED: false
-    MESSAGE_TEXT: '&cNo tienes permiso para cofres de la muerte.'
+    MESSAGE_TEXT: '<red>No tienes permiso para cofres de la muerte.</red>'
 
   CHEST_DENIED_ADJACENT:
     ENABLED: true
-    MESSAGE_TEXT: '&cEl despliegue del cofre de la muerte fue prevenido por un cofre adyacente existente.'
+    MESSAGE_TEXT: '<red>El despliegue del cofre de la muerte fue prevenido por un cofre adyacente existente.</red>'
 
   CHEST_DENIED_SPAWN_RADIUS:
     ENABLED: true
-    MESSAGE_TEXT: '&cEl despliegue del cofre de la muerte fue prevenido por protección de origen mundial.'
+    MESSAGE_TEXT: '<red>El despliegue del cofre de la muerte fue prevenido por protección de origen mundial.</red>'
 
   CHEST_DENIED_WORLD_DISABLED:
     ENABLED: true
-    MESSAGE_TEXT: '&cLos cofres de la muerte no están habilitados en este mundo.'
+    MESSAGE_TEXT: '<red>Los cofres de la muerte no están habilitados en este mundo.</red>'
 
   CHEST_DENIED_VOID:
     ENABLED: true
-    MESSAGE_TEXT: '&cEl cofre de la muerte no se puede desplegar en el vacío.'
+    MESSAGE_TEXT: '<red>El cofre de la muerte no se puede desplegar en el vacío.</red>'
 
 
   INVENTORY_EMPTY:
     ENABLED: true
-    MESSAGE_TEXT: '&cNo tenías ningún inventario para poner en un cofre de la muerte.'
+    MESSAGE_TEXT: '<red>No tenías ningún inventario para poner en un cofre de la muerte.</red>'
 
   INVENTORY_FULL:
     ENABLED: true
-    MESSAGE_TEXT: '&cAlgunos artículos no se pudieron transferir porque su inventario está lleno.'
+    MESSAGE_TEXT: '<red>Algunos artículos no se pudieron transferir porque su inventario está lleno.</red>'
 
   NO_CHEST_IN_INVENTORY:
     ENABLED: true
-    MESSAGE_TEXT: '&cNo tenías ningún cofres en su inventario.'
+    MESSAGE_TEXT: '<red>No tenías ningún cofres en su inventario.</red>'
 
   NOT_OWNER:
     ENABLED: true
-    MESSAGE_TEXT: '&cEse el cofre de muerte no pertenece a usted.'
+    MESSAGE_TEXT: '<red>Ese el cofre de muerte no pertenece a usted.</red>'
 
   CHEST_EXPIRED:
     ENABLED: true
-    MESSAGE_TEXT: '&cSu el cofre de muerte ha expirado.'
+    MESSAGE_TEXT: '<red>Su el cofre de muerte ha expirado.</red>'
 
   CREATIVE_MODE:
     ENABLED: true
-    MESSAGE_TEXT: '&cInventario de modo creativo no se guarda en cofres de muerte.'
+    MESSAGE_TEXT: '<red>Inventario de modo creativo no se guarda en cofres de muerte.</red>'
 
   NO_CREATIVE_ACCESS:
     ENABLED: true
-    MESSAGE_TEXT: '&cEl acceso a los cofres de la muerte en el modo creativo no está permitido.'
+    MESSAGE_TEXT: '<red>El acceso a los cofres de la muerte en el modo creativo no está permitido.</red>'
 
   CHEST_CURRENTLY_OPEN:
     ENABLED: true
-    MESSAGE_TEXT: '&cPecho Muerte está accediendo por otro jugador.'
+    MESSAGE_TEXT: '<red>Pecho Muerte está accediendo por otro jugador.</red>'
 
 
   COMMAND_FAIL_ARGS_COUNT_OVER:
     ENABLED: true
-    MESSAGE_TEXT: '&c¡Demasiados parámetros!'
+    MESSAGE_TEXT: '<red>¡Demasiados parámetros!</red>'
 
   COMMAND_FAIL_HELP_PERMISSION:
     ENABLED: true
-    MESSAGE_TEXT: '&c¡No tienes permiso para mostrar la ayuda de DeathChest!'
+    MESSAGE_TEXT: '<red>¡No tienes permiso para mostrar la ayuda de DeathChest!</red>'
 
   COMMAND_FAIL_LIST_PERMISSION:
     ENABLED: true
-    MESSAGE_TEXT: '&c¡No tienes permiso para listar DeathChests!'
+    MESSAGE_TEXT: '<red>¡No tienes permiso para listar DeathChests!</red>'
 
   COMMAND_FAIL_LIST_OTHER_PERMISSION:
     ENABLED: true
-    MESSAGE_TEXT: '&c¡No tienes permiso para enumerar los DeathChests de otros jugadores!'
+    MESSAGE_TEXT: '<red>¡No tienes permiso para enumerar los DeathChests de otros jugadores!</red>'
 
   COMMAND_FAIL_RELOAD_PERMISSION:
     ENABLED: true
-    MESSAGE_TEXT: '&c¡No tienes permiso para recargar la configuración de DeathChest!'
+    MESSAGE_TEXT: '<red>¡No tienes permiso para recargar la configuración de DeathChest!</red>'
 
   COMMAND_FAIL_STATUS_PERMISSION:
     ENABLED: true
-    MESSAGE_TEXT: '&c¡No tienes permiso para ver la configuración de DeathChest!'
+    MESSAGE_TEXT: '<red>¡No tienes permiso para ver la configuración de DeathChest!</red>'
 
   COMMAND_SUCCESS_RELOAD:
     ENABLED: true
-    MESSAGE_TEXT: '&7Configuración del DeathChest recargada.'
+    MESSAGE_TEXT: '<gray>Configuración del DeathChest recargada.</gray>'
 
 
   COMMAND_HELP_HELP:
     ENABLED: true
-    MESSAGE_TEXT: '&eMuestra ayuda para los comandos de DeathChest.'
+    MESSAGE_TEXT: '<yellow>Muestra ayuda para los comandos de DeathChest.</yellow>'
 
   COMMAND_HELP_LIST:
     ENABLED: true
-    MESSAGE_TEXT: '&eMuestra la lista de todos los DeathChests.'
+    MESSAGE_TEXT: '<yellow>Muestra la lista de todos los DeathChests.</yellow>'
 
   COMMAND_HELP_RELOAD:
     ENABLED: true
-    MESSAGE_TEXT: '&eRecarga la configuración.'
+    MESSAGE_TEXT: '<yellow>Recarga la configuración.</yellow>'
 
   COMMAND_HELP_STATUS:
     ENABLED: true
-    MESSAGE_TEXT: '&eMuestra los ajustes de configuración.'
+    MESSAGE_TEXT: '<yellow>Muestra los ajustes de configuración.</yellow>'
 
   COMMAND_HELP_INVALID:
     ENABLED: true
-    MESSAGE_TEXT: '&eEse no es un comando válido.'
+    MESSAGE_TEXT: '<yellow>Ese no es un comando válido.</yellow>'
 
   COMMAND_HELP_USAGE:
     ENABLED: true
-    MESSAGE_TEXT: '&eUso de comando:'
+    MESSAGE_TEXT: '<yellow>Uso de comando:</yellow>'
 
 
   #########################
   # Status command messages
   #########################
   COMMAND_STATUS_BANNER:
-    MESSAGE_TEXT: "\n&3&m                    =&r&3[&b {PLUGIN} &3]&m=                    "
+    MESSAGE_TEXT: "<newline><gradient:blue:aqua><strikethrough>                    =</strikethrough>[</gradient> <dark_aqua>{PLUGIN}</dark_aqua> <gradient:aqua:blue>]<strikethrough>=                    </strikethrough></gradient>"
+
+  COMMAND_STATUS_FOOTER:
+    MESSAGE_TEXT: "<newline><dark_aqua>Proudly built with <click:open_url:{URL}><blue><underlined>MessageBuilderLib<underlined></blue></click></dark_aqua>"
 
   COMMAND_STATUS_PLUGIN_VERSION:
-    MESSAGE_TEXT: '&aVersion:&r {VERSION}'
+    MESSAGE_TEXT: '<green>Version:</green> {VERSION}'
 
   COMMAND_STATUS_LANGUAGE:
-    MESSAGE_TEXT: "&aLanguage:&r {LANGUAGE}"
+    MESSAGE_TEXT: "<green>Language:</green> {LANGUAGE}"
 
   COMMAND_STATUS_LOCALE:
-    MESSAGE_TEXT: "&aLocale:&r {LOCALE}"
+    MESSAGE_TEXT: "<green>Locale:</green> {LOCALE}"
+
+  COMMAND_STATUS_TIMEZONE:
+    MESSAGE_TEXT: "<green>Timezone:</green> {TIMEZONE}"
 
   COMMAND_STATUS_EXPIRATION_TIME:
-    MESSAGE_TEXT: "&aChest Expiration:&r {EXPIRATION_DURATION}"
+    MESSAGE_TEXT: "<green>Chest Expiration:</green> {EXPIRATION_DURATION}"
 
   COMMAND_STATUS_PROTECTION_TIME:
-    MESSAGE_TEXT: "&aChest Protection:&r {PROTECTION_DURATION}"
+    MESSAGE_TEXT: "<green>Chest Protection:</green> {PROTECTION_DURATION}"
 
   COMMAND_STATUS_SEARCH_DISTANCE:
-    MESSAGE_TEXT: "&aSearch Distance:&r {SEARCH_DISTANCE}"
+    MESSAGE_TEXT: "<green>Search Distance:</green> {SEARCH_DISTANCE}"
 
   COMMAND_STATUS_REQUIRE_CHEST:
-    MESSAGE_TEXT: "&aRequire Chest:&r {REQUIRE_CHEST}"
+    MESSAGE_TEXT: "<green>Require Chest:</green> {REQUIRE_CHEST}"
 
   COMMAND_STATUS_QUICK_LOOT:
-    MESSAGE_TEXT: "&aQuick Loot:&r {QUICK_LOOT}"
+    MESSAGE_TEXT: "<green>Quick Loot:</green> {QUICK_LOOT}"
 
   COMMAND_STATUS_KILLER_LOOTING:
-    MESSAGE_TEXT: "&aKiller looting:&r {KILLER_LOOTING}"
+    MESSAGE_TEXT: "<green>Killer looting:</green> {KILLER_LOOTING}"
 
   COMMAND_STATUS_ENABLED_WORLDS:
-    MESSAGE_TEXT: "&aEnabled Worlds:&r {ENABLED_WORLDS}"
+    MESSAGE_TEXT: "<green>Enabled Worlds:</green> {ENABLED_WORLDS}"
 
   COMMAND_STATUS_PROTECTION_PLUGINS:
-    MESSAGE_TEXT: "&aProtection Plugin Support:"
-
+    MESSAGE_TEXT: "<green>Protection Plugin Support:</green>"
 
 
 #######################
@@ -227,32 +232,32 @@ MESSAGES:
 #######################
   LIST_HEADER:
     ENABLED: true
-    MESSAGE_TEXT: '&3Page &b{PAGE_NUMBER}&3 of &b{PAGE_TOTAL}'
+    MESSAGE_TEXT: '<dark_aqua>Page <aqua>{PAGE_NUMBER}</aqua> of <aqua>{PAGE_TOTAL}</aqua></dark_aqua>'
 
   LIST_FOOTER:
     ENABLED: false
-    MESSAGE_TEXT: '&3Page &b{PAGE_NUMBER}&3 of &b{PAGE_TOTAL}'
+    MESSAGE_TEXT: '<dark_aqua>Page <aqua>{PAGE_NUMBER}</aqua> of <aqua>{PAGE_TOTAL}</aqua></dark_aqua>'
 
   LIST_ITEM:
     ENABLED: true
     MESSAGE_TEXT: |-
-      {ITEM_NUMBER}) &aKiller:&b {KILLER}
-          &aLocation:&b {LOCATION}
-          &aExpiration time:&b {EXPIRATION_DURATION}
-          &aProtection time:&b {PROTECTION_DURATION}
+      {ITEM_NUMBER}) <green>Killer:</green> <aqua>{KILLER}</aqua>
+          <green>Location:</green> <aqua>{LOCATION}</aqua>
+          <green>Expiration time:</green> <aqua>{EXPIRATION_DURATION}</aqua>
+          <green>Protection time:</green> <aqua>{PROTECTION_DURATION}</aqua>
 
   LIST_ITEM_ALL:
     ENABLED: true
     MESSAGE_TEXT: |-
-      {ITEM_NUMBER}) &aOwner:&b {OWNER} &aKiller:&b {KILLER}
-          &aLocation:&b {LOCATION}
-          &aExpiration time:&b {EXPIRATION_DURATION}
-          &aProtection time:&b {PROTECTION_DURATION}
+      {ITEM_NUMBER}) <green>Owner: <aqua>{OWNER}</aqua> Killer: <aqua>{KILLER}</aqua></green>
+          <green>Location:</green> <aqua>{LOCATION}</aqua>
+          <green>Expiration time:</green> <aqua>{EXPIRATION_DURATION}</aqua>
+          <green>Protection time:</green> <aqua>{PROTECTION_DURATION}</aqua>
 
   LIST_EMPTY:
     ENABLED: true
-    MESSAGE_TEXT: '&bThere are no DeathChests to list!'
+    MESSAGE_TEXT: '<aqua>There are no DeathChests to list!</aqua>'
 
   LIST_PLAYER_NOT_FOUND:
     ENABLED: true
-    MESSAGE_TEXT: '&3That player could not be found!'
+    MESSAGE_TEXT: '<dark_aqua>That player could not be found!</dark_aqua>'
