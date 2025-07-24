@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 Tim Savage.
+ * Copyright (c) 2022-2025 Tim Savage.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,7 +15,7 @@
  *
  */
 
-package com.winterhavenmc.deathchest.storage;
+package com.winterhavenmc.deathchest.adapters.datastore.sqlite;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -26,7 +26,7 @@ import java.util.Properties;
 /**
  * A utility class that contains static methods for retrieving database queries from the queries properties file.
  */
-final class Queries
+public final class SQLiteQueries
 {
 	private static final String propFileName = "queries.properties";
 	private static Properties properties;
@@ -34,7 +34,7 @@ final class Queries
 	/**
 	 * Private constructor to prevent instantiation of class
 	 */
-	private Queries() {
+	private SQLiteQueries() {
 		throw new AssertionError();
 	}
 
@@ -47,7 +47,7 @@ final class Queries
 			properties = new Properties();
 			try
 			{
-				InputStream inputStream = Queries.class.getResourceAsStream("/" + propFileName);
+				InputStream inputStream = SQLiteQueries.class.getResourceAsStream("/" + propFileName);
 
 				if (inputStream == null)
 				{
@@ -65,7 +65,7 @@ final class Queries
 	}
 
 
-	static String getQuery(final String query) throws SQLException
+	public static String getQuery(final String query) throws SQLException
 	{
 		return getQueries().getProperty(query);
 	}

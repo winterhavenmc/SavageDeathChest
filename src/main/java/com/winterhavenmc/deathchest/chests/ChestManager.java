@@ -22,8 +22,7 @@ import com.winterhavenmc.deathchest.chests.deployment.DeploymentFactory;
 import com.winterhavenmc.deathchest.messages.Macro;
 import com.winterhavenmc.deathchest.messages.MessageId;
 import com.winterhavenmc.deathchest.sounds.SoundId;
-import com.winterhavenmc.deathchest.storage.DataStore;
-import com.winterhavenmc.deathchest.storage.DataStoreType;
+import com.winterhavenmc.deathchest.storage.SQLiteDataStore;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -57,7 +56,7 @@ public final class ChestManager
 	private final BlockIndex blockIndex;
 
 	// instantiate datastore
-	private DataStore dataStore;
+	private final SQLiteDataStore dataStore;
 
 	// set of replaceable blocks
 	private final ReplaceableBlocks replaceableBlocks;
@@ -85,7 +84,7 @@ public final class ChestManager
 		replaceableBlocks = new ReplaceableBlocks(plugin);
 
 		// initialize datastore
-		dataStore = DataStore.connect(plugin);
+		dataStore = SQLiteDataStore.connect(plugin);
 
 		// initialize chestIndex
 		chestIndex = new ChestIndex();
@@ -114,13 +113,13 @@ public final class ChestManager
 		}
 
 		// populate chestIndex with all death chest records retrieved from datastore
-		for (DeathChestRecord deathChest : dataStore.selectAllChestRecords())
+		for (DeathChestRecord deathChest : dataStore.deathChests().getAll())
 		{
 			this.putChest(deathChest);
 		}
 
 		// populate chest block map with all valid chest blocks retrieved from datastore
-		for (ChestBlock chestBlock : dataStore.selectAllBlockRecords())
+		for (ChestBlock chestBlock : dataStore.chestBlocks().getAll())
 		{
 			// if chest block location is null, continue to next chest block
 			if (chestBlock.getLocation() == null)
@@ -138,7 +137,7 @@ public final class ChestManager
 			// if chest block type is null or parent chest not in chest map, delete block record
 			if (chestBlockType == null || !chestIndex.containsKey(chestBlock.getChestUid()))
 			{
-				dataStore.deleteBlockRecord(chestBlock);
+				dataStore.chestBlocks().delete(chestBlock);
 			}
 			else
 			{
@@ -154,7 +153,7 @@ public final class ChestManager
 			if (this.getBlocks(deathChest.chestUid()).isEmpty())
 			{
 				chestIndex.remove(deathChest);
-				dataStore.deleteChestRecord(deathChest);
+				dataStore.deathChests().delete(deathChest);
 			}
 			// if DeathChest is past expiration (not infinite, denoted by Instant.EPOCH), expire chest
 			else if (deathChest.expirationTime().isAfter(Instant.EPOCH) && deathChest.expirationTime().isBefore(Instant.now()))
@@ -445,19 +444,27 @@ public final class ChestManager
 
 	public void insertChestRecords(final Collection<DeathChestRecord> deathChests)
 	{
-		dataStore.insertChestRecords(deathChests);
+		// get chestBlocks for all deathChests
+		Set<ChestBlock> chestBlocks = new HashSet<>();
+		for (DeathChestRecord deathChestRecord : deathChests)
+		{
+			chestBlocks.addAll(getBlocks(deathChestRecord.chestUid()));
+		}
+
+		dataStore.deathChests().save(deathChests);
+		dataStore.chestBlocks().save(chestBlocks);
 	}
 
 
 	public void deleteBlockRecord(final ChestBlock chestBlock)
 	{
-		dataStore.deleteBlockRecord(chestBlock);
+		dataStore.chestBlocks().delete(chestBlock);
 	}
 
 
 	public void deleteChestRecord(final DeathChestRecord deathChest)
 	{
-		dataStore.deleteChestRecord(deathChest);
+		dataStore.deathChests().delete(deathChest);
 	}
 
 
@@ -467,36 +474,18 @@ public final class ChestManager
 	}
 
 
-	@SuppressWarnings("unused")
-	public String getDataStoreType()
-	{
-		return dataStore.getType().toString();
-	}
-
-
 	public void reload()
 	{
 		replaceableBlocks.reload();
-
-		// get current datastore type
-		DataStoreType currentType = dataStore.getType();
-
-		// get configured datastore type
-		DataStoreType newType = DataStoreType.match(plugin.getConfig().getString("storage-type"));
-
-		// if current datastore type does not match configured datastore type, create new datastore
-		if (!currentType.equals(newType))
-		{
-			// create new datastore
-			dataStore = DataStore.connect(plugin);
-		}
 	}
 
 	@SuppressWarnings("unused")
+
 	public boolean isReplaceableBlock(final Material material)
 	{
 		return replaceableBlocks.contains(material);
 	}
+
 
 	public boolean isReplaceableBlock(final Block block)
 	{
@@ -512,7 +501,7 @@ public final class ChestManager
 
 	public int getChestCount()
 	{
-		return this.dataStore.getChestCount();
+		return this.dataStore.deathChests().getCount();
 	}
 
 
