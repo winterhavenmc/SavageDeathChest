@@ -76,19 +76,21 @@ public final class SQLiteBlockRepository implements BlockRepository
 				final World world = plugin.getServer().getWorld(worldUid);
 
 				// if server world is null, skip adding record to return set
-				//TODO: refactor orphaned block record deletion; invert this if statement to lose the continue
-				if (world == null)
+				//TODO: refactor orphaned block record deletion
+				if (world != null)
 				{
-					// delete all records expired more than 30 days in database that have this invalid world
-//					deleteOrphanedChests(worldName);
-					continue;
+					// create chest block object from retrieved record
+					ChestBlock chestBlock = new ChestBlock(chestUid, world.getName(), world.getUID(), x, y, z, 0, 0);
+
+					// add DeathChestObject to results set
+					results.add(chestBlock);
 				}
+//				else
+//				{
+//					// delete all records expired more than 30 days in database that have this invalid world
+//					deleteOrphanedChests(worldName);
+//				}
 
-				// create chest block object from retrieved record
-				ChestBlock chestBlock = new ChestBlock(chestUid, world.getName(), world.getUID(), x, y, z, 0, 0);
-
-				// add DeathChestObject to results set
-				results.add(chestBlock);
 			}
 		}
 		catch (SQLException e)
