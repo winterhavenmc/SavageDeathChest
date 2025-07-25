@@ -18,7 +18,7 @@
 package com.winterhavenmc.deathchest.tasks;
 
 import com.winterhavenmc.deathchest.chests.ChestManager;
-import com.winterhavenmc.deathchest.chests.DeathChestRecord;
+import com.winterhavenmc.deathchest.models.deathchest.ValidDeathChest;
 import org.bukkit.scheduler.BukkitRunnable;
 
 
@@ -28,14 +28,14 @@ import org.bukkit.scheduler.BukkitRunnable;
 public final class ExpireChestTask extends BukkitRunnable
 {
 	private final ChestManager chestManager;
-	private final DeathChestRecord deathChest;
+	private final ValidDeathChest deathChest;
 
 
 	/**
 	 * Class constructor
 	 * @param deathChest the death chest to expire
 	 */
-	public ExpireChestTask(final ChestManager chestManager, final DeathChestRecord deathChest)
+	public ExpireChestTask(final ChestManager chestManager, final ValidDeathChest deathChest)
 	{
 		this.chestManager = chestManager;
 		this.deathChest = deathChest;

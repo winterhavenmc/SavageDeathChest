@@ -18,7 +18,7 @@
 package com.winterhavenmc.deathchest.permissions;
 
 import com.winterhavenmc.deathchest.chests.ChestManager;
-import com.winterhavenmc.deathchest.chests.DeathChestRecord;
+import com.winterhavenmc.deathchest.models.deathchest.ValidDeathChest;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 
@@ -29,10 +29,10 @@ import org.bukkit.event.Cancellable;
 public class BreakChestAction implements ResultAction
 {
 	@Override
-	public void execute(final Cancellable event, final Player player, final DeathChestRecord deathChest, final ChestManager chestManager)
+	public void execute(final Cancellable event, final Player player, final ValidDeathChest validDeathChest, final ChestManager chestManager)
 	{
 		event.setCancelled(true);
-		chestManager.destroy(deathChest);
+		chestManager.destroy(validDeathChest);
 	}
 
 }

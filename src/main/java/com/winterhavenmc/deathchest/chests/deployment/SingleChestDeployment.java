@@ -23,12 +23,14 @@ import com.winterhavenmc.deathchest.chests.search.QuadrantSearch;
 import com.winterhavenmc.deathchest.chests.search.SearchResult;
 import com.winterhavenmc.deathchest.chests.search.SearchResultCode;
 
+import com.winterhavenmc.deathchest.models.deathchest.DeathChest;
+import com.winterhavenmc.deathchest.models.deathchest.ValidDeathChest;
 import org.bukkit.block.data.type.Chest;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.LinkedList;
 
 
 public class SingleChestDeployment extends AbstractDeployment implements Deployment
@@ -55,7 +57,7 @@ public class SingleChestDeployment extends AbstractDeployment implements Deploym
 	public SearchResult deploy()
 	{
 		// make copy of dropped items
-		Collection<ItemStack> remainingItems = new LinkedList<>(droppedItems);
+		Collection<ItemStack> remainingItems = new ArrayList<>(droppedItems);
 
 		SearchResult searchResult;
 
@@ -75,7 +77,11 @@ public class SingleChestDeployment extends AbstractDeployment implements Deploym
 			else
 			{
 				searchResult = new SearchResult(SearchResultCode.NO_REQUIRED_CHEST, remainingItems);
-				this.finalize(searchResult, new DeathChestRecord(plugin, player, searchResult.getLocation()));
+				DeathChest deathChest = DeathChest.of(player, searchResult.getLocation(), plugin.getConfig());
+				if (deathChest instanceof ValidDeathChest validDeathChest)
+				{
+					this.finalize(searchResult, validDeathChest);
+				}
 				return searchResult;
 			}
 		}
@@ -84,29 +90,31 @@ public class SingleChestDeployment extends AbstractDeployment implements Deploym
 		searchResult = new QuadrantSearch(plugin, player, ChestSize.SINGLE).execute();
 
 		// create new deathChest object for player
-		DeathChestRecord deathChest = new DeathChestRecord(plugin, player, searchResult.getLocation());
-
-		// if search successful, place chest
-		if (searchResult.getResultCode().equals(SearchResultCode.SUCCESS))
+		DeathChest deathChest = DeathChest.of(player, searchResult.getLocation(), plugin.getConfig());
+		if (deathChest instanceof ValidDeathChest validDeathChest)
 		{
-			// place chest at result location
-			placeChest(player, deathChest, searchResult.getLocation(), ChestBlockType.RIGHT_CHEST);
+			// if search successful, place chest
+			if (searchResult.getResultCode().equals(SearchResultCode.SUCCESS))
+			{
+				// place chest at result location
+				placeChest(validDeathChest, searchResult.getLocation(), ChestBlockType.RIGHT_CHEST);
 
-			// set chest block state
-			setChestBlockState(searchResult.getLocation().getBlock(), Chest.Type.SINGLE);
+				// set chest block state
+				setChestBlockState(searchResult.getLocation().getBlock(), Chest.Type.SINGLE);
 
-			// fill chest
-			remainingItems = plugin.chestManager.fill(remainingItems, deathChest);
+				// fill chest
+				remainingItems = plugin.chestManager.fill(remainingItems, validDeathChest);
 
-			// place sign on chest
-			new ChestSign(plugin, player, deathChest).place();
+				// place sign on chest
+				new ChestSign(plugin, player, validDeathChest).place();
+			}
+
+			// set remaining items in result
+			searchResult.setRemainingItems(remainingItems);
+
+			// finish deployment
+			this.finalize(searchResult, validDeathChest);
 		}
-
-		// set remaining items in result
-		searchResult.setRemainingItems(remainingItems);
-
-		// finish deployment
-		this.finalize(searchResult, deathChest);
 
 		// return result
 		return searchResult;

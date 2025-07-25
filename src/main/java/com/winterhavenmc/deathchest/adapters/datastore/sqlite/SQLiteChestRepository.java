@@ -17,7 +17,7 @@
 
 package com.winterhavenmc.deathchest.adapters.datastore.sqlite;
 
-import com.winterhavenmc.deathchest.chests.DeathChestRecord;
+import com.winterhavenmc.deathchest.models.deathchest.ValidDeathChest;
 import com.winterhavenmc.deathchest.ports.datastore.ChestRepository;
 
 import java.sql.Connection;
@@ -50,9 +50,9 @@ public final class SQLiteChestRepository implements ChestRepository
 	 * @return List of DeathChest
 	 */
 	@Override
-	public Collection<DeathChestRecord> getAll()
+	public Collection<ValidDeathChest> getAll()
 	{
-		final Collection<DeathChestRecord> results = new HashSet<>();
+		final Collection<ValidDeathChest> results = new HashSet<>();
 
 		try (PreparedStatement preparedStatement = connection.prepareStatement(SQLiteQueries.getQuery("SelectAllChests")))
 		{
@@ -60,7 +60,10 @@ public final class SQLiteChestRepository implements ChestRepository
 
 			while (resultSet.next())
 			{
-				results.add(chestRowMapper.map(resultSet));
+				if (chestRowMapper.map(resultSet) instanceof ValidDeathChest validDeathChest)
+				{
+					results.add(validDeathChest);
+				}
 			}
 		}
 		catch (SQLException exception)
@@ -80,11 +83,11 @@ public final class SQLiteChestRepository implements ChestRepository
 	 * @param deathChests a collection of DeathChest objects to insert into the datastore
 	 */
 	@Override
-	public int save(Collection<DeathChestRecord> deathChests)
+	public int save(Collection<ValidDeathChest> deathChests)
 	{
 		int count = 0;
 
-		for (DeathChestRecord deathChest : deathChests)
+		for (ValidDeathChest deathChest : deathChests)
 		{
 			if (deathChest != null)
 			{
@@ -106,16 +109,16 @@ public final class SQLiteChestRepository implements ChestRepository
 	/**
 	 * Delete a chest record from the datastore
 	 *
-	 * @param deathChest the chest to delete
+	 * @param validDeathChest the chest to delete
 	 */
 	@Override
-	public void delete(DeathChestRecord deathChest)
+	public void delete(ValidDeathChest validDeathChest)
 	{
-		if (deathChest != null)
+		if (validDeathChest != null)
 		{
 			try (PreparedStatement preparedStatement = connection.prepareStatement(SQLiteQueries.getQuery("DeleteChestByUUID")))
 			{
-				chestQueryHelper.deleteChest(deathChest, preparedStatement);
+				chestQueryHelper.deleteChest(validDeathChest, preparedStatement);
 			}
 			catch (SQLException sqlException)
 			{
