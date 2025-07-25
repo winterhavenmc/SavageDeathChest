@@ -304,16 +304,6 @@ public abstract class AbstractDeployment implements Deployment
 	 */
 	private void sendResultMessage(final Player player, final ValidDeathChest validDeathChest, final SearchResult result)
 	{
-		// get configured expire-time
-		long expireTime = plugin.getConfig().getLong("expire-time");
-
-		// if configured expire-time is zero, set to negative to display infinite time in messages
-		if (expireTime == 0)
-		{
-			expireTime = -1;
-		}
-
-		// send message based on result
 		switch (result.getResultCode())
 		{
 			case SUCCESS -> plugin.messageBuilder.compose(player, MessageId.CHEST_SUCCESS)
