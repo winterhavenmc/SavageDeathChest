@@ -18,7 +18,9 @@
 package com.winterhavenmc.deathchest.chests;
 
 import com.winterhavenmc.deathchest.PluginMain;
+import com.winterhavenmc.deathchest.models.deathchest.ValidDeathChest;
 import com.winterhavenmc.library.messagebuilder.resources.configuration.LanguageTag;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -26,6 +28,7 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.data.type.Chest;
+import org.bukkit.block.sign.Side;
 import org.bukkit.entity.Player;
 
 import java.text.SimpleDateFormat;
@@ -33,7 +36,7 @@ import java.util.List;
 import java.util.Locale;
 
 
-public record ChestSign(PluginMain plugin, Player player, DeathChestRecord deathChest)
+public record ChestSign(PluginMain plugin, Player player, ValidDeathChest deathChest)
 {
 	public void place()
 	{
@@ -44,39 +47,39 @@ public record ChestSign(PluginMain plugin, Player player, DeathChestRecord death
 		}
 
 		// get chest block location
-		deathChest.getOptLocation().ifPresent(location -> {
+		Location location = deathChest.getLocation();
 
-			// get chest block at location
-			Block chestBlock = location.getBlock();
+		// get chest block at location
+		Block chestBlock = location.getBlock();
 
-			// get chest block state
-			BlockState chestState = chestBlock.getState();
+		// get chest block state
+		BlockState chestState = chestBlock.getState();
 
-			// if block state is not chest, do nothing and return
-			if (!(chestState.getBlockData() instanceof Chest))
-			{
-				return;
-			}
+		// if block state is not chest, do nothing and return
+		if (!(chestState.getBlockData() instanceof Chest))
+		{
+			return;
+		}
 
-			// get chest block face direction from block data
-			BlockFace blockFace = ((Chest) chestState.getBlockData()).getFacing();
+		// get chest block face direction from block data
+		BlockFace blockFace = ((Chest) chestState.getBlockData()).getFacing();
 
-			// if chest face is valid location, create wall sign
-			if (isValidSignLocation(chestBlock.getRelative(blockFace).getLocation()))
-			{
-				placeFrontSign(chestBlock, player, deathChest);
-			}
+		// if chest face is valid location, create wall sign
+		if (isValidSignLocation(chestBlock.getRelative(blockFace).getLocation()))
+		{
+			placeFrontSign(chestBlock, player, deathChest);
+		}
 
-			// if front sign could not be placed and holograms are not enabled, place top sign
-			else if (!plugin.getConfig().getBoolean("holograms-enabled"))
-			{
-				placeTopSign(chestBlock, player, deathChest);
-			}
-		});
+		// if front sign could not be placed and holograms are not enabled, place top sign
+		else if (!plugin.getConfig().getBoolean("holograms-enabled"))
+		{
+			placeTopSign(chestBlock, player, deathChest);
+		}
+
 	}
 
 
-	private void placeFrontSign(final Block chestBlock, final Player player, final DeathChestRecord deathChest)
+	private void placeFrontSign(final Block chestBlock, final Player player, final ValidDeathChest deathChest)
 	{
 		// get block adjacent to chest facing player direction
 		Block signBlock = chestBlock.getRelative(LocationUtilities.getCardinalBlockFace(player));
@@ -94,7 +97,7 @@ public record ChestSign(PluginMain plugin, Player player, DeathChestRecord death
 	}
 
 
-	private void placeTopSign(final Block chestBlock, final Player player, final DeathChestRecord deathChest)
+	private void placeTopSign(final Block chestBlock, final Player player, final ValidDeathChest deathChest)
 	{
 		// get block on top of chest
 		Block signBlock = chestBlock.getRelative(BlockFace.UP);
@@ -112,7 +115,7 @@ public record ChestSign(PluginMain plugin, Player player, DeathChestRecord death
 	}
 
 
-	private void finalizeSign(final Block signBlock, final Player player, final DeathChestRecord deathChest)
+	private void finalizeSign(final Block signBlock, final Player player, final ValidDeathChest deathChest)
 	{
 		// put configured text on sign
 		setSignText(signBlock, player);
@@ -178,7 +181,7 @@ public record ChestSign(PluginMain plugin, Player player, DeathChestRecord death
 			line = ChatColor.translateAlternateColorCodes('&', line);
 
 			// set sign text
-			sign.setLine(lineCount, line);
+			sign.getSide(Side.FRONT).setLine(lineCount, line);
 			lineCount++;
 		}
 

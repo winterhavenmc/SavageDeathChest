@@ -18,6 +18,7 @@
 package com.winterhavenmc.deathchest.chests;
 
 import com.winterhavenmc.deathchest.PluginMain;
+import com.winterhavenmc.deathchest.models.deathchest.ValidDeathChest;
 import com.winterhavenmc.deathchest.sounds.SoundId;
 
 import org.bukkit.Location;
@@ -36,6 +37,8 @@ import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.*;
+
+import static com.winterhavenmc.deathchest.models.deathchest.DeathChest.INVALID_UUID;
 
 
 /**
@@ -357,7 +360,7 @@ public final class ChestBlock
 	 *
 	 * @param deathChest the DeathChest whose metadata will be set on this chest block
 	 */
-	public void setMetadata(final DeathChestRecord deathChest)
+	public void setMetadata(final ValidDeathChest deathChest)
 	{
 		// check for null object
 		if (deathChest == null || deathChest.chestUid() == null)
@@ -384,13 +387,13 @@ public final class ChestBlock
 		block.setMetadata("deathchest-uuid", new FixedMetadataValue(plugin, deathChest.chestUid()));
 
 		// set owner uuid metadata
-		if (deathChest.hasValidOwnerUid())
+		if (deathChest.ownerUid() != null && !deathChest.ownerUid().equals(INVALID_UUID))
 		{
 			block.setMetadata("deathchest-owner", new FixedMetadataValue(plugin, deathChest.ownerUid()));
 		}
 
 		// set killer uuid metadata
-		if (deathChest.hasValidKillerUid())
+		if (deathChest.killerUid() != null && !deathChest.killerUid().equals(INVALID_UUID))
 		{
 			block.setMetadata("deathchest-killer", new FixedMetadataValue(plugin, deathChest.killerUid()));
 		}

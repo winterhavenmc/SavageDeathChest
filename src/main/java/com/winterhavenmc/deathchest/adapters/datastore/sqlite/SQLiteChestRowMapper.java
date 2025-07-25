@@ -17,7 +17,7 @@
 
 package com.winterhavenmc.deathchest.adapters.datastore.sqlite;
 
-import com.winterhavenmc.deathchest.chests.DeathChestRecord;
+import com.winterhavenmc.deathchest.models.deathchest.DeathChest;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -27,7 +27,7 @@ import java.util.UUID;
 
 public final class SQLiteChestRowMapper
 {
-	public DeathChestRecord map(ResultSet resultSet) throws SQLException
+	public DeathChest map(ResultSet resultSet) throws SQLException
 	{
 		// convert chest uuid from stored components
 		final UUID chestUid = new UUID(resultSet.getLong("ChestUidMsb"), resultSet.getLong("ChestUidLsb"));
@@ -58,7 +58,7 @@ public final class SQLiteChestRowMapper
 		int locationY = resultSet.getInt("LocationY");
 		int locationZ = resultSet.getInt("LocationZ");
 
-		return new DeathChestRecord(
+		return DeathChest.of(
 				chestUid,
 				ownerUid,
 				ownerName,

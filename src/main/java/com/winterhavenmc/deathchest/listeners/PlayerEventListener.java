@@ -18,9 +18,9 @@
 package com.winterhavenmc.deathchest.listeners;
 
 import com.winterhavenmc.deathchest.PluginMain;
-import com.winterhavenmc.deathchest.chests.DeathChestRecord;
 import com.winterhavenmc.deathchest.messages.Macro;
 import com.winterhavenmc.deathchest.messages.MessageId;
+import com.winterhavenmc.deathchest.models.deathchest.ValidDeathChest;
 import com.winterhavenmc.deathchest.permissions.InventoryOpenAction;
 import com.winterhavenmc.deathchest.permissions.PermissionCheck;
 import com.winterhavenmc.deathchest.permissions.QuickLootAction;
@@ -158,10 +158,10 @@ public final class PlayerEventListener implements Listener
 	public void onPlayerInteract(final PlayerInteractEvent event)
 	{
 		// get DeathChest from event clicked block
-		final DeathChestRecord deathChest = plugin.chestManager.getChest(event.getClickedBlock());
+		final ValidDeathChest validDeathChest = plugin.chestManager.getChest(event.getClickedBlock());
 
 		// if DeathChest is null, do nothing and return
-		if (deathChest == null)
+		if (validDeathChest == null)
 		{
 			return;
 		}
@@ -172,14 +172,14 @@ public final class PlayerEventListener implements Listener
 		// if player sneak-clicked chest, try auto-loot
 		if (isPlayerQuickLooting(event, player))
 		{
-			permissionCheck.performChecks(event, player, deathChest, quickLootAction);
+			permissionCheck.performChecks(event, player, validDeathChest, quickLootAction);
 			return;
 		}
 
 		// if right-click chest, try to open chest inventory
 		if (isPlayerOpeningInventory(event))
 		{
-			permissionCheck.performChecks(event, player, deathChest, inventoryOpenAction);
+			permissionCheck.performChecks(event, player, validDeathChest, inventoryOpenAction);
 		}
 	}
 

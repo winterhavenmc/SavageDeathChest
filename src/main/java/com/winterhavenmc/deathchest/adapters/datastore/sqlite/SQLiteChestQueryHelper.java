@@ -17,7 +17,7 @@
 
 package com.winterhavenmc.deathchest.adapters.datastore.sqlite;
 
-import com.winterhavenmc.deathchest.chests.DeathChestRecord;
+import com.winterhavenmc.deathchest.models.deathchest.ValidDeathChest;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -38,26 +38,26 @@ public final class SQLiteChestQueryHelper
 		return count;
 	}
 
-	public int insertChest(final DeathChestRecord deathChest, final PreparedStatement preparedStatement) throws SQLException
+	public int insertChest(final ValidDeathChest validDeathChest, final PreparedStatement preparedStatement) throws SQLException
 	{
-		preparedStatement.setLong(   1, deathChest.chestUid().getMostSignificantBits());
-		preparedStatement.setLong(   2, deathChest.chestUid().getLeastSignificantBits());
-		preparedStatement.setLong(   3, deathChest.ownerUid().getMostSignificantBits());
-		preparedStatement.setLong(   4, deathChest.ownerUid().getLeastSignificantBits());
-		preparedStatement.setString( 5, deathChest.ownerName());
-		preparedStatement.setLong(   6, deathChest.killerUid().getMostSignificantBits());
-		preparedStatement.setLong(   7, deathChest.killerUid().getLeastSignificantBits());
-		preparedStatement.setString( 8, deathChest.killerName());
-		preparedStatement.setLong(   9, deathChest.worldUid().getMostSignificantBits());
-		preparedStatement.setLong(  10, deathChest.worldUid().getLeastSignificantBits());
-		preparedStatement.setString(11, deathChest.worldName());
-		preparedStatement.setInt(   12, deathChest.locationX());
-		preparedStatement.setInt(   13, deathChest.locationY());
-		preparedStatement.setInt(   14, deathChest.locationZ());
-		preparedStatement.setInt(   15, deathChest.itemCount());
-		preparedStatement.setLong(  16, deathChest.placementTime().toEpochMilli());
-		preparedStatement.setLong(  17, deathChest.expirationTime().toEpochMilli());
-		preparedStatement.setLong(  18, deathChest.protectionTime().toEpochMilli());
+		preparedStatement.setLong(   1, validDeathChest.chestUid().getMostSignificantBits());
+		preparedStatement.setLong(   2, validDeathChest.chestUid().getLeastSignificantBits());
+		preparedStatement.setLong(   3, validDeathChest.ownerUid().getMostSignificantBits());
+		preparedStatement.setLong(   4, validDeathChest.ownerUid().getLeastSignificantBits());
+		preparedStatement.setString( 5, validDeathChest.ownerName());
+		preparedStatement.setLong(   6, validDeathChest.killerUid().getMostSignificantBits());
+		preparedStatement.setLong(   7, validDeathChest.killerUid().getLeastSignificantBits());
+		preparedStatement.setString( 8, validDeathChest.killerName());
+		preparedStatement.setLong(   9, validDeathChest.worldUid().getMostSignificantBits());
+		preparedStatement.setLong(  10, validDeathChest.worldUid().getLeastSignificantBits());
+		preparedStatement.setString(11, validDeathChest.worldName());
+		preparedStatement.setInt(   12, validDeathChest.locationX());
+		preparedStatement.setInt(   13, validDeathChest.locationY());
+		preparedStatement.setInt(   14, validDeathChest.locationZ());
+		preparedStatement.setInt(   15, validDeathChest.itemCount());
+		preparedStatement.setLong(  16, validDeathChest.placementTime().toEpochMilli());
+		preparedStatement.setLong(  17, validDeathChest.expirationTime().toEpochMilli());
+		preparedStatement.setLong(  18, validDeathChest.protectionTime().toEpochMilli());
 		return preparedStatement.executeUpdate();
 	}
 
@@ -72,10 +72,10 @@ public final class SQLiteChestQueryHelper
 	}
 
 
-	public int deleteChest(final DeathChestRecord deathChest, final PreparedStatement preparedStatement) throws SQLException
+	public int deleteChest(final ValidDeathChest validDeathChest, final PreparedStatement preparedStatement) throws SQLException
 	{
-		preparedStatement.setLong(1, deathChest.chestUid().getMostSignificantBits());
-		preparedStatement.setLong(2, deathChest.chestUid().getLeastSignificantBits());
+		preparedStatement.setLong(1, validDeathChest.chestUid().getMostSignificantBits());
+		preparedStatement.setLong(2, validDeathChest.chestUid().getLeastSignificantBits());
 		return preparedStatement.executeUpdate();
 	}
 }

@@ -18,10 +18,11 @@
 package com.winterhavenmc.deathchest.commands;
 
 import com.winterhavenmc.deathchest.PluginMain;
-import com.winterhavenmc.deathchest.chests.DeathChestRecord;
 import com.winterhavenmc.deathchest.messages.Macro;
 import com.winterhavenmc.deathchest.messages.MessageId;
+import com.winterhavenmc.deathchest.models.deathchest.ValidDeathChest;
 import com.winterhavenmc.deathchest.sounds.SoundId;
+
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
@@ -86,10 +87,10 @@ final class ListCommand extends SubcommandAbstract
 			{
 				// get map of chest ownerUUID,name from all current chests
 				Map<UUID, String> chestOwners = new HashMap<>();
-				for (DeathChestRecord deathChest : plugin.chestManager.getAllChests())
+				for (ValidDeathChest validDeathChest : plugin.chestManager.getAllChests())
 				{
-					chestOwners.put(deathChest.ownerUid(),
-							plugin.getServer().getOfflinePlayer(deathChest.ownerUid()).getName());
+					chestOwners.put(validDeathChest.ownerUid(),
+							plugin.getServer().getOfflinePlayer(validDeathChest.ownerUid()).getName());
 				}
 				returnList.addAll(chestOwners.values());
 			}
@@ -123,7 +124,7 @@ final class ListCommand extends SubcommandAbstract
 		String passedPlayerName = getNameFromArgs(args);
 
 		// create empty list of records
-		List<DeathChestRecord> displayRecords = new ArrayList<>();
+		List<ValidDeathChest> displayRecords = new ArrayList<>();
 
 		// true if listing should include player names
 		boolean displayNames = true;
@@ -156,11 +157,11 @@ final class ListCommand extends SubcommandAbstract
 				// else match chest records to entered target player name prefix
 				else
 				{
-					for (DeathChestRecord deathChest : plugin.chestManager.getAllChests())
+					for (ValidDeathChest validDeathChest : plugin.chestManager.getAllChests())
 					{
-						if (deathChest.ownerName().toLowerCase().startsWith(passedPlayerName.toLowerCase()))
+						if (validDeathChest.ownerName().toLowerCase().startsWith(passedPlayerName.toLowerCase()))
 						{
-							displayRecords.add(deathChest);
+							displayRecords.add(validDeathChest);
 						}
 					}
 				}
@@ -182,7 +183,7 @@ final class ListCommand extends SubcommandAbstract
 	@SuppressWarnings("SameReturnValue")
 	private boolean displayChestList(final CommandSender sender,
 	                                 final List<String> args,
-	                                 final List<DeathChestRecord> displayRecords,
+	                                 final List<ValidDeathChest> displayRecords,
 	                                 final boolean displayNames)
 	{
 		// if display list is empty, output list empty message and return
@@ -193,7 +194,7 @@ final class ListCommand extends SubcommandAbstract
 		}
 
 		// sort displayRecords
-		displayRecords.sort(Comparator.comparing(DeathChestRecord::expirationTime));
+		displayRecords.sort(Comparator.comparing(ValidDeathChest::expirationTime));
 
 		// get list page size from configuration
 		int itemsPerPage = plugin.getConfig().getInt("list-page-size-player");
@@ -214,14 +215,14 @@ final class ListCommand extends SubcommandAbstract
 		int startIndex = ((page - 1) * itemsPerPage);
 		int endIndex = Math.min((page * itemsPerPage), displayRecords.size());
 
-		List<DeathChestRecord> displayRange = displayRecords.subList(startIndex, endIndex);
+		List<ValidDeathChest> displayRange = displayRecords.subList(startIndex, endIndex);
 
 		int listCount = startIndex;
 
 		// display list header
 		displayListHeader(sender, page, pageCount);
 
-		for (DeathChestRecord deathChest : displayRange)
+		for (ValidDeathChest deathChest : displayRange)
 		{
 			// increment list counter
 			listCount++;
@@ -249,15 +250,15 @@ final class ListCommand extends SubcommandAbstract
 	}
 
 
-	private List<DeathChestRecord> getChestsForPlayer(final Player player)
+	private List<ValidDeathChest> getChestsForPlayer(final Player player)
 	{
-		List<DeathChestRecord> returnList = new ArrayList<>();
+		List<ValidDeathChest> returnList = new ArrayList<>();
 
-		for (DeathChestRecord deathChest : plugin.chestManager.getAllChests())
+		for (ValidDeathChest validDeathChest : plugin.chestManager.getAllChests())
 		{
-			if (deathChest.ownerUid().equals(player.getUniqueId()))
+			if (validDeathChest.ownerUid().equals(player.getUniqueId()))
 			{
-				returnList.add(deathChest);
+				returnList.add(validDeathChest);
 			}
 		}
 		return returnList;
