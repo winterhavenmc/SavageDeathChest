@@ -65,6 +65,7 @@ public final class SQLiteBlockRepository implements BlockRepository
 
 			while (resultSet.next())
 			{
+				//TODO: use worldName in log message if server world unavailable
 				final String worldName = resultSet.getString("WorldName");
 				final int x = resultSet.getInt("X");
 				final int y = resultSet.getInt("Y");
