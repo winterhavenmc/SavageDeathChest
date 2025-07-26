@@ -112,20 +112,18 @@ public final class SQLiteChestRepository implements ChestRepository
 	 * @param validDeathChest the chest to delete
 	 */
 	@Override
-	public void delete(ValidDeathChest validDeathChest)
+	public int delete(ValidDeathChest validDeathChest)
 	{
-		if (validDeathChest != null)
+		try (PreparedStatement preparedStatement = connection.prepareStatement(SQLiteQueries.getQuery("DeleteChestByUUID")))
 		{
-			try (PreparedStatement preparedStatement = connection.prepareStatement(SQLiteQueries.getQuery("DeleteChestByUUID")))
-			{
-				chestQueryHelper.deleteChest(validDeathChest, preparedStatement);
-			}
-			catch (SQLException sqlException)
-			{
-				logger.warning("An error occurred while attempting to "
-						+ "delete a chest record from the SQLite datastore.");
-				logger.warning(sqlException.getMessage());
-			}
+			return chestQueryHelper.deleteChest(validDeathChest, preparedStatement);
+		}
+		catch (SQLException sqlException)
+		{
+			logger.warning("An error occurred while attempting to "
+					+ "delete a chest record from the SQLite datastore.");
+			logger.warning(sqlException.getMessage());
+			return 0;
 		}
 	}
 
