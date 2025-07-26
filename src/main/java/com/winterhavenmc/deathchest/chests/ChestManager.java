@@ -21,6 +21,7 @@ import com.winterhavenmc.deathchest.PluginMain;
 import com.winterhavenmc.deathchest.chests.deployment.DeploymentFactory;
 import com.winterhavenmc.deathchest.messages.Macro;
 import com.winterhavenmc.deathchest.messages.MessageId;
+import com.winterhavenmc.deathchest.models.chestblock.ValidChestBlock;
 import com.winterhavenmc.deathchest.models.deathchest.ValidDeathChest;
 import com.winterhavenmc.deathchest.sounds.SoundId;
 import com.winterhavenmc.deathchest.storage.SQLiteDataStore;
@@ -37,9 +38,13 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.metadata.FixedMetadataValue;
 
 import java.time.Instant;
 import java.util.*;
+
+import static com.winterhavenmc.deathchest.models.deathchest.DeathChest.INVALID_UUID;
 
 
 /**
@@ -114,36 +119,37 @@ public final class ChestManager
 		}
 
 		// populate chestIndex with all death chest records retrieved from datastore
-		for (ValidDeathChest deathChest : dataStore.deathChests().getAll())
+		for (ValidDeathChest validDeathChest : dataStore.deathChests().getAll())
 		{
-			this.putChest(deathChest);
+			this.putChest(validDeathChest);
 		}
 
 		// populate chest block map with all valid chest blocks retrieved from datastore
-		for (ChestBlock chestBlock : dataStore.chestBlocks().getAll())
+		for (ValidChestBlock validChestBlock : dataStore.chestBlocks().getAll())
 		{
 			// if chest block location is null, continue to next chest block
-			if (chestBlock.getLocation() == null)
+			//TODO: confirm ValidChestBlock location is always valid, then remove this conditional block
+			if (validChestBlock.getLocation() == null)
 			{
 				if (plugin.getConfig().getBoolean("debug"))
 				{
-					plugin.getLogger().info("chest block " + chestBlock.getChestUid() + " has null location.");
+					plugin.getLogger().info("chest block " + validChestBlock.getChestUid() + " has null location.");
 				}
 				continue;
 			}
 
 			// get chest block type from in game block
-			ChestBlockType chestBlockType = ChestBlockType.getType(chestBlock.getLocation().getBlock());
+			ChestBlockType chestBlockType = ChestBlockType.getType(validChestBlock.getLocation().getBlock());
 
 			// if chest block type is null or parent chest not in chest map, delete block record
-			if (chestBlockType == null || !chestIndex.containsKey(chestBlock.getChestUid()))
+			if (chestBlockType == null || !chestIndex.containsKey(validChestBlock.getChestUid()))
 			{
-				dataStore.chestBlocks().delete(chestBlock);
+				dataStore.chestBlocks().delete(validChestBlock);
 			}
 			else
 			{
-				// add chestBlock to block index
-				this.blockIndex.put(chestBlockType, chestBlock);
+				// add validChestBlock to block index
+				this.blockIndex.put(chestBlockType, validChestBlock);
 			}
 		}
 
@@ -211,11 +217,11 @@ public final class ChestManager
 		}
 
 		// get chest block from index by location
-		ChestBlock chestBlock = this.blockIndex.get(block.getLocation());
+		ValidChestBlock validChestBlock = this.blockIndex.get(block.getLocation());
 
 		// return death chest referenced by uid in chest block
-		return (chestBlock != null)
-				? getChest(chestBlock.getChestUid())
+		return (validChestBlock != null)
+				? getChest(validChestBlock.getChestUid())
 				: null;
 	}
 
@@ -254,24 +260,24 @@ public final class ChestManager
 
 
 	/**
-	 * Put ChestBlock object in block index
+	 * Put validChestBlock object in block index
 	 *
-	 * @param chestBlock the ChestBlock to put in map
+	 * @param validChestBlock the validChestBlock to put in map
 	 */
-	public void putBlock(final ChestBlockType chestBlockType, final ChestBlock chestBlock)
+	public void putBlock(final ChestBlockType chestBlockType, final ValidChestBlock validChestBlock)
 	{
-		this.blockIndex.put(chestBlockType, chestBlock);
+		this.blockIndex.put(chestBlockType, validChestBlock);
 	}
 
 
 	/**
-	 * Get ChestBlock object from block index by location
+	 * Get validChestBlock object from block index by location
 	 *
-	 * @param location the location to retrieve ChestBlock object
-	 * @return ChestBlock object, or null if no ChestBlock exists in map with passed location
+	 * @param location the location to retrieve validChestBlock object
+	 * @return validChestBlock object, or null if no validChestBlock exists in map with passed location
 	 */
 	@SuppressWarnings("unused")
-	public ChestBlock getBlock(final Location location)
+	public ValidChestBlock getBlock(final Location location)
 	{
 		return this.blockIndex.get(location);
 	}
@@ -283,7 +289,7 @@ public final class ChestManager
 	 * @param chestUid the UUID of the chest of which to retrieve a set of chest blocks
 	 * @return Set of Blocks in uuidBlockMap, or empty set if no blocks exist for chest UUID
 	 */
-	public Collection<ChestBlock> getBlocks(final UUID chestUid)
+	public Collection<ValidChestBlock> getBlocks(final UUID chestUid)
 	{
 		return this.blockIndex.getBlocks(chestUid);
 	}
@@ -295,29 +301,29 @@ public final class ChestManager
 	 * @param chestUid the UUID of the chest of which to retrieve a map of chest blocks
 	 * @return Map of Blocks in uuidBlockMap, or empty map if no blocks exist for chest UUID
 	 */
-	Map<ChestBlockType, ChestBlock> getBlockMap(final UUID chestUid)
+	Map<ChestBlockType, ValidChestBlock> getBlockMap(final UUID chestUid)
 	{
 		return this.blockIndex.getBlockMap(chestUid);
 	}
 
 
 	/**
-	 * Remove ChestBlock object from map
+	 * Remove validChestBlock object from map
 	 *
-	 * @param chestBlock the ChestBlock object to remove from map
+	 * @param validChestBlock the validChestBlock object to remove from map
 	 */
-	void removeBlock(final ChestBlock chestBlock)
+	void removeBlock(final ValidChestBlock validChestBlock)
 	{
-		this.blockIndex.remove(chestBlock);
+		this.blockIndex.remove(validChestBlock);
 	}
 
 
 	/**
-	 * Test if ChestBlock exists in map with passed block location
+	 * Test if validChestBlock exists in map with passed block location
 	 *
 	 * @param block the block to check for existence in block index
-	 * @return {@code true} if a ChestBlock exists in map with passed block location,
-	 * {@code false} if no ChestBlock exists in map with passed block location
+	 * @return {@code true} if a validChestBlock exists in map with passed block location,
+	 * {@code false} if no validChestBlock exists in map with passed block location
 	 */
 	public boolean isChestBlock(final Block block)
 	{
@@ -445,21 +451,21 @@ public final class ChestManager
 
 	public void insertChestRecords(final Collection<ValidDeathChest> deathChests)
 	{
-		// get chestBlocks for all deathChests
-		Set<ChestBlock> chestBlocks = new HashSet<>();
+		// get validChestBlocks for all deathChests
+		Set<ValidChestBlock> validChestBlocks = new HashSet<>();
 		for (ValidDeathChest validDeathChest : deathChests)
 		{
-			chestBlocks.addAll(getBlocks(validDeathChest.chestUid()));
+			validChestBlocks.addAll(getBlocks(validDeathChest.chestUid()));
 		}
 
 		dataStore.deathChests().save(deathChests);
-		dataStore.chestBlocks().save(chestBlocks);
+		dataStore.chestBlocks().save(validChestBlocks);
 	}
 
 
-	public void deleteBlockRecord(final ChestBlock chestBlock)
+	public void deleteBlockRecord(final ValidChestBlock validChestBlock)
 	{
-		dataStore.chestBlocks().delete(chestBlock);
+		dataStore.chestBlocks().delete(validChestBlock);
 	}
 
 
@@ -509,12 +515,12 @@ public final class ChestManager
 	/**
 	 * Set chest metadata on all component blocks
 	 */
-	void setBlockMetadata(Collection<ChestBlock> chestBlocks)
+	void setBlockMetadata(Collection<ValidChestBlock> validChestBlocks)
 	{
 		// set metadata on blocks in set
-		for (ChestBlock chestBlock : chestBlocks)
+		for (ValidChestBlock validChestBlock : validChestBlocks)
 		{
-			chestBlock.setMetadata(getChest(chestBlock.getChestUid()));
+			setMetadata(validChestBlock, getChest(validChestBlock.getChestUid()));
 		}
 	}
 
@@ -557,7 +563,7 @@ public final class ChestManager
 
 	public Inventory getInventory(final ValidDeathChest deathChest)
 	{
-		Map<ChestBlockType, ChestBlock> blockMap = getBlockMap(deathChest.chestUid());
+		Map<ChestBlockType, ValidChestBlock> blockMap = getBlockMap(deathChest.chestUid());
 		return getInventory(blockMap);
 	}
 
@@ -568,15 +574,15 @@ public final class ChestManager
 	 * @return Inventory - the inventory associated with this death chest;
 	 * returns null if both right and left chest block inventories are invalid
 	 */
-	public Inventory getInventory(Map<ChestBlockType, ChestBlock> blockMap)
+	public Inventory getInventory(Map<ChestBlockType, ValidChestBlock> blockMap)
 	{
 		// get right chest inventory
-		Inventory inventory = blockMap.get(ChestBlockType.RIGHT_CHEST).getInventory();
+		Inventory inventory = plugin.chestManager.getInventory(blockMap.get(ChestBlockType.RIGHT_CHEST));
 
 		// if right chest inventory is null, try left chest
 		if (inventory == null)
 		{
-			inventory = blockMap.get(ChestBlockType.LEFT_CHEST).getInventory();
+			inventory = plugin.chestManager.getInventory(blockMap.get(ChestBlockType.LEFT_CHEST));
 		}
 
 		// return the inventory, or null if right and left chest inventories were both invalid
@@ -642,12 +648,12 @@ public final class ChestManager
 		plugin.soundConfig.playSound(validDeathChest.getLocation(), SoundId.CHEST_BREAK);
 
 		// get block map for this chest
-		Map<ChestBlockType, ChestBlock> chestBlockMap = plugin.chestManager.getBlockMap(validDeathChest.chestUid());
+		Map<ChestBlockType, ValidChestBlock> chestBlockMap = plugin.chestManager.getBlockMap(validDeathChest.chestUid());
 
 		// destroy DeathChest blocks (sign gets destroyed first due to enum order, preventing detach before being destroyed)
-		for (ChestBlock chestBlock : chestBlockMap.values())
+		for (ValidChestBlock validChestBlock : chestBlockMap.values())
 		{
-			chestBlock.destroy();
+			plugin.chestManager.destroy(validChestBlock);
 		}
 
 		// delete DeathChest record from datastore
@@ -725,9 +731,9 @@ public final class ChestManager
 		Collection<ItemStack> remainingItems = new ArrayList<>();
 
 		// transfer contents of any chest blocks to player, putting any items that did not fit in remainingItems
-		for (ChestBlock chestBlock : this.getBlocks(validDeathChest.chestUid()))
+		for (ValidChestBlock validChestBlock : this.getBlocks(validDeathChest.chestUid()))
 		{
-			remainingItems.addAll(chestBlock.transferContents(player));
+			remainingItems.addAll(plugin.chestManager.transferContents(validChestBlock, player));
 		}
 
 		// if remainingItems is empty, all chest items fit in player inventory so destroy chest and return
@@ -753,6 +759,288 @@ public final class ChestManager
 			{
 				player.getWorld().dropItem(player.getLocation(), itemStack);
 			}
+		}
+	}
+
+
+	/**
+	 * Get DeathChest chest block that DeathChest sign is attached
+	 *
+	 * @return Block - DeathChest chest block;
+	 * returns null if sign is not a DeathChest sign or attached block is not a DeathChest chest block
+	 */
+	public Block getAttachedBlock(final Block block)
+	{
+		// if block is not a DeathSign, return null
+		if (!plugin.chestManager.isChestBlockSign(block))
+		{
+			return null;
+		}
+
+		Block returnBlock = null;
+
+		// if block is a wall sign, get block behind
+		if (block.getBlockData() instanceof WallSign wallSign)
+		{
+			returnBlock = block.getRelative(wallSign.getFacing().getOppositeFace());
+		}
+
+		// else if block is a sign post, get block below
+		else if (block.getBlockData() instanceof Sign)
+		{
+			returnBlock = block.getRelative(0, 1, 0);
+		}
+
+		// if attached block is not a DeathChest, return null
+		if (!plugin.chestManager.isChestBlockChest(returnBlock))
+		{
+			return null;
+		}
+
+		return returnBlock;
+	}
+
+
+	/**
+	 * Get the inventory of this validChestBlock
+	 *
+	 * @return Inventory - the inventory of this validChestBlock;
+	 * if validChestBlock is a sign, return inventory of attached validChestBlock;
+	 * returns null if this validChestBlock (or attached block) is not a chest
+	 */
+	public Inventory getInventory(final Block block)
+	{
+		// get the block state of block represented by this validChestBlock
+		BlockState blockState = block.getState();
+
+		// if block is a sign or wall sign, get attached block
+		if (blockState.getType().equals(Material.OAK_SIGN) || blockState.getType().equals((Material.OAK_WALL_SIGN)))
+		{
+			// get attached block
+			Block attachedBlock = this.getAttachedBlock(block);
+
+			// if attached block returned null, do nothing and return
+			if (attachedBlock != null)
+			{
+				blockState = attachedBlock.getState();
+			}
+			else
+			{
+				return null;
+			}
+		}
+
+		// if blockState is a chest object, open inventory for player
+		if (blockState instanceof Chest)
+		{
+			return ((Chest) blockState).getInventory();
+		}
+
+		return null;
+	}
+
+
+	/**
+	 * Get the inventory of this validChestBlock
+	 *
+	 * @return Inventory - the inventory of this validChestBlock;
+	 * if validChestBlock is a sign, return inventory of attached validChestBlock;
+	 * returns null if this validChestBlock (or attached block) is not a chest
+	 */
+	Inventory getInventory(final ValidChestBlock validChestBlock)
+	{
+		// if this validChestBlock location is null, return null
+		if (validChestBlock.getLocation() == null)
+		{
+			return null;
+		}
+
+		// get the block state of block represented by this validChestBlock
+		BlockState blockState = validChestBlock.getLocation().getBlock().getState();
+
+		// if block is a sign or wall sign, get attached block
+		if (blockState.getType().equals(Material.OAK_SIGN) || blockState.getType().equals((Material.OAK_WALL_SIGN)))
+		{
+			// get attached block
+			Block attachedBlock = plugin.chestManager.getAttachedBlock(validChestBlock.getLocation().getBlock());
+
+			// if attached block returned null, do nothing and return
+			if (attachedBlock != null)
+			{
+				blockState = attachedBlock.getState();
+			}
+			else
+			{
+				return null;
+			}
+		}
+
+
+		// if blockState is a chest object, open inventory for player
+		if (blockState instanceof Chest)
+		{
+			return ((Chest) blockState).getInventory();
+		}
+
+		return null;
+	}
+
+
+	/**
+	 * Transfer the contents of this chest block to player inventory
+	 *
+	 * @param player the player whose inventory chest items will be placed
+	 */
+	Collection<ItemStack> transferContents(final ValidChestBlock validChestBlock, final Player player)
+	{
+		// create empty list to contain items that did not fit in chest
+		Collection<ItemStack> remainingItems = new LinkedList<>();
+
+		// if player is null, return empty list
+		if (player == null)
+		{
+			return remainingItems;
+		}
+
+		// if DeathBlock location is null, return empty list
+		if (validChestBlock.getLocation() == null)
+		{
+			return remainingItems;
+		}
+
+		// get in game block at deathBlock location
+		Block block = validChestBlock.getLocation().getBlock();
+
+		// confirm block is still death chest block
+		if (plugin.chestManager.isChestBlockChest(block))
+		{
+			// get player inventory object
+			final PlayerInventory playerInventory = player.getInventory();
+
+			// get chest object
+			final Chest chest = (Chest) block.getState();
+
+			// get Collection of ItemStack for chest inventory
+			final Collection<ItemStack> chestInventory = new LinkedList<>(Arrays.asList(chest.getInventory().getContents()));
+
+			// iterate through all inventory slots in chest inventory
+			for (ItemStack itemStack : chestInventory)
+			{
+				// if inventory slot item is not null...
+				if (itemStack != null)
+				{
+					// remove item from chest inventory
+					chest.getInventory().removeItem(itemStack);
+
+					// add item to player inventory
+					remainingItems.addAll(playerInventory.addItem(itemStack).values());
+
+					// play inventory add sound
+					plugin.soundConfig.playSound(player, SoundId.INVENTORY_ADD_ITEM);
+				}
+			}
+		}
+		return remainingItems;
+	}
+
+
+	/**
+	 * Destroy chest block, dropping any contents on ground.
+	 * Removes block metadata and deletes corresponding block record from block index and datastore.
+	 */
+	void destroy(final ValidChestBlock validChestBlock)
+	{
+		// if validChestBlock location is null, do nothing and return
+		if (validChestBlock.getLocation() == null)
+		{
+			return;
+		}
+
+		// get in game block at this validChestBlock location
+		Block block = validChestBlock.getLocation().getBlock();
+
+		// load chunk if necessary
+		if (!block.getChunk().isLoaded())
+		{
+			block.getChunk().load();
+		}
+
+		// remove metadata from block
+		plugin.chestManager.removeMetadata(validChestBlock);
+
+		// remove validChestBlock record from datastore
+		plugin.chestManager.deleteBlockRecord(validChestBlock);
+
+		// remove validChestBlock from block map
+		plugin.chestManager.removeBlock(validChestBlock);
+
+		// set block material to air; this will drop chest contents, but not the block itself
+		// Note: this must be performed last, because above methods do checks for valid in-game chest material block
+		block.setType(Material.AIR);
+	}
+
+
+	/**
+	 * Remove metadata from this chest block
+	 */
+	void removeMetadata(final ValidChestBlock validChestBlock)
+	{
+		// if validChestBlock location is null, do nothing and return
+		if (validChestBlock.getLocation() == null)
+		{
+			return;
+		}
+
+		// get in game block at this validChestBlock location
+		Block block = validChestBlock.getLocation().getBlock();
+
+		block.removeMetadata("deathchest-uuid", plugin);
+		block.removeMetadata("deathchest-owner", plugin);
+		block.removeMetadata("deathchest-killer", plugin);
+	}
+
+
+	/**
+	 * Set block metadata
+	 *
+	 * @param deathChest the DeathChest whose metadata will be set on this chest block
+	 */
+	public void setMetadata(final ValidChestBlock validChestBlock, final ValidDeathChest deathChest)
+	{
+		// check for null object
+		if (deathChest == null || deathChest.chestUid() == null)
+		{
+			return;
+		}
+
+		// if DeathBlock location is null, do nothing and return
+		if (validChestBlock.getLocation() == null)
+		{
+			return;
+		}
+
+		// get in game block at chest block location
+		Block block = validChestBlock.getLocation().getBlock();
+
+		// if block is not death chest material, do nothing and return
+		if (!ChestManager.deathChestMaterials.contains(block.getType()))
+		{
+			return;
+		}
+
+		// set chest uuid metadata
+		block.setMetadata("deathchest-uuid", new FixedMetadataValue(plugin, deathChest.chestUid()));
+
+		// set owner uuid metadata
+		if (deathChest.ownerUid() != null && !deathChest.ownerUid().equals(INVALID_UUID))
+		{
+			block.setMetadata("deathchest-owner", new FixedMetadataValue(plugin, deathChest.ownerUid()));
+		}
+
+		// set killer uuid metadata
+		if (deathChest.killerUid() != null && !deathChest.killerUid().equals(INVALID_UUID))
+		{
+			block.setMetadata("deathchest-killer", new FixedMetadataValue(plugin, deathChest.killerUid()));
 		}
 	}
 

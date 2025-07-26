@@ -17,19 +17,19 @@
 
 package com.winterhavenmc.deathchest.chests;
 
+import com.winterhavenmc.deathchest.models.chestblock.ValidChestBlock;
 import org.bukkit.Location;
 
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 
 
 final class BlockIndex
 {
 	// map of ChestBlocks indexed by location
-	private final Map<Location, ChestBlock> locationMap;
+	private final Map<Location, ValidChestBlock> locationMap;
 
 	// nested map of ChestBlocks indexed by ChestUUID, ChestBlockType
-	private final Map<UUID, EnumMap<ChestBlockType, ChestBlock>> uuidMap;
+	private final Map<UUID, EnumMap<ChestBlockType, ValidChestBlock>> uuidMap;
 
 
 	/**
@@ -38,48 +38,42 @@ final class BlockIndex
 	BlockIndex()
 	{
 		// initialize location map
-		locationMap = new ConcurrentHashMap<>();
+		locationMap = new HashMap<>();
 
 		// initialize uuid map
-		uuidMap = new ConcurrentHashMap<>();
+		uuidMap = new HashMap<>();
 	}
 
 
 	/**
-	 * Put ChestBlock object in map
+	 * Put LegacyChestBlock object in map
 	 *
-	 * @param chestBlockType the ChestBlockType of ChestBlock to put in map
-	 * @param chestBlock the ChestBlock to put in map
+	 * @param chestBlockType the ChestBlockType of LegacyChestBlock to put in map
+	 * @param validChestBlock the LegacyChestBlock to put in map
 	 */
-	void put(final ChestBlockType chestBlockType, final ChestBlock chestBlock)
+	void put(final ChestBlockType chestBlockType, final ValidChestBlock validChestBlock)
 	{
-		// if passed key or value is null, do nothing and return
-		if (chestBlockType == null || chestBlock == null)
-		{
-			return;
-		}
-
-		// add chestBlock to locationMap
-		this.locationMap.put(chestBlock.getLocation(), chestBlock);
+		// add legacyChestBlock to locationMap
+		this.locationMap.put(validChestBlock.getLocation(), validChestBlock);
 
 		// if chestUUID key does not exist in map, add entry with chestUUID key and empty map as value
-		if (!uuidMap.containsKey(chestBlock.getChestUid()))
+		if (!uuidMap.containsKey(validChestBlock.getChestUid()))
 		{
-			uuidMap.put(chestBlock.getChestUid(), new EnumMap<>(ChestBlockType.class));
+			uuidMap.put(validChestBlock.getChestUid(), new EnumMap<>(ChestBlockType.class));
 		}
 
 		// add new entry to map with chestUUID as key
-		uuidMap.get(chestBlock.getChestUid()).put(chestBlockType, chestBlock);
+		uuidMap.get(validChestBlock.getChestUid()).put(chestBlockType, validChestBlock);
 	}
 
 
 	/**
-	 * Get ChestBlock object by location
+	 * Get LegacyChestBlock object by location
 	 *
-	 * @param location the location to retrieve ChestBlock object
-	 * @return ChestBlock object, or null if no ChestBlock exists in map with passed location
+	 * @param location the location to retrieve LegacyChestBlock object
+	 * @return LegacyChestBlock object, or null if no LegacyChestBlock exists in map with passed location
 	 */
-	ChestBlock get(final Location location)
+	ValidChestBlock get(final Location location)
 	{
 		return this.locationMap.get(location);
 	}
@@ -91,10 +85,10 @@ final class BlockIndex
 	 * @param chestUid the UUID of the chest of which to retrieve a set of chest blocks
 	 * @return Set of Blocks in uuidMap, or empty set if no blocks exist for chest UUID
 	 */
-	Collection<ChestBlock> getBlocks(final UUID chestUid)
+	Collection<ValidChestBlock> getBlocks(final UUID chestUid)
 	{
 		// create empty Set for return
-		Set<ChestBlock> returnSet = new HashSet<>();
+		Set<ValidChestBlock> returnSet = new HashSet<>();
 
 		// if chestUid key exists in map, add map values to returnSet
 		if (chestUid != null && uuidMap.containsKey(chestUid))
@@ -111,35 +105,36 @@ final class BlockIndex
 	 * @param chestUid the UUID of the chest of which to retrieve a map of chest blocks
 	 * @return Map of Blocks in uuidMap, or empty map if no blocks exist for chest UUID
 	 */
-	Map<ChestBlockType, ChestBlock> getBlockMap(final UUID chestUid)
+	Map<ChestBlockType, ValidChestBlock> getBlockMap(final UUID chestUid)
 	{
 		// create empty map for return
-		Map<ChestBlockType, ChestBlock> returnMap = new EnumMap<>(ChestBlockType.class);
+		Map<ChestBlockType, ValidChestBlock> returnMap = new EnumMap<>(ChestBlockType.class);
 
 		// if chestUUID exists in map, add values to returnMap
 		if (chestUid != null && this.uuidMap.containsKey(chestUid))
 		{
 			returnMap.putAll(this.uuidMap.get(chestUid));
 		}
+
 		return returnMap;
 	}
 
 
 	/**
-	 * Remove ChestBlock object from map
+	 * Remove LegacyChestBlock object from map
 	 *
-	 * @param chestBlock the ChestBlock object to remove from map
+	 * @param validChestBlock the LegacyChestBlock object to remove from map
 	 */
-	void remove(final ChestBlock chestBlock)
+	void remove(final ValidChestBlock validChestBlock)
 	{
 		// check for null key
-		if (chestBlock == null)
+		if (validChestBlock == null)
 		{
 			return;
 		}
 
 		// get chest location
-		Location location = chestBlock.getLocation();
+		Location location = validChestBlock.getLocation();
 
 		if (location == null)
 		{
@@ -150,7 +145,7 @@ final class BlockIndex
 		this.locationMap.remove(location);
 
 		// get chest UUID
-		UUID chestUid = chestBlock.getChestUid();
+		UUID chestUid = validChestBlock.getChestUid();
 
 		// if passed chest block UUID is not null, remove chest block from uuid map
 		if (chestUid != null)

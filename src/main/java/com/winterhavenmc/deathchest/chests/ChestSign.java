@@ -18,6 +18,8 @@
 package com.winterhavenmc.deathchest.chests;
 
 import com.winterhavenmc.deathchest.PluginMain;
+import com.winterhavenmc.deathchest.models.chestblock.ChestBlock;
+import com.winterhavenmc.deathchest.models.chestblock.SignChestBlock;
 import com.winterhavenmc.deathchest.models.deathchest.ValidDeathChest;
 import com.winterhavenmc.library.messagebuilder.resources.configuration.LanguageTag;
 
@@ -115,19 +117,22 @@ public record ChestSign(PluginMain plugin, Player player, ValidDeathChest deathC
 	}
 
 
-	private void finalizeSign(final Block signBlock, final Player player, final ValidDeathChest deathChest)
+	private void finalizeSign(final Block signBlock, final Player player, final ValidDeathChest validDeathChest)
 	{
 		// put configured text on sign
 		setSignText(signBlock, player);
 
 		// create ChestBlock for this sign block
-		ChestBlock signChestBlock = new ChestBlock(deathChest.chestUid(), signBlock.getLocation());
+		ChestBlock chestBlock = ChestBlock.of(validDeathChest.chestUid(), signBlock.getLocation(), ChestBlockType.SIGN);
 
-		// add this ChestBlock to block map
-		plugin.chestManager.putBlock(ChestBlockType.SIGN, signChestBlock);
+		if (chestBlock instanceof SignChestBlock signChestBlock)
+		{
+			// add this LegacyChestBlock to block map
+			plugin.chestManager.putBlock(ChestBlockType.SIGN, signChestBlock);
 
-		// set sign block metadata
-		signChestBlock.setMetadata(deathChest);
+			// set sign block metadata
+			plugin.chestManager.setMetadata(signChestBlock, validDeathChest);
+		}
 	}
 
 

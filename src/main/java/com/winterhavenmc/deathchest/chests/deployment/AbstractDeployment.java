@@ -18,13 +18,14 @@
 package com.winterhavenmc.deathchest.chests.deployment;
 
 import com.winterhavenmc.deathchest.PluginMain;
-import com.winterhavenmc.deathchest.chests.ChestBlock;
 import com.winterhavenmc.deathchest.chests.ChestBlockType;
 import com.winterhavenmc.deathchest.chests.LocationUtilities;
 import com.winterhavenmc.deathchest.chests.search.SearchResult;
 import com.winterhavenmc.deathchest.chests.search.SearchResultCode;
 import com.winterhavenmc.deathchest.messages.Macro;
 import com.winterhavenmc.deathchest.messages.MessageId;
+import com.winterhavenmc.deathchest.models.chestblock.ChestBlock;
+import com.winterhavenmc.deathchest.models.chestblock.ValidChestBlock;
 import com.winterhavenmc.deathchest.models.deathchest.ValidDeathChest;
 
 import org.bukkit.Location;
@@ -153,14 +154,17 @@ public abstract class AbstractDeployment implements Deployment
 		// set chest direction
 		setChestDirection(block, player.getLocation());
 
-		// create new ChestBlock object
-		ChestBlock chestBlock = new ChestBlock(deathChest.chestUid(), block.getLocation());
+		// create new LegacyChestBlock object
+		ChestBlock chestBlock = ChestBlock.of(deathChest.chestUid(), block.getLocation(), chestBlockType);
 
-		// add this ChestBlock to block map
-		plugin.chestManager.putBlock(chestBlockType, chestBlock);
+		if (chestBlock instanceof ValidChestBlock validChestBlock)
+		{
+			// add this LegacyChestBlock to block map
+			plugin.chestManager.putBlock(chestBlockType, validChestBlock);
 
-		// set block metadata
-		chestBlock.setMetadata(deathChest);
+			// set block metadata
+			plugin.chestManager.setMetadata(validChestBlock, deathChest);
+		}
 	}
 
 

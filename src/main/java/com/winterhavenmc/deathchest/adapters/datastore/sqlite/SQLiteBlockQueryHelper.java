@@ -17,7 +17,7 @@
 
 package com.winterhavenmc.deathchest.adapters.datastore.sqlite;
 
-import com.winterhavenmc.deathchest.chests.ChestBlock;
+import com.winterhavenmc.deathchest.models.chestblock.ValidChestBlock;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -25,27 +25,27 @@ import java.sql.SQLException;
 
 public final class SQLiteBlockQueryHelper
 {
-	public int insertBlock(final ChestBlock blockRecord, final PreparedStatement preparedStatement) throws SQLException
+	public int insertBlock(final ValidChestBlock validChestBlock, final PreparedStatement preparedStatement) throws SQLException
 	{
-		preparedStatement.setLong(  1, blockRecord.getChestUid().getMostSignificantBits());
-		preparedStatement.setLong(  2, blockRecord.getChestUid().getLeastSignificantBits());
-		preparedStatement.setString(3, blockRecord.getWorldName());
-		preparedStatement.setLong(  4, blockRecord.getWorldUid().getMostSignificantBits());
-		preparedStatement.setLong(  5, blockRecord.getWorldUid().getLeastSignificantBits());
-		preparedStatement.setInt(   6, blockRecord.getX());
-		preparedStatement.setInt(   7, blockRecord.getY());
-		preparedStatement.setInt(   8, blockRecord.getZ());
+		preparedStatement.setLong(  1, validChestBlock.getChestUid().getMostSignificantBits());
+		preparedStatement.setLong(  2, validChestBlock.getChestUid().getLeastSignificantBits());
+		preparedStatement.setString(3, validChestBlock.getWorldName());
+		preparedStatement.setLong(  4, validChestBlock.getWorldUid().getMostSignificantBits());
+		preparedStatement.setLong(  5, validChestBlock.getWorldUid().getLeastSignificantBits());
+		preparedStatement.setInt(   6, validChestBlock.getX());
+		preparedStatement.setInt(   7, validChestBlock.getY());
+		preparedStatement.setInt(   8, validChestBlock.getZ());
 		return preparedStatement.executeUpdate();
 	}
 
 
-	public int DeleteBlock(final ChestBlock chestBlock, final PreparedStatement preparedStatement) throws SQLException
+	public int DeleteBlock(final ValidChestBlock validChestBlock, final PreparedStatement preparedStatement) throws SQLException
 	{
-		preparedStatement.setLong(1, chestBlock.getWorldUid().getMostSignificantBits());
-		preparedStatement.setLong(2, chestBlock.getWorldUid().getLeastSignificantBits());
-		preparedStatement.setInt( 3, chestBlock.getX());
-		preparedStatement.setInt( 4, chestBlock.getY());
-		preparedStatement.setInt( 5, chestBlock.getZ());
+		preparedStatement.setLong(1, validChestBlock.getWorldUid().getMostSignificantBits());
+		preparedStatement.setLong(2, validChestBlock.getWorldUid().getLeastSignificantBits());
+		preparedStatement.setInt( 3, validChestBlock.getX());
+		preparedStatement.setInt( 4, validChestBlock.getY());
+		preparedStatement.setInt( 5, validChestBlock.getZ());
 		return preparedStatement.executeUpdate();
 	}
 
