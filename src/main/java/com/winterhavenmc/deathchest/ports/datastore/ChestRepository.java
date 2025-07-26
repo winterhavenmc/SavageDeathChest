@@ -48,12 +48,11 @@ public interface ChestRepository
 	 *
 	 * @param deathChest the chest to delete
 	 */
-	void delete(final ValidDeathChest deathChest);
+	int delete(final ValidDeathChest deathChest);
 
 
 	int getCount();
 
 
 	int deleteOrphanedChests(final String worldName);
-
 }
