@@ -17,7 +17,7 @@
 
 package com.winterhavenmc.deathchest.ports.datastore;
 
-import com.winterhavenmc.deathchest.chests.ChestBlock;
+import com.winterhavenmc.deathchest.models.chestblock.ValidChestBlock;
 
 import java.util.Collection;
 
@@ -30,24 +30,24 @@ public interface BlockRepository
 	/**
 	 * Retrieve a collection of all block records from the datastore
 	 *
-	 * @return List of ChestBlock
+	 * @return List of ValidChestBlock
 	 */
-	Collection<ChestBlock> getAll();
+	Collection<ValidChestBlock> getAll();
 
 
 	/**
 	 * Insert block records in the datastore
 	 *
-	 * @param blockRecords a collection of ChestBlock objects to insert in the datastore
+	 * @param blockRecords a collection of LegacyChestBlock objects to insert in the datastore
 	 */
-	int save(final Collection<ChestBlock> blockRecords);
+	int save(final Collection<ValidChestBlock> blockRecords);
 
 
 	/**
 	 * Delete a block record from the datastore
 	 *
-	 * @param chestBlock the chest block to delete
+	 * @param validChestBlock the chest block to delete
 	 */
-	void delete(final ChestBlock chestBlock);
+	void delete(final ValidChestBlock validChestBlock);
 
 }

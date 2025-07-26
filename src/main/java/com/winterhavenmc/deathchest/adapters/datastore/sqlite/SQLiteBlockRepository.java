@@ -17,7 +17,8 @@
 
 package com.winterhavenmc.deathchest.adapters.datastore.sqlite;
 
-import com.winterhavenmc.deathchest.chests.ChestBlock;
+import com.winterhavenmc.deathchest.models.chestblock.ChestBlock;
+import com.winterhavenmc.deathchest.models.chestblock.ValidChestBlock;
 import com.winterhavenmc.deathchest.ports.datastore.BlockRepository;
 import org.bukkit.World;
 import org.bukkit.plugin.Plugin;
@@ -54,9 +55,9 @@ public final class SQLiteBlockRepository implements BlockRepository
 
 
 	@Override
-	public Collection<ChestBlock> getAll()
+	public Collection<ValidChestBlock> getAll()
 	{
-		final Collection<ChestBlock> results = new HashSet<>();
+		final Collection<ValidChestBlock> results = new HashSet<>();
 
 		try (PreparedStatement preparedStatement = connection.prepareStatement(SQLiteQueries.getQuery("SelectAllBlocks")))
 		{
@@ -80,10 +81,13 @@ public final class SQLiteBlockRepository implements BlockRepository
 				if (world != null)
 				{
 					// create chest block object from retrieved record
-					ChestBlock chestBlock = new ChestBlock(chestUid, world.getName(), world.getUID(), x, y, z, 0, 0);
+					ChestBlock chestBlock = ChestBlock.of(chestUid, world.getName(), world.getUID(), x, y, z, 0, 0);
 
-					// add DeathChestObject to results set
-					results.add(chestBlock);
+					if (chestBlock instanceof ValidChestBlock validChestBlock)
+					{
+						// add DeathChestObject to results set
+						results.add(validChestBlock);
+					}
 				}
 //				else
 //				{
@@ -105,7 +109,7 @@ public final class SQLiteBlockRepository implements BlockRepository
 
 
 	@Override
-	public int save(final Collection<ChestBlock> blockRecords)
+	public int save(final Collection<ValidChestBlock> blockRecords)
 	{
 		return blockRecords.stream()
 				.filter(Objects::nonNull)
@@ -114,11 +118,11 @@ public final class SQLiteBlockRepository implements BlockRepository
 	}
 
 
-	private int insertBlock(final ChestBlock block)
+	private int insertBlock(final ValidChestBlock validChestBlock)
 	{
 		try (PreparedStatement preparedStatement = connection.prepareStatement(SQLiteQueries.getQuery("InsertBlockRecord")))
 		{
-			return blockQueryHelper.insertBlock(block, preparedStatement);
+			return blockQueryHelper.insertBlock(validChestBlock, preparedStatement);
 		}
 		catch (SQLException sqlException)
 		{
@@ -130,14 +134,14 @@ public final class SQLiteBlockRepository implements BlockRepository
 
 
 	@Override
-	synchronized public void delete(final ChestBlock chestBlock)
+	synchronized public void delete(final ValidChestBlock validChestBlock)
 	{
-		// if passed chestBlock is null, do nothing and return
-		if (chestBlock != null)
+		// if passed legacyChestBlock is null, do nothing and return
+		if (validChestBlock != null)
 		{
 			try (PreparedStatement preparedStatement = connection.prepareStatement(SQLiteQueries.getQuery("DeleteBlockByLocation")))
 			{
-				int rowsAffected = blockQueryHelper.DeleteBlock(chestBlock, preparedStatement);
+				int rowsAffected = blockQueryHelper.DeleteBlock(validChestBlock, preparedStatement);
 			}
 			catch (SQLException sqlException)
 			{

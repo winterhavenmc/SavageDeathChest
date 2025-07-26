@@ -142,7 +142,7 @@ public final class SQLiteDataStore
 //		if (this.schemaVersion == 0)
 //		{
 //			Collection<DeathChestRecord> existingChestRecords = Collections.emptySet();
-//			Collection<ChestBlock> existingBlockRecords = Collections.emptySet();
+//			Collection<LegacyChestBlock> existingBlockRecords = Collections.emptySet();
 //
 //			ResultSet chestTable = statement.executeQuery(SQLiteQueries.getQuery("SelectDeathChestTable"));
 //			if (chestTable.next())
