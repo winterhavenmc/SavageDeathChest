@@ -32,8 +32,9 @@ public sealed interface DeathChest permits ValidDeathChest, InvalidDeathChest
 
 	static DeathChest of(final Player owner, final Location location, final Configuration config)
 	{
-		if (owner == null) return new InvalidDeathChest("Parameter 'owner' was null.");
-		else if (location == null) return new InvalidDeathChest("Parameter 'location' was null.");
+		if (owner == null) return new InvalidDeathChest("The parameter 'owner' was null.");
+		else if (location == null) return new InvalidDeathChest("The parameter 'location' was null.");
+		else if (config == null) return new InvalidDeathChest("The parameter 'config' was null.");
 		else
 		{
 			UUID chestUid = UUID.randomUUID();
