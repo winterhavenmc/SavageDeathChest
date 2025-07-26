@@ -134,21 +134,18 @@ public final class SQLiteBlockRepository implements BlockRepository
 
 
 	@Override
-	synchronized public void delete(final ValidChestBlock validChestBlock)
+	public int delete(final ValidChestBlock validChestBlock)
 	{
-		// if passed legacyChestBlock is null, do nothing and return
-		if (validChestBlock != null)
+		try (PreparedStatement preparedStatement = connection.prepareStatement(SQLiteQueries.getQuery("DeleteBlockByLocation")))
 		{
-			try (PreparedStatement preparedStatement = connection.prepareStatement(SQLiteQueries.getQuery("DeleteBlockByLocation")))
-			{
-				int rowsAffected = blockQueryHelper.DeleteBlock(validChestBlock, preparedStatement);
-			}
-			catch (SQLException sqlException)
-			{
-				logger.warning("An error occurred while attempting to "
-						+ "delete a block record from the SQLite datastore.");
-				logger.warning(sqlException.getMessage());
-			}
+			return blockQueryHelper.DeleteBlock(validChestBlock, preparedStatement);
+		}
+		catch (SQLException sqlException)
+		{
+			logger.warning("An error occurred while attempting to "
+					+ "delete a block record from the SQLite datastore.");
+			logger.warning(sqlException.getMessage());
+			return 0;
 		}
 	}
 
