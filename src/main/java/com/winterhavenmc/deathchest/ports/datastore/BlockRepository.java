@@ -48,6 +48,5 @@ public interface BlockRepository
 	 *
 	 * @param validChestBlock the chest block to delete
 	 */
-	void delete(final ValidChestBlock validChestBlock);
-
+	int delete(final ValidChestBlock validChestBlock);
 }
