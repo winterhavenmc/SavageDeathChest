@@ -58,21 +58,9 @@ public final class SQLiteChestRowMapper
 		int locationY = resultSet.getInt("LocationY");
 		int locationZ = resultSet.getInt("LocationZ");
 
-		return DeathChest.of(
-				chestUid,
-				ownerUid,
-				ownerName,
-				killerUid,
-				killerName,
-				worldUid,
-				worldName,
-				locationX,
-				locationY,
-				locationZ,
-				itemCount,
-				Instant.ofEpochMilli(placementTime),
-				Instant.ofEpochMilli(expirationTime),
-				Instant.ofEpochMilli(protectionExpirationTime));
+		return DeathChest.of(chestUid, ownerUid, ownerName, killerUid, killerName, worldUid, worldName,
+				locationX, locationY, locationZ, itemCount, Instant.ofEpochMilli(placementTime),
+				Instant.ofEpochMilli(expirationTime), Instant.ofEpochMilli(protectionExpirationTime));
 	}
 
 }
