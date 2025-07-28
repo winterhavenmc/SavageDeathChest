@@ -208,7 +208,7 @@ public final class ValidDeathChest implements DeathChest, Ownable, Identifiable,
 	@Override
 	public AnimalTamer getOwner()
 	{
-		return (AnimalTamer) Bukkit.getEntity(ownerUid);
+		return Bukkit.getOfflinePlayer(killerUid);
 	}
 
 	@Override
@@ -234,9 +234,9 @@ public final class ValidDeathChest implements DeathChest, Ownable, Identifiable,
 	 * @return the looter as an {@link Entity}, or {@code null} if unknown
 	 */
 	@Override
-	public Entity getLooter()
+	public AnimalTamer getLooter()
 	{
-		return Bukkit.getEntity(killerUid);
+		return Bukkit.getOfflinePlayer(killerUid);
 	}
 
 	/**
