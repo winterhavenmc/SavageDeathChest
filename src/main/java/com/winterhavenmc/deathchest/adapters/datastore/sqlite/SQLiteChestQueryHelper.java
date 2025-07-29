@@ -26,18 +26,6 @@ import java.sql.SQLException;
 
 public final class SQLiteChestQueryHelper
 {
-	static int getChestCount(PreparedStatement preparedStatement) throws SQLException
-	{
-		int count = 0;
-
-		ResultSet resultSet = preparedStatement.executeQuery();
-		if (resultSet.next())
-		{
-			count = resultSet.getInt("ChestCount");
-		}
-		return count;
-	}
-
 	public int insertChest(final ValidDeathChest validDeathChest, final PreparedStatement preparedStatement) throws SQLException
 	{
 		preparedStatement.setLong(   1, validDeathChest.chestUid().getMostSignificantBits());
@@ -78,4 +66,14 @@ public final class SQLiteChestQueryHelper
 		preparedStatement.setLong(2, validDeathChest.chestUid().getLeastSignificantBits());
 		return preparedStatement.executeUpdate();
 	}
+
+
+	static int getChestItemCount(PreparedStatement preparedStatement) throws SQLException
+	{
+		final ResultSet resultSet = preparedStatement.executeQuery();
+		return (resultSet.next())
+				? resultSet.getInt("ChestCount")
+				: 0;
+	}
+
 }
