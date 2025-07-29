@@ -38,9 +38,6 @@ public final class SQLiteChestRowMapper
 		// convert killer uuid from stored components
 		final UUID killerUid = new UUID(resultSet.getLong("KillerUidMsb"), resultSet.getLong("KillerUidLsb"));
 
-		// get protection expiration time
-		final long protectionExpirationTime = resultSet.getLong("ProtectionExpirationTime");
-
 		// get owner name string
 		final String ownerName = resultSet.getString("OwnerName");
 
@@ -48,15 +45,16 @@ public final class SQLiteChestRowMapper
 		final String killerName = resultSet.getString("KillerName");
 
 		// set other fields in deathChestBlock from database fields
-		int itemCount = resultSet.getInt("ItemCount");
-		long placementTime = resultSet.getLong("PlacementTime");
-		long expirationTime = resultSet.getLong("ExpirationTime");
+		final int itemCount = resultSet.getInt("ItemCount");
+		final long placementTime = resultSet.getLong("PlacementTime");
+		final long expirationTime = resultSet.getLong("ExpirationTime");
+		final long protectionExpirationTime = resultSet.getLong("ProtectionExpirationTime");
 
 		final UUID worldUid = new UUID(resultSet.getLong("WorldUidMsb"), resultSet.getLong("WorldUidLsb"));
-		String worldName = resultSet.getString("WorldName");
-		int locationX = resultSet.getInt("LocationX");
-		int locationY = resultSet.getInt("LocationY");
-		int locationZ = resultSet.getInt("LocationZ");
+		final String worldName = resultSet.getString("WorldName");
+		final int locationX = resultSet.getInt("LocationX");
+		final int locationY = resultSet.getInt("LocationY");
+		final int locationZ = resultSet.getInt("LocationZ");
 
 		return DeathChest.of(chestUid, ownerUid, ownerName, killerUid, killerName, worldUid, worldName,
 				locationX, locationY, locationZ, itemCount, Instant.ofEpochMilli(placementTime),
