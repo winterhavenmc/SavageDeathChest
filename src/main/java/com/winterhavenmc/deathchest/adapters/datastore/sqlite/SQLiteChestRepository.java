@@ -133,7 +133,7 @@ public final class SQLiteChestRepository implements ChestRepository
 	{
 		try (PreparedStatement preparedStatement = connection.prepareStatement(SQLiteQueries.getQuery("SelectChestCount")))
 		{
-			return SQLiteChestQueryHelper.getChestCount(preparedStatement);
+			return SQLiteChestQueryHelper.getChestItemCount(preparedStatement);
 		}
 		catch (SQLException e)
 		{
