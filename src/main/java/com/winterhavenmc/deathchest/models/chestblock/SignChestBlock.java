@@ -18,8 +18,8 @@
 package com.winterhavenmc.deathchest.models.chestblock;
 
 import org.bukkit.Location;
-
 import java.util.UUID;
+
 
 public final class SignChestBlock extends AbstractChestBlock implements ValidChestBlock
 {

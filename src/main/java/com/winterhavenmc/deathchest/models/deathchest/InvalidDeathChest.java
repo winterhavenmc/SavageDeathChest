@@ -17,47 +17,4 @@
 
 package com.winterhavenmc.deathchest.models.deathchest;
 
-import java.util.Objects;
-
-public final class InvalidDeathChest implements DeathChest
-{
-	private final String reason;
-
-	public InvalidDeathChest(String reason)
-	{
-		this.reason = reason;
-	}
-
-	public String reason()
-	{
-		return reason;
-	}
-
-	@Override
-	public boolean equals(Object obj)
-	{
-		if (obj == this)
-		{
-			return true;
-		}
-		if (obj == null || obj.getClass() != this.getClass())
-		{
-			return false;
-		}
-		var that = (InvalidDeathChest) obj;
-		return Objects.equals(this.reason, that.reason);
-	}
-
-	@Override
-	public int hashCode()
-	{
-		return Objects.hash(reason);
-	}
-
-	@Override
-	public String toString()
-	{
-		return "InvalidDeathChest[" +
-				"reason=" + reason + ']';
-	}
-}
+public record InvalidDeathChest(String reason) implements DeathChest { }
