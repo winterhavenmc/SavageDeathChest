@@ -55,6 +55,4 @@ public interface ChestRepository
 
 	int getCount();
 
-
-	int deleteOrphanedChests(final String worldName);
 }
