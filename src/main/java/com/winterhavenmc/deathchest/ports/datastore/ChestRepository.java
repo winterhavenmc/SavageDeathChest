@@ -53,6 +53,11 @@ public interface ChestRepository
 	int delete(final ValidDeathChest deathChest);
 
 
+	/**
+	 * Get number of chests in the datastore
+	 *
+	 * @return number of chests in the datastore
+	 */
 	int getCount();
 
 }
