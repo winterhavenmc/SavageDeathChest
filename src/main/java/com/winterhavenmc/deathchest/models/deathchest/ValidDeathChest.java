@@ -208,7 +208,7 @@ public final class ValidDeathChest implements DeathChest, Ownable, Identifiable,
 	@Override
 	public AnimalTamer getOwner()
 	{
-		return Bukkit.getOfflinePlayer(killerUid);
+		return Bukkit.getOfflinePlayer(ownerUid);
 	}
 
 	@Override
