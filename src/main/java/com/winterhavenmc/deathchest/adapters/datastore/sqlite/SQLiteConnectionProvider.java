@@ -15,15 +15,13 @@
  *
  */
 
-package com.winterhavenmc.deathchest.storage;
+package com.winterhavenmc.deathchest.adapters.datastore.sqlite;
 
 import com.winterhavenmc.deathchest.PluginMain;
-import com.winterhavenmc.deathchest.adapters.datastore.sqlite.SQLiteQueries;
-import com.winterhavenmc.deathchest.adapters.datastore.sqlite.SQLiteBlockRepository;
-import com.winterhavenmc.deathchest.adapters.datastore.sqlite.SQLiteChestQueryHelper;
-import com.winterhavenmc.deathchest.adapters.datastore.sqlite.SQLiteChestRepository;
 import com.winterhavenmc.deathchest.ports.datastore.BlockRepository;
 import com.winterhavenmc.deathchest.ports.datastore.ChestRepository;
+import com.winterhavenmc.deathchest.ports.datastore.ConnectionProvider;
+import org.bukkit.plugin.Plugin;
 
 import java.io.File;
 import java.sql.*;
@@ -34,11 +32,11 @@ import java.util.concurrent.TimeUnit;
  * SQLite implementation of Datastore
  * for persistent storage of death chests and chest block objects
  */
-public final class SQLiteDataStore
+public final class SQLiteConnectionProvider implements ConnectionProvider
 {
-	private final PluginMain plugin;
-	private Connection connection;
+	private final Plugin plugin;
 	private final String dataFilePath;
+	private Connection connection;
 	private boolean initialized;
 
 	private ChestRepository chestRepository;
@@ -52,7 +50,7 @@ public final class SQLiteDataStore
 	 *
 	 * @param plugin reference to plugin main class
 	 */
-	SQLiteDataStore(final PluginMain plugin)
+	public SQLiteConnectionProvider(final Plugin plugin)
 	{
 		this.plugin = plugin;
 		this.dataFilePath = plugin.getDataFolder() + File.separator + "deathchests.db";
@@ -63,12 +61,13 @@ public final class SQLiteDataStore
 	 * initialize the database connection and
 	 * create table if one doesn't already exist
 	 */
-	public void initialize() throws SQLException, ClassNotFoundException
+	@Override
+	public void connect() throws SQLException, ClassNotFoundException
 	{
 		// if data store is already initialized, do nothing and return
-		if (this.isInitialized())
+		if (initialized)
 		{
-			plugin.getLogger().info(this + " datastore already initialized.");
+			plugin.getLogger().info("SQLite datastore already initialized.");
 			return;
 		}
 
@@ -93,7 +92,7 @@ public final class SQLiteDataStore
 		updateSchema();
 
 		// set initialized true
-		setInitialized(true);
+		initialized = true;
 
 		// instantiate datastore adapters
 		chestRepository = new SQLiteChestRepository(plugin.getLogger(), connection);
@@ -101,6 +100,44 @@ public final class SQLiteDataStore
 
 		// output log message
 		plugin.getLogger().info("Datastore initialized.");
+	}
+
+
+	/**
+	 * Close database connection
+	 */
+	@Override
+	public void close()
+	{
+		if (initialized)
+		{
+			try
+			{
+				connection.close();
+				plugin.getLogger().info(this + " datastore connection closed.");
+			}
+			catch (SQLException sqlException)
+			{
+				plugin.getLogger().warning("An error occurred while closing the " +
+						this + " datastore connection.");
+				plugin.getLogger().warning(sqlException.getMessage());
+			}
+			initialized = true;
+		}
+	}
+
+
+	@Override
+	public ChestRepository deathChests()
+	{
+		return this.chestRepository;
+	}
+
+
+	@Override
+	public BlockRepository chestBlocks()
+	{
+		return this.blockRepository;
 	}
 
 
@@ -187,29 +224,6 @@ public final class SQLiteDataStore
 
 
 	/**
-	 * Close database connection
-	 */
-	public void close()
-	{
-		if (isInitialized())
-		{
-			try
-			{
-				connection.close();
-				plugin.getLogger().info(this + " datastore connection closed.");
-			}
-			catch (SQLException sqlException)
-			{
-				plugin.getLogger().warning("An error occurred while closing the " +
-						this + " datastore connection.");
-				plugin.getLogger().warning(sqlException.getMessage());
-			}
-			setInitialized(false);
-		}
-	}
-
-
-	/**
 	 * Delete orphaned chests in nonexistent world {@code worldName}
 	 *
 	 * @param worldName the world name of orphaned chests to delete
@@ -234,64 +248,6 @@ public final class SQLiteDataStore
 					"SQLite datastore.");
 			plugin.getLogger().warning(sqlException.getMessage());
 		}
-	}
-
-
-	/**
-	 * Check if the datastore is initialized
-	 *
-	 * @return {@code true} if the datastore is initialized, {@code false} if it is not
-	 */
-	public boolean isInitialized()
-	{
-		return this.initialized;
-	}
-
-
-	/**
-	 * Set datastore initialized value
-	 *
-	 * @param initialized the boolean value to assign to the datastore initialized field
-	 */
-	public void setInitialized(final boolean initialized)
-	{
-		this.initialized = initialized;
-	}
-
-
-	public ChestRepository deathChests()
-	{
-		return this.chestRepository;
-	}
-
-
-	public BlockRepository chestBlocks()
-	{
-		return this.blockRepository;
-	}
-
-
-	/**
-	 * Create new data store of given type and convert old data store.<br>
-	 * Two parameter version used when a datastore instance already exists
-	 *
-	 * @param plugin reference to plugin main class
-	 * @return the new datastore
-	 */
-	public static SQLiteDataStore connect(final PluginMain plugin)
-	{
-		SQLiteDataStore dataStore = new SQLiteDataStore(plugin);
-		try
-		{
-			dataStore.initialize();
-		}
-		catch (Exception exception)
-		{
-			plugin.getLogger().severe("The SQLite datastore could not be initialized!");
-			plugin.getLogger().severe(exception.getLocalizedMessage());
-		}
-
-		return dataStore;
 	}
 
 }
