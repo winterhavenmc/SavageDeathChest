@@ -24,7 +24,7 @@ import org.bukkit.World;
 import java.util.UUID;
 
 
-public class AbstractChestBlock
+class AbstractChestBlock
 {
 	protected final UUID chestUid;
 	protected final String worldName;
@@ -35,17 +35,19 @@ public class AbstractChestBlock
 	protected final float yaw;
 	protected final float pitch;
 
+
 	AbstractChestBlock(final UUID chestUid, final Location location)
 	{
 		this.chestUid = chestUid;
-		this.worldName = location.getWorld().getName();
-		this.worldUid = location.getWorld().getUID();
+		this.worldName = (location.getWorld() != null) ? location.getWorld().getName() : "\uD83C\uDF10";
+		this.worldUid = (location.getWorld() != null) ? location.getWorld().getUID() : new UUID(0, 0);
 		this.x = location.getBlockX();
 		this.y = location.getBlockY();
 		this.z = location.getBlockZ();
 		this.yaw = location.getYaw();
 		this.pitch = location.getPitch();
 	}
+
 
 	/**
 	 * Getter method for chest block location
