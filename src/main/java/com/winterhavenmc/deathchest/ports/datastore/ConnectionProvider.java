@@ -19,6 +19,7 @@ package com.winterhavenmc.deathchest.ports.datastore;
 
 import java.sql.SQLException;
 
+
 public interface ConnectionProvider
 {
 	/**
