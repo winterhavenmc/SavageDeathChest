@@ -40,6 +40,7 @@ public interface ChestRepository
 	 *
 	 * @param deathChests a collection of DeathChest objects to insert into the datastore
 	 */
+	@SuppressWarnings("UnusedReturnValue")
 	int save(final Collection<ValidDeathChest> deathChests);
 
 
@@ -48,6 +49,7 @@ public interface ChestRepository
 	 *
 	 * @param deathChest the chest to delete
 	 */
+	@SuppressWarnings("UnusedReturnValue")
 	int delete(final ValidDeathChest deathChest);
 
 

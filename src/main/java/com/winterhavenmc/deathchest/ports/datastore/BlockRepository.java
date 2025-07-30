@@ -40,6 +40,7 @@ public interface BlockRepository
 	 *
 	 * @param blockRecords a collection of LegacyChestBlock objects to insert in the datastore
 	 */
+	@SuppressWarnings("UnusedReturnValue")
 	int save(final Collection<ValidChestBlock> blockRecords);
 
 
@@ -48,5 +49,6 @@ public interface BlockRepository
 	 *
 	 * @param validChestBlock the chest block to delete
 	 */
+	@SuppressWarnings("UnusedReturnValue")
 	int delete(final ValidChestBlock validChestBlock);
 }
