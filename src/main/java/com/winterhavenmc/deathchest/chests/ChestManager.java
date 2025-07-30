@@ -24,7 +24,7 @@ import com.winterhavenmc.deathchest.messages.MessageId;
 import com.winterhavenmc.deathchest.models.chestblock.ValidChestBlock;
 import com.winterhavenmc.deathchest.models.deathchest.ValidDeathChest;
 import com.winterhavenmc.deathchest.sounds.SoundId;
-import com.winterhavenmc.deathchest.storage.SQLiteDataStore;
+import com.winterhavenmc.deathchest.storage.DataStore;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -62,7 +62,7 @@ public final class ChestManager
 	private final BlockIndex blockIndex;
 
 	// instantiate datastore
-	private final SQLiteDataStore dataStore;
+	private final DataStore dataStore;
 
 	// set of replaceable blocks
 	private final ReplaceableBlocks replaceableBlocks;
@@ -90,7 +90,7 @@ public final class ChestManager
 		replaceableBlocks = new ReplaceableBlocks(plugin);
 
 		// initialize datastore
-		dataStore = SQLiteDataStore.connect(plugin);
+		dataStore = DataStore.connect(plugin);
 
 		// initialize chestIndex
 		chestIndex = new ChestIndex();
