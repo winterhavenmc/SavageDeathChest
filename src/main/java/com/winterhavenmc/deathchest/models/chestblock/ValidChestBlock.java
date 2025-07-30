@@ -18,10 +18,10 @@
 package com.winterhavenmc.deathchest.models.chestblock;
 
 import org.bukkit.Location;
-
 import java.util.UUID;
 
-public sealed interface ValidChestBlock extends ChestBlock permits LeftChestBlock, RightChestBlock, SignChestBlock
+
+sealed public interface ValidChestBlock extends ChestBlock permits LeftChestBlock, RightChestBlock, SignChestBlock
 {
 	Location getLocation();
 	UUID getChestUid();

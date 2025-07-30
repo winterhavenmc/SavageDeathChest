@@ -17,20 +17,14 @@
 
 package com.winterhavenmc.deathchest.models.chestblock;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.World;
-
 import java.util.UUID;
+
 
 public final class LeftChestBlock extends AbstractChestBlock implements ValidChestBlock
 {
-
-
 	LeftChestBlock(final UUID chestUid, final Location location)
 	{
 		super(chestUid, location);
 	}
-
-
 }
