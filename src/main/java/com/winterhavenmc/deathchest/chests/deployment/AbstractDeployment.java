@@ -154,12 +154,12 @@ public abstract class AbstractDeployment implements Deployment
 		// set chest direction
 		setChestDirection(block, player.getLocation());
 
-		// create new LegacyChestBlock object
+		// create new ChestBlock object
 		ChestBlock chestBlock = ChestBlock.of(deathChest.chestUid(), block.getLocation(), chestBlockType);
 
 		if (chestBlock instanceof ValidChestBlock validChestBlock)
 		{
-			// add this LegacyChestBlock to block map
+			// add this ChestBlock to block map
 			plugin.chestManager.putBlock(chestBlockType, validChestBlock);
 
 			// set block metadata
