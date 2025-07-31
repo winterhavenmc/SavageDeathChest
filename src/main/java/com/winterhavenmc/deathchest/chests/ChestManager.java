@@ -56,23 +56,12 @@ import static com.winterhavenmc.deathchest.models.deathchest.DeathChest.INVALID_
  */
 public final class ChestManager
 {
-	// reference to main class
 	private final PluginMain plugin;
-
-	// map of death chests
 	private final ChestIndex chestIndex;
-
-	// map of chest blocks
 	private final BlockIndex blockIndex;
-
-	// instantiate datastore
 	private final DataStore dataStore;
-
-	// set of replaceable blocks
 	private final ReplaceableBlocks replaceableBlocks;
-
-	// DeathChest material types
-	final static Collection<Material> deathChestMaterials = Set.of(
+	private final static Collection<Material> deathChestMaterials = Set.of(
 			Material.CHEST,
 			Material.OAK_WALL_SIGN,
 			Material.OAK_SIGN );
@@ -87,21 +76,11 @@ public final class ChestManager
 	 */
 	public ChestManager(final PluginMain plugin)
 	{
-		// set reference to main class
 		this.plugin = plugin;
-
-		// initialize replaceableBlocks
 		replaceableBlocks = new ReplaceableBlocks(plugin);
-
-		// initialize datastore
 		dataStore = DataStore.connect(plugin);
-
-		// initialize chestIndex
 		chestIndex = new ChestIndex();
-
-		// initialize blockIndex
 		blockIndex = new BlockIndex();
-
 		deploymentFactory = new DeploymentFactory();
 	}
 
