@@ -17,10 +17,9 @@
 
 package com.winterhavenmc.deathchest.chests;
 
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
-import org.bukkit.block.data.BlockData;
+import org.bukkit.block.Sign;
 
 
 /**
@@ -34,46 +33,38 @@ public enum ChestBlockType
 
 
 	/**
-	 * Get chest block type from passed block
+	 * Get chest block type from existing in-game block
 	 *
 	 * @param block block to determine chest type
 	 * @return ChestBlockType enum value, or null if block is not a chest or sign
 	 */
 	public static ChestBlockType getType(final Block block)
 	{
-		// check for null parameter
-		if (block == null)
+		switch (block)
 		{
-			return null;
-		}
-
-		// if block material is SIGN or WALL_SIGN, return ChestBlockType.SIGN
-		if (block.getType().equals(Material.OAK_SIGN) || block.getType().equals(Material.OAK_WALL_SIGN))
-		{
-			return ChestBlockType.SIGN;
-		}
-
-		// if block material is CHEST, determine if it is LEFT or RIGHT chest (single chest returns RIGHT)
-		else if (block.getType().equals(Material.CHEST))
-		{
-			// cast block state to chest
-			Chest chest = (Chest) block.getState();
-
-			// get block data
-			BlockData blockData = chest.getBlockData();
-
-			// if chest is left chest, return LEFT_CHEST
-			if (((org.bukkit.block.data.type.Chest) blockData).getType().equals(org.bukkit.block.data.type.Chest.Type.LEFT))
+			case Sign ignored ->
 			{
-				return ChestBlockType.LEFT_CHEST;
+				return ChestBlockType.SIGN;
 			}
 
-			// if chest is single chest or right chest, return RIGHT_CHEST
-			return ChestBlockType.RIGHT_CHEST;
-		}
+			case Chest chest ->
+			{
+				if (chest.getBlockData() instanceof org.bukkit.block.data.type.Chest chestBlockData
+						&& chestBlockData.getType().equals(org.bukkit.block.data.type.Chest.Type.LEFT))
+				{
+					return ChestBlockType.LEFT_CHEST;
+				}
+				else
+				{
+					return ChestBlockType.RIGHT_CHEST;
+				}
+			}
 
-		// if block is not a sign or chest, return null
-		return null;
+			case null, default ->
+			{
+				return null;
+			}
+		}
 	}
 
 }
