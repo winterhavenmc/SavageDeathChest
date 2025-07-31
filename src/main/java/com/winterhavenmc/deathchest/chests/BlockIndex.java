@@ -56,16 +56,16 @@ final class BlockIndex
 	 */
 	void put(final ChestBlockType chestBlockType, final ValidChestBlock validChestBlock)
 	{
-		// add legacyChestBlock to locationMap
+		// add ChestBlock to locationMap
 		this.locationMap.put(validChestBlock.getLocation(), validChestBlock);
 
-		// if chestUUID key does not exist in map, add entry with chestUUID key and empty map as value
+		// if chestUid key does not exist in map, add entry with chestUid key and empty map as value
 		if (!uuidMap.containsKey(validChestBlock.getChestUid()))
 		{
 			uuidMap.put(validChestBlock.getChestUid(), new EnumMap<>(ChestBlockType.class));
 		}
 
-		// add new entry to map with chestUUID as key
+		// add new entry to map with chestUid as key
 		uuidMap.get(validChestBlock.getChestUid()).put(chestBlockType, validChestBlock);
 	}
 
