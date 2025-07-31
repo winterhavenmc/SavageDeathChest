@@ -33,8 +33,8 @@ public final class SQLiteChestRepository implements ChestRepository
 {
 	private final Logger logger;
 	private final Connection connection;
-	private final SQLiteChestRowMapper chestRowMapper = new SQLiteChestRowMapper();
-	private final SQLiteChestQueryHelper chestQueryHelper = new SQLiteChestQueryHelper();
+	private final SqliteChestRowMapper chestRowMapper = new SqliteChestRowMapper();
+	private final SqliteChestQueryExecutor chestQueryHelper = new SqliteChestQueryExecutor();
 
 
 	public SQLiteChestRepository(final Logger logger, final Connection connection)
@@ -133,7 +133,7 @@ public final class SQLiteChestRepository implements ChestRepository
 	{
 		try (PreparedStatement preparedStatement = connection.prepareStatement(SQLiteQueries.getQuery("SelectChestCount")))
 		{
-			return SQLiteChestQueryHelper.getChestItemCount(preparedStatement);
+			return SqliteChestQueryExecutor.getChestItemCount(preparedStatement);
 		}
 		catch (SQLException e)
 		{

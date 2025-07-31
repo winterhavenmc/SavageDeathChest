@@ -23,7 +23,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 
-public final class SQLiteBlockQueryHelper
+public final class SqliteBlockQueryExecutor
 {
 	public int insertBlock(final ValidChestBlock validChestBlock, final PreparedStatement preparedStatement) throws SQLException
 	{

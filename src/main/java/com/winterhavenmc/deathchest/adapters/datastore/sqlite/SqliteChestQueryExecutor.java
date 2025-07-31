@@ -24,7 +24,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 
-public final class SQLiteChestQueryHelper
+public final class SqliteChestQueryExecutor
 {
 	public int insertChest(final ValidDeathChest validDeathChest, final PreparedStatement preparedStatement) throws SQLException
 	{

@@ -40,7 +40,7 @@ public final class SQLiteBlockRepository implements BlockRepository
 	private final Plugin plugin;
 	private final Logger logger;
 	private final Connection connection;
-	private final SQLiteBlockQueryHelper blockQueryHelper = new SQLiteBlockQueryHelper();
+	private final SqliteBlockQueryExecutor blockQueryHelper = new SqliteBlockQueryExecutor();
 
 
 	/**

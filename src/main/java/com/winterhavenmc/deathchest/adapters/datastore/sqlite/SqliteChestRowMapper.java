@@ -25,7 +25,7 @@ import java.time.Instant;
 import java.util.UUID;
 
 
-public final class SQLiteChestRowMapper
+public final class SqliteChestRowMapper
 {
 	public DeathChest map(ResultSet resultSet) throws SQLException
 	{
