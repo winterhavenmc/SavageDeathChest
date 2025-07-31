@@ -211,12 +211,15 @@ final public class PermissionCheck
 		if (isCurrentlyOpen(validDeathChest))
 		{
 			event.setCancelled(true);
-			String viewerName = plugin.chestManager.getInventory(validDeathChest).getViewers().getFirst().getName();
-			plugin.soundConfig.playSound(player, SoundId.CHEST_DENIED_ACCESS);
-			plugin.messageBuilder.compose(player, MessageId.CHEST_CURRENTLY_OPEN)
-					.setMacro(Macro.DEATH_CHEST, validDeathChest)
-					.setMacro(Macro.VIEWER, viewerName)
-					.send();
+			plugin.chestManager.getInventory(validDeathChest).ifPresent(inventory ->
+			{
+				String viewerName = inventory.getViewers().getFirst().getName();
+				plugin.soundConfig.playSound(player, SoundId.CHEST_DENIED_ACCESS);
+				plugin.messageBuilder.compose(player, MessageId.CHEST_CURRENTLY_OPEN)
+						.setMacro(Macro.DEATH_CHEST, validDeathChest)
+						.setMacro(Macro.VIEWER, viewerName)
+						.send();
+			});
 			return;
 		}
 
