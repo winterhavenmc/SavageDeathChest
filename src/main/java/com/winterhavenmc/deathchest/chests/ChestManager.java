@@ -105,10 +105,12 @@ public final class ChestManager
 		deploymentFactory = new DeploymentFactory();
 	}
 
+
 	public DeploymentFactory getDeploymentFactory()
 	{
 		return this.deploymentFactory;
 	}
+
 
 	/**
 	 * Load death chest blocks from datastore.
