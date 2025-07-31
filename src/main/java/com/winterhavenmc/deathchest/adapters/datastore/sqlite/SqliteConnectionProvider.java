@@ -17,7 +17,6 @@
 
 package com.winterhavenmc.deathchest.adapters.datastore.sqlite;
 
-import com.winterhavenmc.deathchest.PluginMain;
 import com.winterhavenmc.deathchest.ports.datastore.BlockRepository;
 import com.winterhavenmc.deathchest.ports.datastore.ChestRepository;
 import com.winterhavenmc.deathchest.ports.datastore.ConnectionProvider;
@@ -32,7 +31,7 @@ import java.util.concurrent.TimeUnit;
  * SQLite implementation of Datastore
  * for persistent storage of death chests and chest block objects
  */
-public final class SQLiteConnectionProvider implements ConnectionProvider
+public final class SqliteConnectionProvider implements ConnectionProvider
 {
 	private final Plugin plugin;
 	private final String dataFilePath;
@@ -42,7 +41,7 @@ public final class SQLiteConnectionProvider implements ConnectionProvider
 	private ChestRepository chestRepository;
 	private BlockRepository blockRepository;
 
-	private final SQLiteChestQueryHelper chestQueryHelper = new SQLiteChestQueryHelper();
+	private final SqliteChestQueryExecutor chestQueryHelper = new SqliteChestQueryExecutor();
 
 
 	/**
@@ -50,7 +49,7 @@ public final class SQLiteConnectionProvider implements ConnectionProvider
 	 *
 	 * @param plugin reference to plugin main class
 	 */
-	public SQLiteConnectionProvider(final Plugin plugin)
+	public SqliteConnectionProvider(final Plugin plugin)
 	{
 		this.plugin = plugin;
 		this.dataFilePath = plugin.getDataFolder() + File.separator + "deathchests.db";
