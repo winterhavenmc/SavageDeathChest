@@ -17,7 +17,7 @@
 
 package com.winterhavenmc.deathchest.bootstrap;
 
-import com.winterhavenmc.deathchest.adapters.datastore.sqlite.SQLiteConnectionProvider;
+import com.winterhavenmc.deathchest.adapters.datastore.sqlite.SqliteConnectionProvider;
 import com.winterhavenmc.deathchest.ports.datastore.ConnectionProvider;
 import org.bukkit.plugin.Plugin;
 
@@ -27,7 +27,7 @@ public final class Bootstrap
 
 	public static ConnectionProvider getConnectionProvider(Plugin plugin)
 	{
-		return new SQLiteConnectionProvider(plugin);
+		return new SqliteConnectionProvider(plugin);
 	}
 
 }
