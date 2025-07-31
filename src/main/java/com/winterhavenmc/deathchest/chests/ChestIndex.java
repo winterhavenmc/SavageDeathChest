@@ -18,6 +18,9 @@
 package com.winterhavenmc.deathchest.chests;
 
 import com.winterhavenmc.deathchest.PluginMain;
+import com.winterhavenmc.deathchest.models.deathchest.DeathChest;
+import com.winterhavenmc.deathchest.models.deathchest.DeathChestReason;
+import com.winterhavenmc.deathchest.models.deathchest.InvalidDeathChest;
 import com.winterhavenmc.deathchest.models.deathchest.ValidDeathChest;
 import com.winterhavenmc.deathchest.tasks.ExpireChestTask;
 import org.bukkit.scheduler.BukkitTask;
@@ -25,9 +28,9 @@ import org.bukkit.scheduler.BukkitTask;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
 
 
 final class ChestIndex
@@ -41,8 +44,8 @@ final class ChestIndex
 	 */
 	ChestIndex()
 	{
-		deathChestMap = new ConcurrentHashMap<>();
-		expireMap = new ConcurrentHashMap<>();
+		deathChestMap = new HashMap<>();
+		expireMap = new HashMap<>();
 	}
 
 
@@ -52,14 +55,11 @@ final class ChestIndex
 	 * @param chestUid UUID of DeathChest object to retrieve
 	 * @return DeathChest object, or null if no DeathChest exists in map with passed chestUUID
 	 */
-	ValidDeathChest get(final UUID chestUid)
+	DeathChest get(final UUID chestUid)
 	{
-		// check for null key
-		if (chestUid == null) {
-			return null;
-		}
-
-		return this.deathChestMap.get(chestUid);
+		return (chestUid != null)
+				? this.deathChestMap.get(chestUid)
+				: new InvalidDeathChest(DeathChestReason.CHEST_UID_NULL);
 	}
 
 
@@ -70,37 +70,25 @@ final class ChestIndex
 
 
 	/**
-	 * Put DeathChest object in map
+	 * Put ValidDeathChest in map
 	 *
-	 * @param deathChest the DeathChest object to put in map
+	 * @param validDeathChest the ValidDeathChest to put in map
 	 */
-	void put(final PluginMain plugin, final ValidDeathChest deathChest)
+	void put(final PluginMain plugin, final ValidDeathChest validDeathChest)
 	{
-		// check for null key
-		if (deathChest == null || deathChest.chestUid() == null)
-		{
-			return;
-		}
-
-		this.deathChestMap.put(deathChest.chestUid(), deathChest);
-		this.expireMap.put(deathChest.chestUid(), createExpireTask(plugin, deathChest));
+		this.deathChestMap.put(validDeathChest.chestUid(), validDeathChest);
+		this.expireMap.put(validDeathChest.chestUid(), createExpireTask(plugin, validDeathChest));
 	}
 
 
 	/**
-	 * Remove DeathChest object from map
+	 * Remove ValidDeathChest from map
 	 *
-	 * @param deathChest the DeathChest object to remove from map
+	 * @param validDeathChest the ValidDeathChest to remove from map
 	 */
-	void remove(final ValidDeathChest deathChest)
+	void remove(final ValidDeathChest validDeathChest)
 	{
-		// check for null key
-		if (deathChest == null || deathChest.chestUid() == null)
-		{
-			return;
-		}
-
-		this.deathChestMap.remove(deathChest.chestUid());
+		this.deathChestMap.remove(validDeathChest.chestUid());
 	}
 
 
@@ -112,13 +100,7 @@ final class ChestIndex
 	 */
 	boolean containsKey(final UUID chestUid)
 	{
-		// check for null chestUUID
-		if (chestUid == null)
-		{
-			return false;
-		}
-
-		return deathChestMap.containsKey(chestUid);
+		return chestUid != null && deathChestMap.containsKey(chestUid);
 	}
 
 
@@ -161,6 +143,5 @@ final class ChestIndex
 
 		return ticksRemaining;
 	}
-
 
 }
