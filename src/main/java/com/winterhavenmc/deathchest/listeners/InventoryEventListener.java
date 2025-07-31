@@ -19,6 +19,7 @@ package com.winterhavenmc.deathchest.listeners;
 
 
 import com.winterhavenmc.deathchest.PluginMain;
+import com.winterhavenmc.deathchest.models.deathchest.DeathChest;
 import com.winterhavenmc.deathchest.models.deathchest.ValidDeathChest;
 import com.winterhavenmc.deathchest.permissions.PermissionCheck;
 import com.winterhavenmc.deathchest.permissions.protectionplugins.ProtectionCheckResult;
@@ -82,31 +83,22 @@ public final class InventoryEventListener implements Listener
 	public void onInventoryOpen(final InventoryOpenEvent event)
 	{
 		// get death chest for event inventory
-		final ValidDeathChest deathChest = plugin.chestManager.getChest(event.getInventory());
+		final DeathChest deathChest = plugin.chestManager.getChest(event.getInventory());
 
-		// if death chest is null, do nothing and return
-		if (deathChest == null)
+		if (deathChest instanceof ValidDeathChest validDeathChest)
 		{
-			return;
+			if (event.getPlayer() instanceof Player player)
+			{
+				// if access is blocked by a protection plugin, do nothing and return (allow protection plugin to handle event)
+				ProtectionCheckResult protectionCheckResult = plugin.protectionPluginRegistry.AccessAllowed(player, validDeathChest.getLocation());
+
+				if (!permissionCheck.isPluginBlockingAccess(protectionCheckResult))
+				{
+					// uncancel event
+					event.setCancelled(false);
+				}
+			}
 		}
-
-		// if event entity is not a player, do nothing and return
-		if (!(event.getPlayer() instanceof final Player player))
-		{
-			return;
-		}
-
-		// if access is blocked by a protection plugin, do nothing and return (allow protection plugin to handle event)
-		ProtectionCheckResult protectionCheckResult = plugin.protectionPluginRegistry.AccessAllowed(player, deathChest.getLocation());
-
-		if (permissionCheck.isPluginBlockingAccess(protectionCheckResult))
-		{
-			// do not cancel event - allow protection plugin to handle it
-			return;
-		}
-
-		// uncancel event
-		event.setCancelled(false);
 	}
 
 
@@ -122,18 +114,16 @@ public final class InventoryEventListener implements Listener
 		final Inventory inventory = event.getInventory();
 
 		// get death chest from inventory
-		final ValidDeathChest validDeathChest = plugin.chestManager.getChest(inventory);
+		final DeathChest deathChest = plugin.chestManager.getChest(inventory);
 
 		// if death chest is null, do nothing and return
-		if (validDeathChest == null)
+		if (deathChest instanceof ValidDeathChest validDeathChest)
 		{
-			return;
-		}
-
-		// if inventory is empty, destroy chest(s) and sign
-		if (inventory.isEmpty())
-		{
-			plugin.chestManager.destroy(validDeathChest);
+			// if inventory is empty, destroy chest(s) and sign
+			if (inventory.isEmpty())
+			{
+				plugin.chestManager.destroy(validDeathChest);
+			}
 		}
 	}
 
