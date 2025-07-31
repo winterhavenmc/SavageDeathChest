@@ -17,4 +17,4 @@
 
 package com.winterhavenmc.deathchest.models.deathchest;
 
-public record InvalidDeathChest(String reason) implements DeathChest { }
+public record InvalidDeathChest(DeathChestReason reason) implements DeathChest { }
