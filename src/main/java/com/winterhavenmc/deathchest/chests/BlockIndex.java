@@ -17,6 +17,9 @@
 
 package com.winterhavenmc.deathchest.chests;
 
+import com.winterhavenmc.deathchest.models.chestblock.ChestBlock;
+import com.winterhavenmc.deathchest.models.chestblock.ChestBlockReason;
+import com.winterhavenmc.deathchest.models.chestblock.InvalidChestBlock;
 import com.winterhavenmc.deathchest.models.chestblock.ValidChestBlock;
 import org.bukkit.Location;
 
@@ -73,9 +76,11 @@ final class BlockIndex
 	 * @param location the location to retrieve LegacyChestBlock object
 	 * @return LegacyChestBlock object, or null if no LegacyChestBlock exists in map with passed location
 	 */
-	ValidChestBlock get(final Location location)
+	ChestBlock get(final Location location)
 	{
-		return this.locationMap.get(location);
+		return (location != null)
+				? this.locationMap.get(location)
+				: new InvalidChestBlock(ChestBlockReason.LOCATION_NULL, "🌐");
 	}
 
 
