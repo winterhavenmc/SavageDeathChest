@@ -20,6 +20,7 @@ package com.winterhavenmc.deathchest.listeners;
 import com.winterhavenmc.deathchest.PluginMain;
 import com.winterhavenmc.deathchest.messages.Macro;
 import com.winterhavenmc.deathchest.messages.MessageId;
+import com.winterhavenmc.deathchest.models.deathchest.DeathChest;
 import com.winterhavenmc.deathchest.models.deathchest.ValidDeathChest;
 import com.winterhavenmc.deathchest.permissions.InventoryOpenAction;
 import com.winterhavenmc.deathchest.permissions.PermissionCheck;
@@ -157,29 +158,24 @@ public final class PlayerEventListener implements Listener
 	@EventHandler(priority = EventPriority.LOW)
 	public void onPlayerInteract(final PlayerInteractEvent event)
 	{
-		// get DeathChest from event clicked block
-		final ValidDeathChest validDeathChest = plugin.chestManager.getChest(event.getClickedBlock());
+		final DeathChest deathChest = plugin.chestManager.getChest(event.getClickedBlock());
 
-		// if DeathChest is null, do nothing and return
-		if (validDeathChest == null)
+		if (deathChest instanceof ValidDeathChest validDeathChest)
 		{
-			return;
-		}
+			final Player player = event.getPlayer();
 
-		// get player from event
-		final Player player = event.getPlayer();
+			// if player sneak-clicked chest, try auto-loot
+			if (isPlayerQuickLooting(event))
+			{
+				permissionCheck.performChecks(event, player, validDeathChest, quickLootAction);
+				return;
+			}
 
-		// if player sneak-clicked chest, try auto-loot
-		if (isPlayerQuickLooting(event, player))
-		{
-			permissionCheck.performChecks(event, player, validDeathChest, quickLootAction);
-			return;
-		}
-
-		// if right-click chest, try to open chest inventory
-		if (isPlayerOpeningInventory(event))
-		{
-			permissionCheck.performChecks(event, player, validDeathChest, inventoryOpenAction);
+			// if right-click chest, try to open chest inventory
+			if (isPlayerOpeningInventory(event))
+			{
+				permissionCheck.performChecks(event, player, validDeathChest, inventoryOpenAction);
+			}
 		}
 	}
 
@@ -188,15 +184,14 @@ public final class PlayerEventListener implements Listener
 	 * Test if player is attempting to quick loot chest if allowed
 	 *
 	 * @param event  the PlayerInteractEvent being checked
-	 * @param player the player being checked
 	 * @return true if player is sneak-punching a chest and configuration and permissions allows
 	 */
-	private boolean isPlayerQuickLooting(final PlayerInteractEvent event, final Player player)
+	private boolean isPlayerQuickLooting(final PlayerInteractEvent event)
 	{
 		return (event.getAction().equals(Action.LEFT_CLICK_BLOCK) || event.getAction().equals(Action.RIGHT_CLICK_BLOCK))
-				&& player.isSneaking()
+				&& event.getPlayer().isSneaking()
 				&& plugin.getConfig().getBoolean("quick-loot")
-				&& player.hasPermission("deathchest.loot");
+				&& event.getPlayer().hasPermission("deathchest.loot");
 	}
 
 
