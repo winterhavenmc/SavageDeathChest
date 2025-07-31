@@ -17,4 +17,4 @@
 
 package com.winterhavenmc.deathchest.models.chestblock;
 
-public record InvalidChestBlock(String reason) implements ChestBlock { }
+public record InvalidChestBlock(ChestBlockReason reason, String worldName) implements ChestBlock { }
