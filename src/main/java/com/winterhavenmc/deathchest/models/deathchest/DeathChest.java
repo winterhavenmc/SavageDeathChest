@@ -30,11 +30,12 @@ public sealed interface DeathChest permits ValidDeathChest, InvalidDeathChest
 {
 	UUID INVALID_UUID = new UUID(0, 0);
 
+
 	static DeathChest of(final Player owner, final Location location, final Configuration config)
 	{
-		if (owner == null) return new InvalidDeathChest("The parameter 'owner' was null.");
-		else if (location == null) return new InvalidDeathChest("The parameter 'location' was null.");
-		else if (config == null) return new InvalidDeathChest("The parameter 'config' was null.");
+		if (owner == null) return new InvalidDeathChest(DeathChestReason.OWNER_NULL);
+		else if (location == null) return new InvalidDeathChest(DeathChestReason.LOCATION_NULL);
+		else if (config == null) return new InvalidDeathChest(DeathChestReason.CONFIG_NULL);
 		else
 		{
 			UUID chestUid = UUID.randomUUID();
@@ -66,9 +67,9 @@ public sealed interface DeathChest permits ValidDeathChest, InvalidDeathChest
 	                     final int locationX, final int locationY, final int locationZ, final int itemCount,
 	                     final Instant placementTime, final Instant expirationTime, final Instant protectionExpirationTime)
 	{
-		if (chestUid == null) return new InvalidDeathChest("The parameter 'chestUid' was null.");
-		else if (ownerUid == null) return new InvalidDeathChest("The parameter 'ownerUid' was null.");
-		else if (worldUid == null) return new InvalidDeathChest("The parameter 'worldUid' was null.");
+		if (chestUid == null) return new InvalidDeathChest(DeathChestReason.CHEST_UID_NULL);
+		else if (ownerUid == null) return new InvalidDeathChest(DeathChestReason.OWNER_UID_NULL);
+		else if (worldUid == null) return new InvalidDeathChest(DeathChestReason.WORLD_UID_NULL);
 		else return new ValidDeathChest(chestUid, ownerUid, ownerName, killerUid, killerName, worldUid, worldName,
 				locationX, locationY, locationZ, itemCount, placementTime, expirationTime, protectionExpirationTime);
 	}
