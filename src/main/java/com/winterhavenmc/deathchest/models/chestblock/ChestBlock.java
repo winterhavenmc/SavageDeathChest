@@ -29,9 +29,10 @@ public sealed interface ChestBlock permits InvalidChestBlock, ValidChestBlock
 {
 	static ChestBlock of(final UUID chestUid, final Location location, final ChestBlockType type)
 	{
-		if (chestUid == null) return new InvalidChestBlock("The parameter 'chestUid' was null.");
-		else if (location == null) return new InvalidChestBlock("The parameter 'location' was null.");
-		else if (type == null) return new InvalidChestBlock("The parameter 'type' was null.");
+		if (location == null) return new InvalidChestBlock(ChestBlockReason.LOCATION_NULL, "🌐");
+		else if (location.getWorld() == null) return new InvalidChestBlock(ChestBlockReason.WORLD_NULL, "🌐");
+		else if (chestUid == null) return new InvalidChestBlock(ChestBlockReason.CHEST_UID_NULL, location.getWorld().getName());
+		else if (type == null) return new InvalidChestBlock(ChestBlockReason.TYPE_NULL, location.getWorld().getName());
 		else return switch (type)
 		{
 			case ChestBlockType.LEFT_CHEST -> new LeftChestBlock(chestUid, location);
@@ -45,17 +46,17 @@ public sealed interface ChestBlock permits InvalidChestBlock, ValidChestBlock
 	                     final int x, final int y, final int z, final float yaw, final float pitch)
 	{
 		World world = Bukkit.getWorld(worldUid);
-		if (chestUid == null) return new InvalidChestBlock("The parameter 'chestUid' was null.");
-		else if (world == null) return new InvalidChestBlock("The world '" + worldName + "' is unavailable.");
+		if (world == null) return new InvalidChestBlock(ChestBlockReason.WORLD_NULL, worldName);
+		else if (chestUid == null) return new InvalidChestBlock(ChestBlockReason.CHEST_UID_NULL, worldName);
 		else
 		{
 			Location location = new Location(world, x, y, z, yaw, pitch);
-			ChestBlockType type = ChestBlockType.getType(world.getBlockAt(x, y, z));
-			return switch (type)
+			return switch (ChestBlockType.getType(world.getBlockAt(x, y, z)))
 			{
 				case ChestBlockType.LEFT_CHEST -> new LeftChestBlock(chestUid, location);
 				case ChestBlockType.RIGHT_CHEST -> new RightChestBlock(chestUid, location);
 				case ChestBlockType.SIGN -> new SignChestBlock(chestUid, location);
+				case null -> new InvalidChestBlock(ChestBlockReason.NOT_ChEST_BLOCK, worldName);
 			};
 		}
 	}
