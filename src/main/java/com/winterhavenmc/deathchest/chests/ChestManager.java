@@ -163,7 +163,7 @@ public final class ChestManager
 				dataStore.deathChests().delete(validDeathChest);
 			}
 			// if DeathChest is after epoch and before current time, expire chest
-			else if (validDeathChest.expirationTime().isAfter(Instant.EPOCH) && validDeathChest.expirationTime().isBefore(Instant.now()))
+			else if (isExpired(validDeathChest))
 			{
 				plugin.chestManager.expire(validDeathChest);
 			}
@@ -176,6 +176,13 @@ public final class ChestManager
 				}
 			}
 		}
+	}
+
+
+	private static boolean isExpired(ValidDeathChest validDeathChest)
+	{
+		return validDeathChest.expirationTime().isAfter(Instant.EPOCH)
+				&& validDeathChest.expirationTime().isBefore(Instant.now());
 	}
 
 
