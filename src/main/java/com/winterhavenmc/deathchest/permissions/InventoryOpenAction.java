@@ -32,7 +32,7 @@ public class InventoryOpenAction implements ResultAction
 	public void execute(final Cancellable event, final Player player, final ValidDeathChest validDeathChest, final ChestManager chestManager)
 	{
 		event.setCancelled(true);
-		player.openInventory(chestManager.getInventory(validDeathChest));
+		chestManager.getInventory(validDeathChest).ifPresent(player::openInventory);
 	}
 
 }
