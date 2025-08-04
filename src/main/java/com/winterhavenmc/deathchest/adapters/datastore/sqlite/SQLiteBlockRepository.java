@@ -41,7 +41,8 @@ public final class SQLiteBlockRepository implements BlockRepository
 	private final Logger logger;
 	private final LocaleProvider localeProvider;
 	private final Connection connection;
-	private final SqliteBlockQueryExecutor blockQueryHelper = new SqliteBlockQueryExecutor();
+	private final SqliteBlockQueryExecutor queryExecutor = new SqliteBlockQueryExecutor();
+	private final SqliteBlockRowMapper rowMapper = new SqliteBlockRowMapper();
 
 
 	/**
@@ -61,9 +62,9 @@ public final class SQLiteBlockRepository implements BlockRepository
 	{
 		final Collection<ValidChestBlock> results = new HashSet<>();
 
-		try (PreparedStatement preparedStatement = connection.prepareStatement(SQLiteQueries.getQuery("SelectAllBlocks")))
+		try (PreparedStatement preparedStatement = connection.prepareStatement(SqliteQueries.getQuery("SelectAllBlocks")))
 		{
-			ResultSet resultSet = preparedStatement.executeQuery();
+			ResultSet resultSet = queryExecutor.selectAllBlocks(preparedStatement);
 
 			while (resultSet.next())
 			{
@@ -116,9 +117,9 @@ public final class SQLiteBlockRepository implements BlockRepository
 
 	private int insertBlock(final ValidChestBlock validChestBlock)
 	{
-		try (PreparedStatement preparedStatement = connection.prepareStatement(SQLiteQueries.getQuery("InsertBlockRecord")))
+		try (PreparedStatement preparedStatement = connection.prepareStatement(SqliteQueries.getQuery("InsertBlockRecord")))
 		{
-			return blockQueryHelper.insertBlock(validChestBlock, preparedStatement);
+			return queryExecutor.insertBlock(validChestBlock, preparedStatement);
 		}
 		catch (SQLException sqlException)
 		{
@@ -132,9 +133,9 @@ public final class SQLiteBlockRepository implements BlockRepository
 	@Override
 	public int delete(final ValidChestBlock validChestBlock)
 	{
-		try (PreparedStatement preparedStatement = connection.prepareStatement(SQLiteQueries.getQuery("DeleteBlockByLocation")))
+		try (PreparedStatement preparedStatement = connection.prepareStatement(SqliteQueries.getQuery("DeleteBlockByLocation")))
 		{
-			return blockQueryHelper.DeleteBlock(validChestBlock, preparedStatement);
+			return queryExecutor.DeleteBlock(validChestBlock, preparedStatement);
 		}
 		catch (SQLException sqlException)
 		{
