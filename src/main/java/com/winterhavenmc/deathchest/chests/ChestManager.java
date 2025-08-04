@@ -98,12 +98,6 @@ public final class ChestManager
 	 */
 	public void loadChests()
 	{
-		if (plugin.getConfig().getBoolean("debug"))
-		{
-			plugin.getLogger().info("Loading Death Chests...");
-		}
-
-		// populate chestIndex with all death chest records retrieved from datastore
 		for (ValidDeathChest validDeathChest : dataStore.deathChests().getAll())
 		{
 			this.putChest(validDeathChest);
