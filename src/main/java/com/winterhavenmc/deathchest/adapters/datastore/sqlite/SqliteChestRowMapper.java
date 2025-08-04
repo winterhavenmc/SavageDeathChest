@@ -27,7 +27,7 @@ import java.util.UUID;
 
 public final class SqliteChestRowMapper
 {
-	public DeathChest map(ResultSet resultSet) throws SQLException
+	public DeathChest map(final ResultSet resultSet) throws SQLException
 	{
 		final UUID chestUid = new UUID(resultSet.getLong("ChestUidMsb"), resultSet.getLong("ChestUidLsb"));
 		final UUID ownerUid = new UUID(resultSet.getLong("OwnerUidMsb"), resultSet.getLong("OwnerUidLsb"));
