@@ -17,29 +17,36 @@
 
 package com.winterhavenmc.deathchest.adapters.datastore.sqlite;
 
+import com.winterhavenmc.deathchest.models.deathchest.DeathChest;
 import com.winterhavenmc.deathchest.models.deathchest.ValidDeathChest;
 import com.winterhavenmc.deathchest.ports.datastore.ChestRepository;
+import com.winterhavenmc.library.messagebuilder.resources.configuration.LocaleProvider;
+import org.bukkit.plugin.Plugin;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
+
 public final class SQLiteChestRepository implements ChestRepository
 {
 	private final Logger logger;
+	private final LocaleProvider localeProvider;
 	private final Connection connection;
 	private final SqliteChestRowMapper chestRowMapper = new SqliteChestRowMapper();
 	private final SqliteChestQueryExecutor queryExecutor = new SqliteChestQueryExecutor();
 
 
-	public SQLiteChestRepository(final Logger logger, final Connection connection)
+	public SQLiteChestRepository(final Plugin plugin, final Connection connection)
 	{
-		this.logger = logger;
+		this.logger = plugin.getLogger();
+		this.localeProvider = LocaleProvider.create(plugin);
 		this.connection = connection;
 	}
 
@@ -60,9 +67,16 @@ public final class SQLiteChestRepository implements ChestRepository
 
 			while (resultSet.next())
 			{
-				if (chestRowMapper.map(resultSet) instanceof ValidDeathChest validDeathChest)
+				DeathChest deathChest = chestRowMapper.map(resultSet);
+				if (deathChest instanceof ValidDeathChest validDeathChest)
 				{
 					results.add(validDeathChest);
+				}
+				else
+				{
+					String worldName = resultSet.getString("worldName");
+					int rowsAffected = deleteOrphanedChest(worldName);
+					logger.info(rowsAffected + " orphaned chests in world " + worldName + " removed.");
 				}
 			}
 		}
@@ -113,9 +127,9 @@ public final class SQLiteChestRepository implements ChestRepository
 	@Override
 	public int delete(ValidDeathChest validDeathChest)
 	{
-		try (PreparedStatement preparedStatement = connection.prepareStatement(SQLiteQueries.getQuery("DeleteChestByUUID")))
+		try (PreparedStatement preparedStatement = connection.prepareStatement(SqliteQueries.getQuery("DeleteChestByUUID")))
 		{
-			return chestQueryHelper.deleteChest(validDeathChest, preparedStatement);
+			return queryExecutor.deleteChest(validDeathChest, preparedStatement);
 		}
 		catch (SQLException sqlException)
 		{
@@ -129,7 +143,7 @@ public final class SQLiteChestRepository implements ChestRepository
 	@Override
 	public int getCount()
 	{
-		try (PreparedStatement preparedStatement = connection.prepareStatement(SQLiteQueries.getQuery("SelectChestCount")))
+		try (PreparedStatement preparedStatement = connection.prepareStatement(SqliteQueries.getQuery("SelectChestCount")))
 		{
 			return SqliteChestQueryExecutor.getChestItemCount(preparedStatement);
 		}
@@ -143,18 +157,18 @@ public final class SQLiteChestRepository implements ChestRepository
 
 
 	/**
-	 * Delete orphaned chests in nonexistent world {@code worldName}
+	 * Delete orphaned chests in nonexistent worlds 30 days after expiration time has past
 	 *
 	 * @param worldName the world name of orphaned chests to delete
 	 */
-	public int deleteOrphanedChests(final String worldName)
+	public int deleteOrphanedChest(final String worldName)
 	{
 		// pastDueTime = current time in milliseconds - 30 days
 		final long pastDueTime = System.currentTimeMillis() - TimeUnit.DAYS.toMillis(30);
 
-		try (PreparedStatement preparedStatement = connection.prepareStatement(SQLiteQueries.getQuery("DeleteOrphanedChests")))
+		try (PreparedStatement preparedStatement = connection.prepareStatement(SqliteQueries.getQuery("DeleteOrphanedChests")))
 		{
-			return chestQueryHelper.deleteOrphanedChests(worldName, pastDueTime, preparedStatement);
+			return queryExecutor.deleteOrphanedChests(worldName, pastDueTime, preparedStatement);
 		}
 		catch (SQLException sqlException)
 		{
