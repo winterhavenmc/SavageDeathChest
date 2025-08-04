@@ -39,6 +39,7 @@ public final class SQLiteBlockRepository implements BlockRepository
 {
 	private final Plugin plugin;
 	private final Logger logger;
+	private final LocaleProvider localeProvider;
 	private final Connection connection;
 	private final SqliteBlockQueryExecutor blockQueryHelper = new SqliteBlockQueryExecutor();
 
@@ -50,6 +51,7 @@ public final class SQLiteBlockRepository implements BlockRepository
 	{
 		this.plugin = plugin;
 		this.logger = plugin.getLogger();
+		this.localeProvider = LocaleProvider.create(plugin);
 		this.connection = connection;
 	}
 
