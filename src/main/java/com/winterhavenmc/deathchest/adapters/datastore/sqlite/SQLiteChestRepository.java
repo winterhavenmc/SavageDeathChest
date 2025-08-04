@@ -68,8 +68,7 @@ public final class SQLiteChestRepository implements ChestRepository
 		}
 		catch (SQLException exception)
 		{
-			logger.warning("An error occurred while trying to " +
-					"select all chest records from the SQLite datastore.");
+			logger.warning(SqliteMessage.SELECT_ALL_CHESTS_ERROR.getLocalizeMessage(localeProvider.getLocale()));
 			logger.warning(exception.getMessage());
 		}
 
@@ -96,7 +95,7 @@ public final class SQLiteChestRepository implements ChestRepository
 					count += chestQueryHelper.insertChest(deathChest, preparedStatement);
 				} catch (SQLException sqlException)
 				{
-					logger.warning("An error occurred while inserting a DeathChest into the SQLite datastore.");
+					logger.warning(SqliteMessage.INSERT_CHEST_ERROR.getLocalizeMessage(localeProvider.getLocale()));
 					logger.warning(sqlException.getMessage());
 				}
 			}
@@ -120,8 +119,7 @@ public final class SQLiteChestRepository implements ChestRepository
 		}
 		catch (SQLException sqlException)
 		{
-			logger.warning("An error occurred while attempting to "
-					+ "delete a chest record from the SQLite datastore.");
+			logger.warning(SqliteMessage.DELETE_CHEST_ERROR.getLocalizeMessage(localeProvider.getLocale()));
 			logger.warning(sqlException.getMessage());
 			return 0;
 		}
@@ -137,8 +135,7 @@ public final class SQLiteChestRepository implements ChestRepository
 		}
 		catch (SQLException e)
 		{
-			logger.warning("An error occurred while attempting to " +
-					"retrieve a count of chest records from the SQLite datastore.");
+			logger.warning(SqliteMessage.GET_CHEST_COUNT_ERROR.getLocalizeMessage(localeProvider.getLocale()));
 			logger.warning(e.getLocalizedMessage());
 			return 0;
 		}
@@ -161,7 +158,7 @@ public final class SQLiteChestRepository implements ChestRepository
 		}
 		catch (SQLException sqlException)
 		{
-			logger.warning("An error occurred while attempting to delete orphaned chests from the datastore.");
+			logger.warning(SqliteMessage.DELETE_ORPHANED_CHESTS_ERROR.getLocalizeMessage(localeProvider.getLocale()));
 			logger.warning(sqlException.getMessage());
 			return 0;
 		}
