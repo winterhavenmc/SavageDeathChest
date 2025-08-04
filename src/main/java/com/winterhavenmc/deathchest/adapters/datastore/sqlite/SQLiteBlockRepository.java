@@ -100,8 +100,7 @@ public final class SQLiteBlockRepository implements BlockRepository
 		}
 		catch (SQLException e)
 		{
-			logger.warning("An error occurred while trying to "
-					+ "select all block records from the SQLite datastore.");
+			logger.warning(SqliteMessage.SELECT_ALL_BLOCKS_ERROR.getLocalizeMessage(localeProvider.getLocale()));
 			logger.warning(e.getLocalizedMessage());
 		}
 
@@ -127,8 +126,8 @@ public final class SQLiteBlockRepository implements BlockRepository
 		}
 		catch (SQLException sqlException)
 		{
-			logger.warning("An error occurred while inserting a death chest block into the SQLite datastore.");
-			logger.warning(sqlException.getMessage());
+			logger.warning(SqliteMessage.INSERT_CHEST_ERROR.getLocalizeMessage(localeProvider.getLocale()));
+			logger.warning(sqlException.getLocalizedMessage());
 			return 0;
 		}
 	}
@@ -143,9 +142,8 @@ public final class SQLiteBlockRepository implements BlockRepository
 		}
 		catch (SQLException sqlException)
 		{
-			logger.warning("An error occurred while attempting to "
-					+ "delete a block record from the SQLite datastore.");
-			logger.warning(sqlException.getMessage());
+			logger.warning(SqliteMessage.DELETE_BLOCK_ERROR.getLocalizeMessage(localeProvider.getLocale()));
+			logger.warning(sqlException.getLocalizedMessage());
 			return 0;
 		}
 	}
