@@ -43,12 +43,12 @@ public final class SqliteChestRowMapper
 
 		final UUID worldUid = new UUID(resultSet.getLong("WorldUidMsb"), resultSet.getLong("WorldUidLsb"));
 		final String worldName = resultSet.getString("WorldName");
-		final int locationX = resultSet.getInt("LocationX");
-		final int locationY = resultSet.getInt("LocationY");
-		final int locationZ = resultSet.getInt("LocationZ");
+		final int x = resultSet.getInt("X");
+		final int y = resultSet.getInt("Y");
+		final int z = resultSet.getInt("Z");
 
-		return DeathChest.of(chestUid, ownerUid, ownerName, killerUid, killerName, worldUid, worldName,
-				locationX, locationY, locationZ, itemCount, Instant.ofEpochMilli(placementTime),
+		return DeathChest.of(chestUid, ownerUid, ownerName, killerUid, killerName,
+				worldUid, worldName, x, y, z, itemCount, Instant.ofEpochMilli(placementTime),
 				Instant.ofEpochMilli(expirationTime), Instant.ofEpochMilli(protectionExpirationTime));
 	}
 
