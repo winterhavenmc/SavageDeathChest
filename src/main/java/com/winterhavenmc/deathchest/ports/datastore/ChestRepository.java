@@ -18,7 +18,6 @@
 package com.winterhavenmc.deathchest.ports.datastore;
 
 import com.winterhavenmc.deathchest.models.deathchest.ValidDeathChest;
-
 import java.util.Collection;
 
 
@@ -59,5 +58,4 @@ public interface ChestRepository
 	 * @return number of chests in the datastore
 	 */
 	int getCount();
-
 }

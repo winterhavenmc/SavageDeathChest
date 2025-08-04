@@ -18,7 +18,6 @@
 package com.winterhavenmc.deathchest.ports.datastore;
 
 import com.winterhavenmc.deathchest.models.chestblock.ValidChestBlock;
-
 import java.util.Collection;
 
 
