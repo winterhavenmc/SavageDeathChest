@@ -105,12 +105,8 @@ public final class ChestManager
 
 		for (ValidChestBlock validChestBlock : dataStore.chestBlocks().getAll())
 		{
-			// if parent chest is not in chest map, delete block record
-			if (!chestIndex.containsKey(validChestBlock.getChestUid()))
-			{
-				dataStore.chestBlocks().delete(validChestBlock);
-			}
-			else
+			// if chest uuid is in chest index, get ChestBlockType and put in block index
+			if (chestIndex.containsKey(validChestBlock.getChestUid()))
 			{
 				// get chest block type constant from object type
 				ChestBlockType chestBlockType = switch (validChestBlock)
@@ -122,6 +118,10 @@ public final class ChestManager
 
 				// add validChestBlock to block index
 				this.blockIndex.put(chestBlockType, validChestBlock);
+			}
+			else
+			{
+				dataStore.chestBlocks().delete(validChestBlock);
 			}
 		}
 
