@@ -17,10 +17,14 @@
 
 package com.winterhavenmc.deathchest.models.chestblock;
 
-import com.winterhavenmc.deathchest.util.Reason;
+import com.winterhavenmc.deathchest.util.Notice;
+
+import java.util.Locale;
+import java.util.MissingResourceException;
+import java.util.ResourceBundle;
 
 
-public enum ChestBlockReason implements Reason
+public enum ChestBlockReason implements Notice
 {
 	CHEST_UID_NULL("The parameter 'chestUid' was null."),
 	LOCATION_NULL("The parameter 'location' was null."),
@@ -29,24 +33,25 @@ public enum ChestBlockReason implements Reason
 	NOT_ChEST_BLOCK("The block is not a valid chest block."),
 	;
 
-	private final String message;
+	private final String defaultMessage;
 
 
-	ChestBlockReason(final String message)
+	ChestBlockReason(final String defaultMessage)
 	{
-		this.message = message;
+		this.defaultMessage = defaultMessage;
 	}
 
 
-	public String message()
+	public String getLocalizeMessage(final Locale locale)
 	{
-		return message;
-	}
-
-
-	@Override
-	public String toString()
-	{
-		return message;
+		try
+		{
+			ResourceBundle bundle = ResourceBundle.getBundle(getClass().getSimpleName(), locale);
+			return bundle.getString(name());
+		}
+		catch (MissingResourceException exception)
+		{
+			return this.defaultMessage;
+		}
 	}
 }
