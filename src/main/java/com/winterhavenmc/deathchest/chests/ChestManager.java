@@ -148,11 +148,7 @@ public final class ChestManager
 			}
 			else
 			{
-				// set chest metadata
 				this.setBlockMetadata(this.getBlocks(validDeathChest.chestUid()));
-				if (plugin.getConfig().getBoolean("debug")) {
-					plugin.getLogger().info("[loadDeathChests] Setting metadata for chest " + validDeathChest.chestUid());
-				}
 			}
 		}
 	}
