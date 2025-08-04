@@ -21,5 +21,5 @@ import java.util.Locale;
 
 public interface Notice
 {
-	public String getLocalizeMessage(final Locale locale);
+	String getLocalizeMessage(final Locale locale);
 }
