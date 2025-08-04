@@ -66,7 +66,7 @@ public final class SqliteConnectionProvider implements ConnectionProvider
 		// if data store is already initialized, do nothing and return
 		if (initialized)
 		{
-			plugin.getLogger().info("SQLite datastore already initialized.");
+			logger.info(SqliteMessage.ALREADY_INITIALIZED_NOTICE.getLocalizeMessage(localeProvider.getLocale()));
 			return;
 		}
 
@@ -117,9 +117,8 @@ public final class SqliteConnectionProvider implements ConnectionProvider
 			}
 			catch (SQLException sqlException)
 			{
-				plugin.getLogger().warning("An error occurred while closing the " +
-						this + " datastore connection.");
-				plugin.getLogger().warning(sqlException.getMessage());
+				logger.warning(SqliteMessage.CLOSE_DATASTORE_ERROR.getLocalizeMessage(localeProvider.getLocale()));
+				logger.warning(sqlException.getMessage());
 			}
 			initialized = true;
 		}
@@ -157,8 +156,8 @@ public final class SqliteConnectionProvider implements ConnectionProvider
 		}
 		catch (SQLException sqlException)
 		{
-			plugin.getLogger().warning("Could not get schema version for the SQLite datastore!");
-			plugin.getLogger().warning(sqlException.getLocalizedMessage());
+			logger.warning(SqliteMessage.CREATE_CHEST_TABLE_ERROR.getLocalizeMessage(localeProvider.getLocale()));
+			logger.warning(sqlException.getLocalizedMessage());
 		}
 		return version;
 	}
@@ -243,9 +242,8 @@ public final class SqliteConnectionProvider implements ConnectionProvider
 		}
 		catch (SQLException sqlException)
 		{
-			plugin.getLogger().warning("An error occurred while attempting to delete orphaned chests from the " +
-					"SQLite datastore.");
-			plugin.getLogger().warning(sqlException.getMessage());
+			logger.warning(SqliteMessage.CREATE_BLOCK_TABLE_ERROR.getLocalizeMessage(localeProvider.getLocale()));
+			logger.warning(sqlException.getLocalizedMessage());
 		}
 	}
 
