@@ -128,7 +128,7 @@ public final class ChestManager
 		// expire chests with no blocks or past expiration
 		for (ValidDeathChest validDeathChest : chestIndex.values())
 		{
-			// if DeathChest has no children, remove from index and datastore
+			// if DeathChest has no child blocks, remove from index and datastore
 			if (this.getBlocks(validDeathChest.chestUid()).isEmpty())
 			{
 				chestIndex.remove(validDeathChest);
