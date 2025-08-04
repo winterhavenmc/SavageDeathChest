@@ -17,9 +17,13 @@
 
 package com.winterhavenmc.deathchest.models.deathchest;
 
-import com.winterhavenmc.deathchest.util.Reason;
+import com.winterhavenmc.deathchest.util.Notice;
 
-public enum DeathChestReason implements Reason
+import java.util.Locale;
+import java.util.MissingResourceException;
+import java.util.ResourceBundle;
+
+public enum DeathChestReason implements Notice
 {
 	OWNER_NULL("The parameter 'owner' was null."),
 	LOCATION_NULL("The parameter 'location' was null."),
@@ -31,24 +35,26 @@ public enum DeathChestReason implements Reason
 	BLOCK_INVALID("The block was not a DeathChest block."),
 	;
 
-	private final String message;
+	private final String defaultMessage;
 
 
-	DeathChestReason(final String message)
+	DeathChestReason(final String defaultMessage)
 	{
-		this.message = message;
+		this.defaultMessage = defaultMessage;
 	}
 
 
-	public String message()
+	public String getLocalizeMessage(final Locale locale)
 	{
-		return message;
+		try
+		{
+			ResourceBundle bundle = ResourceBundle.getBundle(getClass().getSimpleName(), locale);
+			return bundle.getString(name());
+		}
+		catch (MissingResourceException exception)
+		{
+			return this.defaultMessage;
+		}
 	}
 
-
-	@Override
-	public String toString()
-	{
-		return message;
-	}
 }
