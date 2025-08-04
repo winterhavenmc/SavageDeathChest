@@ -92,12 +92,6 @@ public final class SQLiteBlockRepository implements BlockRepository
 						results.add(validChestBlock);
 					}
 				}
-//				else
-//				{
-//					// delete all records expired more than 30 days in database that have this invalid world
-//					deleteOrphanedChests(worldName);
-//				}
-
 			}
 		}
 		catch (SQLException e)
