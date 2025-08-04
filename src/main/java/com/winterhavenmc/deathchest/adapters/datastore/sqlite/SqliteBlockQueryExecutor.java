@@ -20,11 +20,18 @@ package com.winterhavenmc.deathchest.adapters.datastore.sqlite;
 import com.winterhavenmc.deathchest.models.chestblock.ValidChestBlock;
 
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 
 public final class SqliteBlockQueryExecutor
 {
+	public ResultSet selectAllBlocks(PreparedStatement preparedStatement) throws SQLException
+	{
+		return preparedStatement.executeQuery();
+	}
+
+
 	public int insertBlock(final ValidChestBlock validChestBlock, final PreparedStatement preparedStatement) throws SQLException
 	{
 		preparedStatement.setLong(  1, validChestBlock.getChestUid().getMostSignificantBits());
