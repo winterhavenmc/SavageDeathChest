@@ -45,7 +45,7 @@ public sealed interface DeathChest permits ValidDeathChest, InvalidDeathChest
 			UUID killerUid = (owner.getKiller() != null) ? owner.getKiller().getUniqueId() : INVALID_UUID;
 			String killerName = (owner.getKiller() != null) ? owner.getKiller().getName() : "";
 
-			// player.getWorld() cannot be null
+			// player.getWorld() is never null
 			String worldName = owner.getWorld().getName();
 			UUID worldUid = owner.getWorld().getUID();
 			int locationX = location.getBlockX();
