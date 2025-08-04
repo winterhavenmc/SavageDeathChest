@@ -103,7 +103,6 @@ public final class ChestManager
 			this.putChest(validDeathChest);
 		}
 
-		// populate chest block map with all valid chest blocks retrieved from datastore
 		for (ValidChestBlock validChestBlock : dataStore.chestBlocks().getAll())
 		{
 			// if parent chest is not in chest map, delete block record
