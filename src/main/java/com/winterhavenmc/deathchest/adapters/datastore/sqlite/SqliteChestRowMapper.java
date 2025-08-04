@@ -29,22 +29,13 @@ public final class SqliteChestRowMapper
 {
 	public DeathChest map(ResultSet resultSet) throws SQLException
 	{
-		// convert chest uuid from stored components
 		final UUID chestUid = new UUID(resultSet.getLong("ChestUidMsb"), resultSet.getLong("ChestUidLsb"));
-
-		// convert owner uuid from stored components
 		final UUID ownerUid = new UUID(resultSet.getLong("OwnerUidMsb"), resultSet.getLong("OwnerUidLsb"));
-
-		// convert killer uuid from stored components
 		final UUID killerUid = new UUID(resultSet.getLong("KillerUidMsb"), resultSet.getLong("KillerUidLsb"));
 
-		// get owner name string
 		final String ownerName = resultSet.getString("OwnerName");
-
-		// get killer name string
 		final String killerName = resultSet.getString("KillerName");
 
-		// set other fields in deathChestBlock from database fields
 		final int itemCount = resultSet.getInt("ItemCount");
 		final long placementTime = resultSet.getLong("PlacementTime");
 		final long expirationTime = resultSet.getLong("ExpirationTime");
