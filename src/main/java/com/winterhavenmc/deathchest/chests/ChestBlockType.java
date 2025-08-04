@@ -18,6 +18,7 @@
 package com.winterhavenmc.deathchest.chests;
 
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
 import org.bukkit.block.Chest;
 import org.bukkit.block.Sign;
 
@@ -40,7 +41,9 @@ public enum ChestBlockType
 	 */
 	public static ChestBlockType getType(final Block block)
 	{
-		switch (block)
+		BlockState blockState = block.getState();
+
+		switch (blockState)
 		{
 			case Sign ignored ->
 			{
@@ -60,7 +63,7 @@ public enum ChestBlockType
 				}
 			}
 
-			case null, default ->
+			default ->
 			{
 				return null;
 			}
