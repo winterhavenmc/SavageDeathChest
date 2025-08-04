@@ -43,14 +43,14 @@ public sealed interface ChestBlock permits InvalidChestBlock, ValidChestBlock
 
 
 	static ChestBlock of(final UUID chestUid, final String worldName, final UUID worldUid,
-	                     final int x, final int y, final int z, final float yaw, final float pitch)
+	                     final int x, final int y, final int z)
 	{
 		World world = Bukkit.getWorld(worldUid);
 		if (world == null) return new InvalidChestBlock(ChestBlockReason.WORLD_NULL, worldName);
 		else if (chestUid == null) return new InvalidChestBlock(ChestBlockReason.CHEST_UID_NULL, worldName);
 		else
 		{
-			Location location = new Location(world, x, y, z, yaw, pitch);
+			Location location = new Location(world, x, y, z);
 			return switch (ChestBlockType.getType(world.getBlockAt(x, y, z)))
 			{
 				case ChestBlockType.LEFT_CHEST -> new LeftChestBlock(chestUid, location);
