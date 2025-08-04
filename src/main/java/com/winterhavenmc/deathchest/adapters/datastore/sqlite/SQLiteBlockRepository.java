@@ -20,14 +20,11 @@ package com.winterhavenmc.deathchest.adapters.datastore.sqlite;
 import com.winterhavenmc.deathchest.models.chestblock.ChestBlock;
 import com.winterhavenmc.deathchest.models.chestblock.ValidChestBlock;
 import com.winterhavenmc.deathchest.ports.datastore.BlockRepository;
-import org.bukkit.World;
+import com.winterhavenmc.library.messagebuilder.resources.configuration.LocaleProvider;
 import org.bukkit.plugin.Plugin;
 
 import java.sql.*;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 import java.util.logging.Logger;
 
 
@@ -68,30 +65,10 @@ public final class SQLiteBlockRepository implements BlockRepository
 
 			while (resultSet.next())
 			{
-				//TODO: use worldName in log message if server world unavailable
-				final String worldName = resultSet.getString("WorldName");
-				final int x = resultSet.getInt("X");
-				final int y = resultSet.getInt("Y");
-				final int z = resultSet.getInt("Z");
-
-				final UUID chestUid = new UUID(resultSet.getLong("ChestUidMsb"), resultSet.getLong("chestUidLsb"));
-				final UUID worldUid = new UUID(resultSet.getLong("WorldUidMsb"), resultSet.getLong("WorldUidLsb"));
-
-				// get server world by uuid
-				final World world = plugin.getServer().getWorld(worldUid);
-
-				// if server world is null, skip adding record to return set
-				//TODO: refactor orphaned block record deletion
-				if (world != null)
+				ChestBlock chestBlock = rowMapper.map(plugin, resultSet);
+				if (chestBlock instanceof ValidChestBlock validChestBlock)
 				{
-					// create chest block object from retrieved record
-					ChestBlock chestBlock = ChestBlock.of(chestUid, world.getName(), world.getUID(), x, y, z, 0, 0);
-
-					if (chestBlock instanceof ValidChestBlock validChestBlock)
-					{
-						// add DeathChestObject to results set
-						results.add(validChestBlock);
-					}
+					results.add(validChestBlock);
 				}
 			}
 		}
