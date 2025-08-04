@@ -26,6 +26,12 @@ import java.sql.SQLException;
 
 public final class SqliteChestQueryExecutor
 {
+	public ResultSet SelectAllChests(final PreparedStatement preparedStatement) throws SQLException
+	{
+		return preparedStatement.executeQuery();
+	}
+
+
 	public int insertChest(final ValidDeathChest validDeathChest, final PreparedStatement preparedStatement) throws SQLException
 	{
 		preparedStatement.setLong(   1, validDeathChest.chestUid().getMostSignificantBits());
@@ -50,20 +56,20 @@ public final class SqliteChestQueryExecutor
 	}
 
 
+	public int deleteChest(final ValidDeathChest validDeathChest, final PreparedStatement preparedStatement) throws SQLException
+	{
+		preparedStatement.setLong(1, validDeathChest.chestUid().getMostSignificantBits());
+		preparedStatement.setLong(2, validDeathChest.chestUid().getLeastSignificantBits());
+		return preparedStatement.executeUpdate();
+	}
+
+
 	public int deleteOrphanedChests(final String worldName,
 	                                final long pastDueTime,
 	                                final PreparedStatement preparedStatement) throws SQLException
 	{
 		preparedStatement.setString(1, worldName);
 		preparedStatement.setLong(  2, pastDueTime);
-		return preparedStatement.executeUpdate();
-	}
-
-
-	public int deleteChest(final ValidDeathChest validDeathChest, final PreparedStatement preparedStatement) throws SQLException
-	{
-		preparedStatement.setLong(1, validDeathChest.chestUid().getMostSignificantBits());
-		preparedStatement.setLong(2, validDeathChest.chestUid().getLeastSignificantBits());
 		return preparedStatement.executeUpdate();
 	}
 
