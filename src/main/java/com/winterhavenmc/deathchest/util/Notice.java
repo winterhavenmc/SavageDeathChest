@@ -17,7 +17,9 @@
 
 package com.winterhavenmc.deathchest.util;
 
-public interface Reason
+import java.util.Locale;
+
+public interface Notice
 {
-	String message();
+	public String getLocalizeMessage(final Locale locale);
 }
