@@ -71,7 +71,7 @@ final class BlockIndex
 
 
 	/**
-	 * Get LegacyChestBlock object by location
+	 * Get ChestBlock object by location
 	 *
 	 * @param location the location to retrieve LegacyChestBlock object
 	 * @return LegacyChestBlock object, or null if no LegacyChestBlock exists in map with passed location
