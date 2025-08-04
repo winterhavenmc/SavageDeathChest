@@ -26,15 +26,16 @@ import java.util.Properties;
 /**
  * A utility class that contains static methods for retrieving database queries from the queries properties file.
  */
-public final class SQLiteQueries
+public final class SqliteQueries
 {
 	private static final String propFileName = "queries.properties";
 	private static Properties properties;
 
+
 	/**
 	 * Private constructor to prevent instantiation of class
 	 */
-	private SQLiteQueries() {
+	private SqliteQueries() {
 		throw new AssertionError();
 	}
 
@@ -47,7 +48,7 @@ public final class SQLiteQueries
 			properties = new Properties();
 			try
 			{
-				InputStream inputStream = SQLiteQueries.class.getResourceAsStream("/" + propFileName);
+				InputStream inputStream = SqliteQueries.class.getResourceAsStream("/" + propFileName);
 
 				if (inputStream == null)
 				{
