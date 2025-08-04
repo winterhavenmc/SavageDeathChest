@@ -34,7 +34,7 @@ public final class SQLiteChestRepository implements ChestRepository
 	private final Logger logger;
 	private final Connection connection;
 	private final SqliteChestRowMapper chestRowMapper = new SqliteChestRowMapper();
-	private final SqliteChestQueryExecutor chestQueryHelper = new SqliteChestQueryExecutor();
+	private final SqliteChestQueryExecutor queryExecutor = new SqliteChestQueryExecutor();
 
 
 	public SQLiteChestRepository(final Logger logger, final Connection connection)
@@ -54,9 +54,9 @@ public final class SQLiteChestRepository implements ChestRepository
 	{
 		final Collection<ValidDeathChest> results = new HashSet<>();
 
-		try (PreparedStatement preparedStatement = connection.prepareStatement(SQLiteQueries.getQuery("SelectAllChests")))
+		try (PreparedStatement preparedStatement = connection.prepareStatement(SqliteQueries.getQuery("SelectAllChests")))
 		{
-			ResultSet resultSet = preparedStatement.executeQuery();
+			ResultSet resultSet = queryExecutor.SelectAllChests(preparedStatement);
 
 			while (resultSet.next())
 			{
@@ -90,9 +90,9 @@ public final class SQLiteChestRepository implements ChestRepository
 		{
 			if (deathChest != null)
 			{
-				try (PreparedStatement preparedStatement = connection.prepareStatement(SQLiteQueries.getQuery("InsertChestRecord")))
+				try (PreparedStatement preparedStatement = connection.prepareStatement(SqliteQueries.getQuery("InsertChestRecord")))
 				{
-					count += chestQueryHelper.insertChest(deathChest, preparedStatement);
+					count += queryExecutor.insertChest(deathChest, preparedStatement);
 				} catch (SQLException sqlException)
 				{
 					logger.warning(SqliteMessage.INSERT_CHEST_ERROR.getLocalizeMessage(localeProvider.getLocale()));
