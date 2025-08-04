@@ -17,14 +17,16 @@
 
 package com.winterhavenmc.deathchest.adapters.datastore.sqlite;
 
+import com.winterhavenmc.deathchest.adapters.datastore.sqlite.schema.SqliteSchemaUpdater;
 import com.winterhavenmc.deathchest.ports.datastore.BlockRepository;
 import com.winterhavenmc.deathchest.ports.datastore.ChestRepository;
 import com.winterhavenmc.deathchest.ports.datastore.ConnectionProvider;
+import com.winterhavenmc.library.messagebuilder.resources.configuration.LocaleProvider;
 import org.bukkit.plugin.Plugin;
 
 import java.io.File;
 import java.sql.*;
-import java.util.concurrent.TimeUnit;
+import java.util.logging.Logger;
 
 
 /**
@@ -34,14 +36,14 @@ import java.util.concurrent.TimeUnit;
 public final class SqliteConnectionProvider implements ConnectionProvider
 {
 	private final Plugin plugin;
+	private final Logger logger;
+	private final LocaleProvider localeProvider;
 	private final String dataFilePath;
 	private Connection connection;
 	private boolean initialized;
 
 	private ChestRepository chestRepository;
 	private BlockRepository blockRepository;
-
-	private final SqliteChestQueryExecutor chestQueryHelper = new SqliteChestQueryExecutor();
 
 
 	/**
@@ -52,6 +54,8 @@ public final class SqliteConnectionProvider implements ConnectionProvider
 	public SqliteConnectionProvider(final Plugin plugin)
 	{
 		this.plugin = plugin;
+		this.logger = plugin.getLogger();
+		this.localeProvider = LocaleProvider.create(plugin);
 		this.dataFilePath = plugin.getDataFolder() + File.separator + "deathchests.db";
 	}
 
@@ -82,23 +86,26 @@ public final class SqliteConnectionProvider implements ConnectionProvider
 		// create a database connection
 		connection = DriverManager.getConnection(dbUrl);
 
-		final Statement statement = connection.createStatement();
+		// instantiate datastore adapters
+		chestRepository = new SQLiteChestRepository(plugin, connection);
+		blockRepository = new SQLiteBlockRepository(plugin, connection);
 
 		// enable foreign keys
-		statement.executeUpdate(SQLiteQueries.getQuery("EnableForeignKeys"));
+		enableForeignKeys(connection);
 
-		// update database schema if necessary
-		updateSchema();
+		// Update schema
+		SqliteSchemaUpdater schemaUpdater = SqliteSchemaUpdater.create(plugin, connection, localeProvider, chestRepository, blockRepository);
+		schemaUpdater.update();
+
+		// create tables if necessary
+		createChestTable(connection);
+		createBlockTable(connection);
 
 		// set initialized true
 		initialized = true;
 
-		// instantiate datastore adapters
-		chestRepository = new SQLiteChestRepository(plugin.getLogger(), connection);
-		blockRepository = new SQLiteBlockRepository(plugin, connection);
-
 		// output log message
-		plugin.getLogger().info("Datastore initialized.");
+		logger.info("Datastore initialized.");
 	}
 
 
@@ -113,14 +120,14 @@ public final class SqliteConnectionProvider implements ConnectionProvider
 			try
 			{
 				connection.close();
-				plugin.getLogger().info(this + " datastore connection closed.");
+				logger.info(SqliteMessage.CONNECTION_CLOSED_NOTICE.getLocalizeMessage(localeProvider.getLocale()));
 			}
 			catch (SQLException sqlException)
 			{
 				logger.warning(SqliteMessage.CLOSE_DATASTORE_ERROR.getLocalizeMessage(localeProvider.getLocale()));
 				logger.warning(sqlException.getMessage());
 			}
-			initialized = true;
+			initialized = false;
 		}
 	}
 
@@ -139,106 +146,38 @@ public final class SqliteConnectionProvider implements ConnectionProvider
 	}
 
 
-	private int getStoredSchemaVersion()
+	private void enableForeignKeys(final Connection connection)
 	{
-		int version = -1;
-
-		try
+		try (final Statement statement = connection.createStatement())
 		{
-			final Statement statement = connection.createStatement();
+			statement.executeUpdate(SqliteQueries.getQuery("EnableForeignKeys"));
+		}
+		catch (SQLException sqlException)
+		{
+			logger.warning(SqliteMessage.ENABLE_FOREIGN_KEYS_ERROR.getLocalizeMessage(localeProvider.getLocale()));
+		}
+	}
 
-			ResultSet rs = statement.executeQuery(SQLiteQueries.getQuery("GetUserVersion"));
 
-			while (rs.next())
-			{
-				version = rs.getInt(1);
-			}
+	private void createChestTable(final Connection connection)
+	{
+		try (final Statement statement = connection.createStatement())
+		{
+			statement.executeUpdate(SqliteQueries.getQuery("CreateChestTable"));
 		}
 		catch (SQLException sqlException)
 		{
 			logger.warning(SqliteMessage.CREATE_CHEST_TABLE_ERROR.getLocalizeMessage(localeProvider.getLocale()));
 			logger.warning(sqlException.getLocalizedMessage());
 		}
-		return version;
 	}
 
 
-	private void updateSchema() throws SQLException
+	private void createBlockTable(final Connection connection)
 	{
-		int schemaVersion = getStoredSchemaVersion();
-
-		if (plugin.getConfig().getBoolean("debug"))
+		try (final Statement statement = connection.createStatement())
 		{
-			plugin.getLogger().info("Current schema version: " + schemaVersion);
-		}
-
-		final Statement statement = connection.createStatement();
-
-//		if (this.schemaVersion == 0)
-//		{
-//			Collection<DeathChestRecord> existingChestRecords = Collections.emptySet();
-//			Collection<LegacyChestBlock> existingBlockRecords = Collections.emptySet();
-//
-//			ResultSet chestTable = statement.executeQuery(SQLiteQueries.getQuery("SelectDeathChestTable"));
-//			if (chestTable.next())
-//			{
-//				existingChestRecords = selectAllChestRecords();
-//			}
-//
-//			ResultSet blockTable = statement.executeQuery(SQLiteQueries.getQuery("SelectDeathBlockTable"));
-//			if (blockTable.next())
-//			{
-//				existingBlockRecords = selectAllBlockRecords();
-//			}
-//
-//			statement.executeUpdate(SQLiteQueries.getQuery("dropDeathChestTable"));
-//			statement.executeUpdate(SQLiteQueries.getQuery("CreateDeathChestTable"));
-//
-//			statement.executeUpdate(SQLiteQueries.getQuery("DropDeathBlockTable"));
-//			statement.executeUpdate(SQLiteQueries.getQuery("CreateDeathBlockTable"));
-//
-//
-//			int chestCount = insertChestRecordsSync(existingChestRecords);
-//			plugin.getLogger().info(chestCount + " death chest records migrated to schema v1 in the " +
-//					this + " datastore.");
-//
-//			int blockCount = insertBlockRecordsSync(existingBlockRecords);
-//			plugin.getLogger().info(blockCount + " death block records migrated to schema v1 in the " +
-//					this + " datastore.");
-//
-//			// update schema version in database
-//			statement.executeUpdate("PRAGMA user_version = 1");
-//
-//			// update schema version field
-//			schemaVersion = 1;
-//		}
-
-		// execute death chest table creation statement
-		statement.executeUpdate(SQLiteQueries.getQuery("CreateDeathChestTable"));
-
-		// execute death block table creation statement
-		statement.executeUpdate(SQLiteQueries.getQuery("CreateDeathBlockTable"));
-	}
-
-
-	/**
-	 * Delete orphaned chests in nonexistent world {@code worldName}
-	 *
-	 * @param worldName the world name of orphaned chests to delete
-	 */
-	private void deleteOrphanedChests(final String worldName)
-	{
-		// pastDueTime = current time in milliseconds - 30 days
-		final long pastDueTime = System.currentTimeMillis() - TimeUnit.DAYS.toMillis(30);
-
-		try (PreparedStatement preparedStatement = connection.prepareStatement(SQLiteQueries.getQuery("DeleteOrphanedChests")))
-		{
-			int rowsAffected = chestQueryHelper.deleteOrphanedChests(worldName, pastDueTime, preparedStatement);
-
-			if (plugin.getConfig().getBoolean("debug"))
-			{
-				plugin.getLogger().info(rowsAffected + " rows deleted.");
-			}
+			statement.executeUpdate(SqliteQueries.getQuery("CreateBlockTable"));
 		}
 		catch (SQLException sqlException)
 		{
