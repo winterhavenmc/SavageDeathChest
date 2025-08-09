@@ -292,7 +292,7 @@ final class ListCommand extends SubcommandAbstract
 	{
 		int returnInt = 1;
 
-		if (args.size() == 1)
+		if (args.size() == 1 && isNumeric(args.getFirst()))
 		{
 			try
 			{
@@ -303,7 +303,7 @@ final class ListCommand extends SubcommandAbstract
 				// not a number
 			}
 		}
-		else if (args.size() == 2)
+		else if (args.size() == 2 && isNumeric(args.get(1)))
 		{
 			try
 			{
@@ -320,17 +320,22 @@ final class ListCommand extends SubcommandAbstract
 
 	private boolean isNumeric(final String strNum)
 	{
-		// if string is null, return false
-		if (strNum == null) { return false; }
-
-		try
-		{
-			Integer.parseInt(strNum);
-		}
-		catch (NumberFormatException nfe)
+		// if string is null or empty return false
+		if (strNum == null || strNum.isEmpty())
 		{
 			return false;
 		}
+		else
+		{
+			for (int i = 0; i < strNum.length(); i++)
+			{
+				if (!Character.isDigit(strNum.charAt(i)))
+				{
+					return false;
+				}
+			}
+		}
+
 		return true;
 	}
 
