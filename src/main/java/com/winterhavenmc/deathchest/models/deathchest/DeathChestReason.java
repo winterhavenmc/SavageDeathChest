@@ -33,6 +33,7 @@ public enum DeathChestReason implements Notice
 	WORLD_UID_NULL("The parameter 'worldUid' was null."),
 	BLOCK_NULL("The parameter 'block' was null."),
 	BLOCK_INVALID("The block was not a DeathChest block."),
+	WORLD_NULL("The parameter 'world' was null."),
 	;
 
 	private final String defaultMessage;
