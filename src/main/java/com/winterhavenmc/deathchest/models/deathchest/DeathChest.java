@@ -71,7 +71,7 @@ public sealed interface DeathChest permits ValidDeathChest, InvalidDeathChest
 		else if (ownerUid == null) return new InvalidDeathChest(DeathChestReason.OWNER_UID_NULL);
 		else if (worldUid == null) return new InvalidDeathChest(DeathChestReason.WORLD_UID_NULL);
 		else return new ValidDeathChest(chestUid, ownerUid, ownerName, killerUid, killerName, worldUid, worldName,
-				locationX, locationY, locationZ, itemCount, placementTime, expirationTime, protectionExpirationTime);
+					locationX, locationY, locationZ, itemCount, placementTime, expirationTime, protectionExpirationTime);
 	}
 
 }
