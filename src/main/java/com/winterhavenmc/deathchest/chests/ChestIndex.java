@@ -23,6 +23,7 @@ import com.winterhavenmc.deathchest.models.deathchest.DeathChestReason;
 import com.winterhavenmc.deathchest.models.deathchest.InvalidDeathChest;
 import com.winterhavenmc.deathchest.models.deathchest.ValidDeathChest;
 import com.winterhavenmc.deathchest.tasks.ExpireChestTask;
+import com.winterhavenmc.library.time.TimeUnit;
 import org.bukkit.scheduler.BukkitTask;
 
 import java.time.Duration;
@@ -135,7 +136,8 @@ final class ChestIndex
 		}
 
 		// compute ticks remaining until expire time (millisecond interval divided by 50 yields ticks)
-		long ticksRemaining = Duration.between(Instant.now(), deathChest.expirationTime()).toMillis() / 50;
+//		long ticksRemaining = Duration.between(Instant.now(), deathChest.expirationTime()).toMillis() / 50;
+		long ticksRemaining = TimeUnit.MILLISECONDS.toTicks(Duration.between(Instant.now(), deathChest.expirationTime()).toMillis());
 		if (ticksRemaining < 1)
 		{
 			ticksRemaining = 1L;
