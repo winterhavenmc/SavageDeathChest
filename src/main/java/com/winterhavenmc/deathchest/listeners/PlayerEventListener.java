@@ -46,12 +46,8 @@ import java.util.LinkedList;
 
 public final class PlayerEventListener implements Listener
 {
-	// reference to main class
 	private final PluginMain plugin;
-
-	// reference to permissionCheck class
 	private final PermissionCheck permissionCheck;
-
 	private final ResultAction inventoryOpenAction = new InventoryOpenAction();
 	private final ResultAction quickLootAction = new QuickLootAction();
 
@@ -63,13 +59,8 @@ public final class PlayerEventListener implements Listener
 	 */
 	public PlayerEventListener(final PluginMain plugin)
 	{
-		// set reference to main class
 		this.plugin = plugin;
-
-		// create instance of permissionCheck class
 		this.permissionCheck = new PermissionCheck(plugin);
-
-		// register event handlers in this class
 		plugin.getServer().getPluginManager().registerEvents(this, plugin);
 	}
 
