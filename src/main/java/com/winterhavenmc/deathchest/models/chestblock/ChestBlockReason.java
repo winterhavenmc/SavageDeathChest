@@ -46,7 +46,7 @@ public enum ChestBlockReason implements Notice
 	{
 		try
 		{
-			ResourceBundle bundle = ResourceBundle.getBundle(getClass().getSimpleName(), locale);
+			final ResourceBundle bundle = ResourceBundle.getBundle(getClass().getSimpleName(), locale);
 			return bundle.getString(name());
 		}
 		catch (MissingResourceException exception)
