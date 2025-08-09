@@ -78,7 +78,6 @@ final class ListCommand extends SubcommandAbstract
 	                                  final @Nonnull String alias,
 	                                  final String[] args)
 	{
-		// initialize return list
 		final List<String> returnList = new LinkedList<>();
 
 		if (args.length == 2)
