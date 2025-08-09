@@ -251,16 +251,9 @@ final class ListCommand extends SubcommandAbstract
 
 	private List<ValidDeathChest> getChestsForPlayer(final Player player)
 	{
-		List<ValidDeathChest> returnList = new ArrayList<>();
-
-		for (ValidDeathChest validDeathChest : plugin.chestManager.getAllChests())
-		{
-			if (validDeathChest.ownerUid().equals(player.getUniqueId()))
-			{
-				returnList.add(validDeathChest);
-			}
-		}
-		return returnList;
+		return plugin.chestManager.getAllChests().stream()
+				.filter(chest -> chest.ownerUid().equals(player.getUniqueId()))
+				.toList();
 	}
 
 
