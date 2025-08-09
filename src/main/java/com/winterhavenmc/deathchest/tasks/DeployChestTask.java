@@ -40,6 +40,7 @@ public class DeployChestTask extends BukkitRunnable
 	}
 
 
+	@Override
 	public void run()
 	{
 		plugin.chestManager.getDeploymentFactory().createDeployment(plugin, player, droppedItems).deploy();
