@@ -35,6 +35,6 @@ public interface ResultAction
 	 * @param player the player involved in the event
 	 * @param validDeathChest the deathchest involved in the event
 	 */
-	void execute(final Cancellable event, final Player player, final ValidDeathChest validDeathChest, final ChestManager chestManager);
+	void execute(Cancellable event, Player player, ValidDeathChest validDeathChest, ChestManager chestManager);
 
 }
