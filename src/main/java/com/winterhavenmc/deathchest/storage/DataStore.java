@@ -79,12 +79,18 @@ public final class DataStore
 	}
 
 
+	/**
+	 * Return DeathChest repository instance
+	 */
 	public ChestRepository deathChests()
 	{
 		return connectionProvider.deathChests();
 	}
 
 
+	/**
+	 * Return ChestBlock repository instance
+	 */
 	public BlockRepository chestBlocks()
 	{
 		return connectionProvider.chestBlocks();
