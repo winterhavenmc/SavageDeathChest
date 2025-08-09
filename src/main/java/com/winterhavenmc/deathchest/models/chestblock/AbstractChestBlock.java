@@ -56,7 +56,7 @@ class AbstractChestBlock
 	 */
 	public Location getLocation()
 	{
-		World world = Bukkit.getServer().getWorld(this.worldUid);
+		final World world = Bukkit.getServer().getWorld(this.worldUid);
 
 		if (world == null)
 		{
