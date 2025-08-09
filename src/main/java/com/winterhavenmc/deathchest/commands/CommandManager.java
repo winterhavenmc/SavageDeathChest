@@ -112,7 +112,7 @@ public final class CommandManager implements TabExecutor
 
 		// get subcommand name, or "help" if list is empty
 		String subcommandName = (!argsList.isEmpty())
-				? argsList.remove(0)
+				? argsList.removeFirst()
 				: "help";
 
 		// get subcommand from map by name
