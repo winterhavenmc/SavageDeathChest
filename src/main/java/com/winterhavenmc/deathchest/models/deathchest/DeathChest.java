@@ -38,23 +38,23 @@ public sealed interface DeathChest permits ValidDeathChest, InvalidDeathChest
 		else if (config == null) return new InvalidDeathChest(DeathChestReason.CONFIG_NULL);
 		else
 		{
-			UUID chestUid = UUID.randomUUID();
-			UUID ownerUid = owner.getUniqueId();
-			String ownerName = owner.getName();
+			final UUID chestUid = UUID.randomUUID();
+			final UUID ownerUid = owner.getUniqueId();
+			final String ownerName = owner.getName();
 
-			UUID killerUid = (owner.getKiller() != null) ? owner.getKiller().getUniqueId() : INVALID_UUID;
-			String killerName = (owner.getKiller() != null) ? owner.getKiller().getName() : "";
+			final UUID killerUid = (owner.getKiller() != null) ? owner.getKiller().getUniqueId() : INVALID_UUID;
+			final String killerName = (owner.getKiller() != null) ? owner.getKiller().getName() : "";
 
 			// player.getWorld() is never null
-			String worldName = owner.getWorld().getName();
-			UUID worldUid = owner.getWorld().getUID();
-			int locationX = location.getBlockX();
-			int locationY = location.getBlockY();
-			int locationZ = location.getBlockZ();
+			final String worldName = owner.getWorld().getName();
+			final UUID worldUid = owner.getWorld().getUID();
+			final int locationX = location.getBlockX();
+			final int locationY = location.getBlockY();
+			final int locationZ = location.getBlockZ();
 
-			Instant placementTime = Instant.now();
-			Instant expirationTime = Instant.now().plus(Duration.ofMinutes(config.getInt("expire-time")));
-			Instant protectionExpirationTime = Instant.now().plus(Duration.ofMinutes(config.getInt("chest-protection-time")));
+			final Instant placementTime = Instant.now();
+			final Instant expirationTime = Instant.now().plus(Duration.ofMinutes(config.getInt("expire-time")));
+			final Instant protectionExpirationTime = Instant.now().plus(Duration.ofMinutes(config.getInt("chest-protection-time")));
 
 			return new ValidDeathChest(chestUid, ownerUid, ownerName, killerUid, killerName, worldUid, worldName,
 					locationX, locationY, locationZ, 0, placementTime, expirationTime, protectionExpirationTime);
