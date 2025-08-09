@@ -40,12 +40,8 @@ import java.util.Set;
 
 public final class InventoryEventListener implements Listener
 {
-	// reference to main class
 	private final PluginMain plugin;
-
-	// reference to permissionCheck class
 	private final PermissionCheck permissionCheck;
-
 	private final Set<InventoryAction> inventoryPlaceActions = Set.of(
 			InventoryAction.PLACE_ALL,
 			InventoryAction.PLACE_SOME,
@@ -60,13 +56,8 @@ public final class InventoryEventListener implements Listener
 	 */
 	public InventoryEventListener(final PluginMain plugin)
 	{
-		// set reference to main class
 		this.plugin = plugin;
-
-		// create instance of permissionCheck class
 		this.permissionCheck = new PermissionCheck(plugin);
-
-		// register event handlers in this class
 		plugin.getServer().getPluginManager().registerEvents(this, plugin);
 	}
 
