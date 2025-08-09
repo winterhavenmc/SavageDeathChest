@@ -23,13 +23,13 @@ import java.sql.SQLException;
 public interface ConnectionProvider
 {
 	/**
-	 * Initialize datastore
+	 * Create datastore connection
 	 */
 	void connect() throws SQLException, ClassNotFoundException;
 
 
 	/**
-	 * Close SQLite datastore connection
+	 * Close datastore connection
 	 */
 	void close();
 
