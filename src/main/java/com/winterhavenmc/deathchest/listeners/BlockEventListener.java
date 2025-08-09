@@ -47,12 +47,8 @@ import java.util.LinkedList;
  */
 public final class BlockEventListener implements Listener
 {
-	// reference to main class
 	private final PluginMain plugin;
-
-	// reference to permissionCheck class
 	private final PermissionCheck permissionCheck;
-
 	final ResultAction breakChestAction = new BreakChestAction();
 
 
@@ -63,13 +59,8 @@ public final class BlockEventListener implements Listener
 	 */
 	public BlockEventListener(final PluginMain plugin)
 	{
-		// set reference to main class
 		this.plugin = plugin;
-
-		// create instance of permissionCheck class
 		this.permissionCheck = new PermissionCheck(plugin);
-
-		// register event handlers in this class
 		plugin.getServer().getPluginManager().registerEvents(this, plugin);
 	}
 
