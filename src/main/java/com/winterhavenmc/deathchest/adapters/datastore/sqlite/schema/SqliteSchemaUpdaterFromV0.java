@@ -38,7 +38,7 @@ import java.util.Set;
 import java.util.UUID;
 
 
-public final class SqliteSchemaUpdaterV0 implements SqliteSchemaUpdater
+public final class SqliteSchemaUpdaterFromV0 implements SqliteSchemaUpdater
 {
 	private final Plugin plugin;
 	private final Connection connection;
@@ -47,11 +47,11 @@ public final class SqliteSchemaUpdaterV0 implements SqliteSchemaUpdater
 	private final LocaleProvider localeProvider;
 
 
-	SqliteSchemaUpdaterV0(final Plugin plugin,
-	                      final Connection connection,
-	                      final LocaleProvider localeProvider,
-	                      final ChestRepository chestRepository,
-	                      final BlockRepository blockRepository)
+	SqliteSchemaUpdaterFromV0(final Plugin plugin,
+	                          final Connection connection,
+	                          final LocaleProvider localeProvider,
+	                          final ChestRepository chestRepository,
+	                          final BlockRepository blockRepository)
 	{
 		this.plugin = plugin;
 		this.connection = connection;
@@ -65,89 +65,59 @@ public final class SqliteSchemaUpdaterV0 implements SqliteSchemaUpdater
 	{
 		if (tableExists(connection, "Chests"))
 		{
-			try (Statement statement = connection.createStatement())
-			{
-				Set<ValidDeathChest> existingChests = selectAllChestRecords(plugin, connection);
-
-				statement.executeUpdate(SqliteQueries.getQuery("dropChestTable"));
-				statement.executeUpdate(SqliteQueries.getQuery("CreateChestTable"));
-				statement.executeUpdate("PRAGMA user_version = 2");
-
-				int chestCount = chestRepository.save(existingChests);
-				plugin.getLogger().info(chestCount + " death chest records migrated to schema v2 in the SQLite datastore.");
-			}
-			catch (SQLException sqlException)
-			{
-				plugin.getLogger().warning(SqliteMessage.SCHEMA_UPDATE_ERROR.getLocalizeMessage(localeProvider.getLocale()));
-				plugin.getLogger().warning(sqlException.getLocalizedMessage());
-			}
+			migrateChestRecords();
 		}
 
 		if (tableExists(connection, "Blocks"))
 		{
-			try (Statement statement = connection.createStatement())
-			{
-				Set<ValidChestBlock> existingBlocks = selectAllBlockRecords(plugin, connection);
-
-				statement.executeUpdate(SqliteQueries.getQuery("dropBlockTable"));
-				statement.executeUpdate(SqliteQueries.getQuery("CreateBlockTable"));
-				statement.executeUpdate("PRAGMA user_version = 2");
-
-				int blockCount = blockRepository.save(existingBlocks);
-				plugin.getLogger().info(blockCount + " death chest records migrated to schema v2 in the SQLite datastore.");
-			}
-			catch(SQLException sqlException)
-			{
-				plugin.getLogger().warning(SqliteMessage.SCHEMA_UPDATE_ERROR.getLocalizeMessage(localeProvider.getLocale()));
-				plugin.getLogger().warning(sqlException.getLocalizedMessage());
-			}
+			migrateBlockRecords();
 		}
 	}
 
 
-	Set<ValidChestBlock> selectAllBlockRecords(final Plugin plugin, final Connection connection)
+	private void migrateChestRecords()
 	{
-		final Set<ValidChestBlock> results = new HashSet<>();
-
-		try (PreparedStatement preparedStatement = connection.prepareStatement(SqliteQueries.getQuery("SelectAllBlocks")))
+		try (Statement statement = connection.createStatement())
 		{
-			ResultSet resultSet = preparedStatement.executeQuery();
+			Set<ValidDeathChest> existingChests = selectAllChestRecords(plugin, connection);
 
-			while (resultSet.next())
-			{
-				final UUID chestUid = getUid(resultSet.getString("ChestUid"));
-				final String worldName = resultSet.getString("WorldName");
-				final World world = plugin.getServer().getWorld(worldName);
-				final int x = resultSet.getInt("X");
-				final int y = resultSet.getInt("Y");
-				final int z = resultSet.getInt("Z");
+			statement.executeUpdate(SqliteQueries.getQuery("dropChestTable"));
+			statement.executeUpdate(SqliteQueries.getQuery("CreateChestTable"));
+			statement.executeUpdate("PRAGMA user_version = 2");
 
-				if (world != null)
-				{
-					ChestBlock chestBlock = ChestBlock.of(chestUid, worldName, world.getUID(), x, y, z);
-
-					if (chestBlock instanceof ValidChestBlock validChestBlock)
-					{
-						results.add(validChestBlock);
-					}
-				}
-				else
-				{
-					plugin.getLogger().warning("World name '" + worldName + "' does not match a loaded world on the server.");
-				}
-			}
+			int chestCount = chestRepository.save(existingChests);
+			plugin.getLogger().info(chestCount + " death chest records migrated to schema v2 in the SQLite datastore.");
 		}
 		catch (SQLException sqlException)
 		{
-			plugin.getLogger().warning(SqliteMessage.SELECT_ALL_CHESTS_ERROR.getLocalizeMessage(localeProvider.getLocale()));
+			plugin.getLogger().warning(SqliteMessage.SCHEMA_UPDATE_ERROR.getLocalizeMessage(localeProvider.getLocale()));
 			plugin.getLogger().warning(sqlException.getLocalizedMessage());
 		}
-
-		return results;
 	}
 
 
-	Set<ValidDeathChest> selectAllChestRecords(final Plugin plugin, final Connection connection)
+	private void migrateBlockRecords()
+	{
+		try (Statement statement = connection.createStatement())
+		{
+			Set<ValidChestBlock> existingBlocks = selectAllBlockRecords(plugin, connection);
+
+			statement.executeUpdate(SqliteQueries.getQuery("dropBlockTable"));
+			statement.executeUpdate(SqliteQueries.getQuery("CreateBlockTable"));
+			statement.executeUpdate("PRAGMA user_version = 2");
+
+			int blockCount = blockRepository.save(existingBlocks);
+			plugin.getLogger().info(blockCount + " death chest records migrated to schema v2 in the SQLite datastore.");
+		}
+		catch(SQLException sqlException)
+		{
+			plugin.getLogger().warning(SqliteMessage.SCHEMA_UPDATE_ERROR.getLocalizeMessage(localeProvider.getLocale()));
+			plugin.getLogger().warning(sqlException.getLocalizedMessage());
+		}
+	}
+
+
+	private Set<ValidDeathChest> selectAllChestRecords(final Plugin plugin, final Connection connection)
 	{
 		final Set<ValidDeathChest> results = new HashSet<>();
 
@@ -202,18 +172,60 @@ public final class SqliteSchemaUpdaterV0 implements SqliteSchemaUpdater
 	}
 
 
+	private Set<ValidChestBlock> selectAllBlockRecords(final Plugin plugin, final Connection connection)
+	{
+		final Set<ValidChestBlock> results = new HashSet<>();
+
+		try (PreparedStatement preparedStatement = connection.prepareStatement(SqliteQueries.getQuery("SelectAllBlocks")))
+		{
+			ResultSet resultSet = preparedStatement.executeQuery();
+
+			while (resultSet.next())
+			{
+				final UUID chestUid = getUid(resultSet.getString("ChestUid"));
+				final String worldName = resultSet.getString("WorldName");
+				final World world = plugin.getServer().getWorld(worldName);
+				final int x = resultSet.getInt("X");
+				final int y = resultSet.getInt("Y");
+				final int z = resultSet.getInt("Z");
+
+				if (world != null)
+				{
+					ChestBlock chestBlock = ChestBlock.of(chestUid, worldName, world.getUID(), x, y, z);
+
+					if (chestBlock instanceof ValidChestBlock validChestBlock)
+					{
+						results.add(validChestBlock);
+					}
+				}
+				else
+				{
+					plugin.getLogger().warning("World name '" + worldName + "' does not match a loaded world on the server. Skipping record for migration.");
+				}
+			}
+		}
+		catch (SQLException sqlException)
+		{
+			plugin.getLogger().warning(SqliteMessage.SELECT_ALL_CHESTS_ERROR.getLocalizeMessage(localeProvider.getLocale()));
+			plugin.getLogger().warning(sqlException.getLocalizedMessage());
+		}
+
+		return results;
+	}
+
+
 	private UUID getUid(final String uidString)
 	{
-		UUID uid;
+		UUID uuid;
 		try
 		{
-			uid = UUID.fromString(uidString);
+			uuid = UUID.fromString(uidString);
 		}
 		catch (IllegalArgumentException exception)
 		{
-			uid = new UUID(0, 0);
+			uuid = new UUID(0, 0);
 		}
-		return uid;
+		return uuid;
 	}
 
 }
