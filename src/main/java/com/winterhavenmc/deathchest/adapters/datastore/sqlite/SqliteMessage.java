@@ -26,6 +26,7 @@ import java.util.ResourceBundle;
 
 public enum SqliteMessage implements Notice
 {
+	INITIALIZE_DATASTORE_ERROR("An error occurred while trying to initialize the datastore."),
 	CREATE_CHEST_TABLE_ERROR("An error occurred while creating the 'chest' table in the Sqlite datastore."),
 	CREATE_BLOCK_TABLE_ERROR("An error occurred while creating the 'block' table in the Sqlite datastore."),
 	SELECT_ALL_CHESTS_ERROR("An error occurred while trying to select all chest records from the SQLite datastore."),
@@ -43,7 +44,6 @@ public enum SqliteMessage implements Notice
 	ENABLE_FOREIGN_KEYS_ERROR("An error occurred while attempting to enable foreign keys in the SQLIte datastore."),
 	SCHEMA_UPDATE_ERROR("An error occurred while updating chest records in the SQLite datastore during schema migration."),
 	SCHEMA_UP_TO_DATE_NOTICE("Current schema is up to date."),
-	INITIALIZE_DATASTORE_ERROR("An error occurred while trying to initialize the datastore."),
 	;
 
 	final String defaultMessage;
@@ -59,7 +59,7 @@ public enum SqliteMessage implements Notice
 	{
 		try
 		{
-			ResourceBundle bundle = ResourceBundle.getBundle(getClass().getSimpleName(), locale);
+			final ResourceBundle bundle = ResourceBundle.getBundle(getClass().getSimpleName(), locale);
 			return bundle.getString(name());
 		}
 		catch (MissingResourceException exception)
