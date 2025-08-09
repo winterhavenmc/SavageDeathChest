@@ -20,10 +20,10 @@ package com.winterhavenmc.deathchest.chests;
 import com.winterhavenmc.deathchest.PluginMain;
 import org.bukkit.Material;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 
 /**
@@ -55,18 +55,11 @@ public final class ReplaceableBlocks
 		// clear replaceable blocks
 		materialSet.clear();
 
-		// get string list of materials from config file
-		Collection<String> materialStringList = plugin.getConfig().getStringList("replaceable-blocks");
-
-		// iterate over string list
-		for (String materialString : materialStringList)
-		{
-			// if material string matches a valid material type, add to replaceableBlocks set
-			if (Material.matchMaterial(materialString) != null)
-			{
-				materialSet.add(Material.matchMaterial(materialString));
-			}
-		}
+		// add valid materials to set from config list
+		materialSet.addAll(plugin.getConfig().getStringList("replaceable-blocks").stream()
+				.filter(material -> Material.matchMaterial(material) != null)
+				.map(Material::matchMaterial)
+				.collect(Collectors.toSet()));
 	}
 
 
