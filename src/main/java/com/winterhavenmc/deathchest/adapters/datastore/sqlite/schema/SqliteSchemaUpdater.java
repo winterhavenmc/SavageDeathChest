@@ -42,7 +42,7 @@ public sealed interface SqliteSchemaUpdater permits SqliteSchemaUpdaterFromV1, S
 		int schemaVersion = getSchemaVersion(connection, plugin.getLogger(), localeProvider);
 		if (plugin.getConfig().getBoolean("debug"))
 		{
-			plugin.getLogger().info("Schema version detected: " + schemaVersion);
+			plugin.getLogger().info(SqliteMessage.SCHEMA_VERSION_NOTICE.getLocalizeMessage(localeProvider.getLocale(), schemaVersion));
 		}
 
 		return switch (schemaVersion)
@@ -68,7 +68,7 @@ public sealed interface SqliteSchemaUpdater permits SqliteSchemaUpdaterFromV1, S
 		}
 		catch (SQLException sqlException)
 		{
-			logger.warning(SqliteMessage.NO_SCHEMA_VERSION_ERROR.getLocalizeMessage(localeProvider.getLocale()));
+			logger.warning(SqliteMessage.SCHEMA_VERSION_ERROR.getLocalizeMessage(localeProvider.getLocale()));
 			logger.warning(sqlException.getLocalizedMessage());
 		}
 

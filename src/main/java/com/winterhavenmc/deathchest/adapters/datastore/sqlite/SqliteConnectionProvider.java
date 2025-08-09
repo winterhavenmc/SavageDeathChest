@@ -105,7 +105,7 @@ public final class SqliteConnectionProvider implements ConnectionProvider
 		initialized = true;
 
 		// output log message
-		logger.info("Datastore initialized.");
+		logger.info(SqliteMessage.INITIALIZE_DATASTORE_NOTICE.getLocalizeMessage(localeProvider.getLocale()));
 	}
 
 

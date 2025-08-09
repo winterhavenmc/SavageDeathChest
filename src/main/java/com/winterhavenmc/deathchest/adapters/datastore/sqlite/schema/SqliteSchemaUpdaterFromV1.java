@@ -73,7 +73,8 @@ public final class SqliteSchemaUpdaterFromV1 implements SqliteSchemaUpdater
 			statement.executeUpdate("PRAGMA user_version = 2");
 
 			int chestCount = chestRepository.save(existingChests);
-			plugin.getLogger().info(chestCount + " death chest records migrated to schema v2 in the SQLite datastore.");
+			plugin.getLogger().info(SqliteMessage.SCHEMA_CHESTS_MIGRATED_NOTICE.getLocalizeMessage(localeProvider.getLocale(), chestCount));
+//			plugin.getLogger().info(chestCount + " death chest records migrated to schema v2 in the SQLite datastore.");
 		}
 		catch(SQLException sqlException)
 		{

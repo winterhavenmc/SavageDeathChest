@@ -86,7 +86,8 @@ public final class SqliteSchemaUpdaterFromV0 implements SqliteSchemaUpdater
 			statement.executeUpdate("PRAGMA user_version = 2");
 
 			int chestCount = chestRepository.save(existingChests);
-			plugin.getLogger().info(chestCount + " death chest records migrated to schema v2 in the SQLite datastore.");
+			plugin.getLogger().info(SqliteMessage.SCHEMA_CHESTS_MIGRATED_NOTICE.getLocalizeMessage(localeProvider.getLocale(), chestCount));
+//			plugin.getLogger().info(chestCount + " death chest records migrated to schema v2 in the SQLite datastore.");
 		}
 		catch (SQLException sqlException)
 		{
@@ -107,7 +108,8 @@ public final class SqliteSchemaUpdaterFromV0 implements SqliteSchemaUpdater
 			statement.executeUpdate("PRAGMA user_version = 2");
 
 			int blockCount = blockRepository.save(existingBlocks);
-			plugin.getLogger().info(blockCount + " death chest records migrated to schema v2 in the SQLite datastore.");
+			plugin.getLogger().info(SqliteMessage.SCHEMA_BLOCKS_MIGRATED_NOTICE.getLocalizeMessage(localeProvider.getLocale(), blockCount));
+//			plugin.getLogger().info(blockCount + " death chest records migrated to schema v2 in the SQLite datastore.");
 		}
 		catch(SQLException sqlException)
 		{
@@ -200,7 +202,8 @@ public final class SqliteSchemaUpdaterFromV0 implements SqliteSchemaUpdater
 				}
 				else
 				{
-					plugin.getLogger().warning("World name '" + worldName + "' does not match a loaded world on the server. Skipping record for migration.");
+					plugin.getLogger().warning(SqliteMessage.SCHEMA_WORLD_NOT_LOADED_ERROR.getLocalizeMessage(localeProvider.getLocale(), worldName));
+//					plugin.getLogger().warning("World name '" + worldName + "' does not match a loaded world on the server. Skipping record for migration.");
 				}
 			}
 		}

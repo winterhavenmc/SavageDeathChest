@@ -76,7 +76,8 @@ public final class SQLiteChestRepository implements ChestRepository
 				{
 					String worldName = resultSet.getString("worldName");
 					int rowsAffected = deleteOrphanedChest(worldName);
-					logger.info(rowsAffected + " orphaned chests in world " + worldName + " removed.");
+					logger.info(SqliteMessage.DELETE_ORPHANED_CHESTS_NOTICE.getLocalizeMessage(localeProvider.getLocale(), rowsAffected, worldName));
+//					logger.info(rowsAffected + " orphaned chests in world " + worldName + " removed.");
 				}
 			}
 		}
