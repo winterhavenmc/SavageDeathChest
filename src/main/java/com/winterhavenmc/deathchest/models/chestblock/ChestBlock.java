@@ -25,7 +25,7 @@ import org.bukkit.World;
 import java.util.UUID;
 
 
-public sealed interface ChestBlock permits InvalidChestBlock, ValidChestBlock
+public sealed interface ChestBlock permits ValidChestBlock, InvalidChestBlock
 {
 	static ChestBlock of(final UUID chestUid, final Location location, final ChestBlockType type)
 	{
