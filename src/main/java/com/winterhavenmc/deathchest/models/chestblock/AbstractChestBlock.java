@@ -52,7 +52,7 @@ class AbstractChestBlock
 	/**
 	 * Getter method for chest block location
 	 *
-	 * @return Location - the in game location of this chest block
+	 * @return {@link Location} the in game location of this chest block
 	 */
 	public Location getLocation()
 	{
