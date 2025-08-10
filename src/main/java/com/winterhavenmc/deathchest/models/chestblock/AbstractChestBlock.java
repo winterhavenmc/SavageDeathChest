@@ -64,12 +64,7 @@ class AbstractChestBlock
 		}
 
 		// return new location object
-		return new Location(world,
-				this.x,
-				this.y,
-				this.z,
-				this.yaw,
-				this.pitch);
+		return new Location(world, this.x, this.y, this.z, this.yaw, this.pitch);
 	}
 
 	public UUID getChestUid()
