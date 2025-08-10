@@ -63,7 +63,6 @@ class AbstractChestBlock
 			return null;
 		}
 
-		// return new location object
 		return new Location(world, this.x, this.y, this.z, this.yaw, this.pitch);
 	}
 
