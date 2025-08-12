@@ -25,6 +25,7 @@ import com.winterhavenmc.deathchest.sounds.SoundId;
 
 import javax.annotation.Nonnull;
 import java.util.*;
+import java.util.function.Predicate;
 
 
 /**
@@ -140,17 +141,25 @@ public final class CommandManager implements TabExecutor
 	 */
 	private List<String> matchingCommands(final CommandSender sender, final String matchString)
 	{
-		List<String> returnList = new LinkedList<>();
-
-		for (String subcommand : subcommandRegistry.getNames())
-		{
-			if (sender.hasPermission("deathchest." + subcommand)
-					&& subcommand.startsWith(matchString.toLowerCase()))
-			{
-				returnList.add(subcommand);
-			}
-		}
-		return returnList;
+		return subcommandRegistry.getNames().stream()
+				.filter(hasPermission(sender))
+				.filter(matchesPrefix(matchString))
+				.toList();
 	}
+
+
+	private Predicate<String> hasPermission(final CommandSender sender)
+	{
+		return subcommandName -> Optional.of(subcommandRegistry.getCommand(subcommandName))
+				.map(subcommand -> sender.hasPermission("deathchest." + subcommandName))
+				.orElse(false);
+	}
+
+
+	private Predicate<String> matchesPrefix(final String prefix)
+	{
+		return subcommandName -> subcommandName.startsWith(prefix.toLowerCase());
+	}
+
 
 }
