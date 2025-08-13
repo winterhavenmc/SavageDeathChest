@@ -26,6 +26,7 @@ import org.bukkit.plugin.Plugin;
 
 import java.io.File;
 import java.sql.*;
+import java.util.Locale;
 import java.util.logging.Logger;
 
 
@@ -91,15 +92,15 @@ public final class SqliteConnectionProvider implements ConnectionProvider
 		blockRepository = new SQLiteBlockRepository(plugin, connection);
 
 		// enable foreign keys
-		enableForeignKeys(connection);
+		enableForeignKeys(connection, localeProvider.getLocale());
 
 		// Update schema
 		SqliteSchemaUpdater schemaUpdater = SqliteSchemaUpdater.create(plugin, connection, localeProvider, chestRepository, blockRepository);
 		schemaUpdater.update();
 
 		// create tables if necessary
-		createChestTable(connection);
-		createBlockTable(connection);
+		createChestTable(connection, localeProvider.getLocale());
+		createBlockTable(connection, localeProvider.getLocale());
 
 		// set initialized true
 		initialized = true;
@@ -146,7 +147,7 @@ public final class SqliteConnectionProvider implements ConnectionProvider
 	}
 
 
-	private void enableForeignKeys(final Connection connection)
+	private void enableForeignKeys(final Connection connection, final Locale locale)
 	{
 		try (final Statement statement = connection.createStatement())
 		{
@@ -154,12 +155,12 @@ public final class SqliteConnectionProvider implements ConnectionProvider
 		}
 		catch (SQLException sqlException)
 		{
-			logger.warning(SqliteMessage.ENABLE_FOREIGN_KEYS_ERROR.getLocalizeMessage(localeProvider.getLocale()));
+			logger.warning(SqliteMessage.ENABLE_FOREIGN_KEYS_ERROR.getLocalizeMessage(locale));
 		}
 	}
 
 
-	private void createChestTable(final Connection connection)
+	private void createChestTable(final Connection connection, final Locale locale)
 	{
 		try (final Statement statement = connection.createStatement())
 		{
@@ -167,13 +168,13 @@ public final class SqliteConnectionProvider implements ConnectionProvider
 		}
 		catch (SQLException sqlException)
 		{
-			logger.warning(SqliteMessage.CREATE_CHEST_TABLE_ERROR.getLocalizeMessage(localeProvider.getLocale()));
+			logger.warning(SqliteMessage.CREATE_CHEST_TABLE_ERROR.getLocalizeMessage(locale));
 			logger.warning(sqlException.getLocalizedMessage());
 		}
 	}
 
 
-	private void createBlockTable(final Connection connection)
+	private void createBlockTable(final Connection connection, final Locale locale)
 	{
 		try (final Statement statement = connection.createStatement())
 		{
@@ -181,7 +182,7 @@ public final class SqliteConnectionProvider implements ConnectionProvider
 		}
 		catch (SQLException sqlException)
 		{
-			logger.warning(SqliteMessage.CREATE_BLOCK_TABLE_ERROR.getLocalizeMessage(localeProvider.getLocale()));
+			logger.warning(SqliteMessage.CREATE_BLOCK_TABLE_ERROR.getLocalizeMessage(locale));
 			logger.warning(sqlException.getLocalizedMessage());
 		}
 	}
