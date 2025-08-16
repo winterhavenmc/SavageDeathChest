@@ -94,7 +94,7 @@ public final class SQLiteBlockRepository implements BlockRepository
 
 	private int insertBlock(final ValidChestBlock validChestBlock)
 	{
-		try (PreparedStatement preparedStatement = connection.prepareStatement(SqliteQueries.getQuery("InsertBlockRecord")))
+		try (final PreparedStatement preparedStatement = connection.prepareStatement(SqliteQueries.getQuery("InsertBlockRecord")))
 		{
 			return queryExecutor.insertBlock(validChestBlock, preparedStatement);
 		}
@@ -110,7 +110,7 @@ public final class SQLiteBlockRepository implements BlockRepository
 	@Override
 	public int delete(final ValidChestBlock validChestBlock)
 	{
-		try (PreparedStatement preparedStatement = connection.prepareStatement(SqliteQueries.getQuery("DeleteBlockByLocation")))
+		try (final PreparedStatement preparedStatement = connection.prepareStatement(SqliteQueries.getQuery("DeleteBlockByLocation")))
 		{
 			return queryExecutor.DeleteBlock(validChestBlock, preparedStatement);
 		}
