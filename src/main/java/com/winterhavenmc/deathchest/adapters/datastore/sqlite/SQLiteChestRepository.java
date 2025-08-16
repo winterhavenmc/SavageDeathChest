@@ -61,10 +61,9 @@ public final class SQLiteChestRepository implements ChestRepository
 	{
 		final Collection<ValidDeathChest> results = new HashSet<>();
 
-		try (PreparedStatement preparedStatement = connection.prepareStatement(SqliteQueries.getQuery("SelectAllChests")))
+		try (final PreparedStatement preparedStatement = connection.prepareStatement(SqliteQueries.getQuery("SelectAllChests"));
+		     final ResultSet resultSet = queryExecutor.SelectAllChests(preparedStatement))
 		{
-			ResultSet resultSet = queryExecutor.SelectAllChests(preparedStatement);
-
 			while (resultSet.next())
 			{
 				DeathChest deathChest = chestRowMapper.map(resultSet);
