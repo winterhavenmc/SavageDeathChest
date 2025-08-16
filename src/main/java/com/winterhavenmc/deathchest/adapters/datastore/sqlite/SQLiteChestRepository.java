@@ -127,7 +127,7 @@ public final class SQLiteChestRepository implements ChestRepository
 	@Override
 	public int delete(ValidDeathChest validDeathChest)
 	{
-		try (PreparedStatement preparedStatement = connection.prepareStatement(SqliteQueries.getQuery("DeleteChestByUUID")))
+		try (final PreparedStatement preparedStatement = connection.prepareStatement(SqliteQueries.getQuery("DeleteChestByUUID")))
 		{
 			return queryExecutor.deleteChest(validDeathChest, preparedStatement);
 		}
@@ -143,7 +143,7 @@ public final class SQLiteChestRepository implements ChestRepository
 	@Override
 	public int getCount()
 	{
-		try (PreparedStatement preparedStatement = connection.prepareStatement(SqliteQueries.getQuery("SelectChestCount")))
+		try (final PreparedStatement preparedStatement = connection.prepareStatement(SqliteQueries.getQuery("SelectChestCount")))
 		{
 			return SqliteChestQueryExecutor.getChestItemCount(preparedStatement);
 		}
@@ -166,7 +166,7 @@ public final class SQLiteChestRepository implements ChestRepository
 		// pastDueTime = current time in milliseconds - 30 days
 		final long pastDueTime = System.currentTimeMillis() - TimeUnit.DAYS.toMillis(30);
 
-		try (PreparedStatement preparedStatement = connection.prepareStatement(SqliteQueries.getQuery("DeleteOrphanedChests")))
+		try (final PreparedStatement preparedStatement = connection.prepareStatement(SqliteQueries.getQuery("DeleteOrphanedChests")))
 		{
 			return queryExecutor.deleteOrphanedChests(worldName, pastDueTime, preparedStatement);
 		}
