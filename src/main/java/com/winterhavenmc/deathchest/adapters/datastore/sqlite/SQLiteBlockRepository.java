@@ -59,10 +59,9 @@ public final class SQLiteBlockRepository implements BlockRepository
 	{
 		final Collection<ValidChestBlock> results = new HashSet<>();
 
-		try (PreparedStatement preparedStatement = connection.prepareStatement(SqliteQueries.getQuery("SelectAllBlocks")))
+		try (final PreparedStatement preparedStatement = connection.prepareStatement(SqliteQueries.getQuery("SelectAllBlocks"));
+		     final ResultSet resultSet = queryExecutor.selectAllBlocks(preparedStatement))
 		{
-			ResultSet resultSet = queryExecutor.selectAllBlocks(preparedStatement);
-
 			while (resultSet.next())
 			{
 				ChestBlock chestBlock = rowMapper.map(plugin, resultSet);
