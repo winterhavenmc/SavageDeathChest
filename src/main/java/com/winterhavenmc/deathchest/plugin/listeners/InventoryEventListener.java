@@ -81,7 +81,7 @@ public final class InventoryEventListener implements Listener
 			if (event.getPlayer() instanceof Player player)
 			{
 				// if access is blocked by a protection plugin, do nothing and return (allow protection plugin to handle event)
-				ProtectionCheckResult protectionCheckResult = plugin.protectionPluginRegistry.AccessAllowed(player, validDeathChest.getLocation());
+				ProtectionCheckResult protectionCheckResult = plugin.protectionPluginRegistry.accessAllowed(player, validDeathChest.getLocation());
 
 				if (!permissionCheck.isPluginBlockingAccess(protectionCheckResult))
 				{
