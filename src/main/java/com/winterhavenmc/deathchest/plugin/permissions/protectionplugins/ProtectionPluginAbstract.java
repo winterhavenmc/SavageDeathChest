@@ -22,14 +22,16 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 
-public abstract class ProtectionPluginAbstract implements ProtectionPlugin {
-
+public abstract class ProtectionPluginAbstract implements ProtectionPlugin
+{
 	protected JavaPlugin plugin;
 	protected String name;
 	protected String version;
 
+
 	@Override
-	public String toString() {
+	public String toString()
+	{
 		return this.name;
 	}
 
@@ -40,12 +42,14 @@ public abstract class ProtectionPluginAbstract implements ProtectionPlugin {
 	public abstract boolean allowChestAccess(final Player player, final Location location);
 
 	@Override
-	public String getPluginName() {
+	public String getPluginName()
+	{
 		return this.name;
 	}
 
 	@Override
-	public String getPluginVersion() {
+	public String getPluginVersion()
+	{
 		return this.version;
 	}
 
@@ -53,17 +57,10 @@ public abstract class ProtectionPluginAbstract implements ProtectionPlugin {
 	/**
 	 * Log errors that occur when checking for block place permission
 	 */
-	public void logPlaceError(final String message) {
+	public void logPlaceError(final String message)
+	{
 		plugin.getLogger().warning("An error occurred checking for block place permission with " + this);
 		plugin.getLogger().warning(message);
-	}
-
-
-	/**
-	 * Log errors that occur when checking for chest access permission
-	 */
-	public void logAccessError() {
-		plugin.getLogger().warning("An error occurred checking for chest access permission with " + this);
 	}
 
 
@@ -83,8 +80,8 @@ public abstract class ProtectionPluginAbstract implements ProtectionPlugin {
 	 * @return {@code true} if the protection plugin is enabled for check on placement, {@code false} if not
 	 */
 	@Override
-	public boolean isIgnoredOnPlace() {
-
+	public boolean isIgnoredOnPlace()
+	{
 		// if plugin is not enabled in config, return false
 		return (plugin.getConfig().getBoolean("protection-plugins." + this + ".ignore-on-place"));
 	}
@@ -96,7 +93,8 @@ public abstract class ProtectionPluginAbstract implements ProtectionPlugin {
 	 * @return {@code true} if the protection plugin is enabled for check on access, {@code false} if not
 	 */
 	@Override
-	public boolean isIgnoredOnAccess() {
+	public boolean isIgnoredOnAccess()
+	{
 		// if plugin is not enabled in config, return false
 		return (plugin.getConfig().getBoolean("protection-plugins." + this + ".ignore-on-access"));
 	}
