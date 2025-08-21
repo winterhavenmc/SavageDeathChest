@@ -53,14 +53,6 @@ public abstract class ProtectionPluginAbstract implements ProtectionPlugin {
 	/**
 	 * Log errors that occur when checking for block place permission
 	 */
-	public void logPlaceError() {
-		plugin.getLogger().warning("An error occurred checking for block place permission with " + this);
-	}
-
-
-	/**
-	 * Log errors that occur when checking for block place permission
-	 */
 	public void logPlaceError(final String message) {
 		plugin.getLogger().warning("An error occurred checking for block place permission with " + this);
 		plugin.getLogger().warning(message);
@@ -78,7 +70,8 @@ public abstract class ProtectionPluginAbstract implements ProtectionPlugin {
 	/**
 	 * Log errors that occur when checking for chest access permission
 	 */
-	public void logAccessError(final String message) {
+	public void logAccessError(final String message)
+	{
 		plugin.getLogger().warning("An error occurred checking for chest access permission with " + this);
 		plugin.getLogger().warning(message);
 	}
