@@ -34,7 +34,7 @@ import java.util.Map;
 import java.util.UUID;
 
 
-final class ChestIndex
+final class ChestMap
 {
 	private final Map<UUID, ValidDeathChest> deathChestMap;
 	private final Map<UUID, Integer> expireMap;
@@ -43,7 +43,7 @@ final class ChestIndex
 	/**
 	 * Constructor
 	 */
-	ChestIndex()
+	ChestMap()
 	{
 		deathChestMap = new HashMap<>();
 		expireMap = new HashMap<>();
