@@ -11,27 +11,46 @@ CONSTANTS:
     INVENTORY_NAME: "死亡宝箱"
 
 
-#################
-# Custom Messages
-#################
-# Variable substitutions:
-# {EXPIRATION_DURATION}           expiration duration with seconds
-# {PROTECTION_DURATION}           protection duration with seconds
+# Message placeholders:
+# {RECIPIENT}                        Name of message recipient
+# {RECIPIENT.LOCATION}               Location of message recipient, if in game player.
+# {RECIPIENT.LOCATION.WORLD}         World name of Recipient (player) location
+# {RECIPIENT.LOCATION.X}             Recipient (player) X coordinate
+# {RECIPIENT.LOCATION.Y}             Recipient (player) Y coordinate
+# {RECIPIENT.LOCATION.Z}             Recipient (player) Z coordinate
+# {DEATH_CHEST} subfields:
+# {DEATH_CHEST.OWNER}                Chest owner name (only available in messages that reference a valid chest object)
+# {DEATH_CHEST.LOOTER}               Chest looter name (only available in messages that reference a valid chest object)
+# {DEATH_CHEST.LOCATION}             Chest location formatted: world [x, y, z]
+# {DEATH_CHEST.LOCATION.WORLD}       World name of chest
+# {DEATH_CHEST.LOCATION.X}           Chest coordinates
+# {DEATH_CHEST.LOCATION.Y}           Chest coordinates
+# {DEATH_CHEST.LOCATION.Z}           Chest coordinates
+# {DEATH_CHEST.EXPIRATION.DURATION}  Time remaining until chest expires and drops contents
+# {DEATH_CHEST.EXPIRATION.INSTANT}   Date/time when chest expires and drops contents
+# {DEATH_CHEST.PROTECTION.DURATION}  Remaining time before non-owners may access chest contents
+# {DEATH_CHEST.PROTECTION.INSTANT}   Date/time when non-owners may access chest contents
+# {PLUGIN}                           Protection plugin name
 
-# {PLAYER}          Player name of message recipient
-# {OWNER}           Chest owner name (only available in messages that reference a valid chest object)
-# {KILLER}          Chest killer name (only available in messages that reference a valid chest object)
-# {VIEWER}          Chest viewer name
-# {PLUGIN}          Protection plugin name
-# {LOCATION}        Chest location formatted: world [x, y, z]
-# {LOCATION.WORLD}
-# {LOCATION.X}
-# {LOCATION.Y}
-# {LOCATION.Z}
-
+# List placeholders:
 # {PAGE_NUMBER}   List page number (only available in LIST_HEADER and LIST_FOOTER messages)
 # {PAGE_TOTAL}    List total page count (only available in LIST_HEADER and LIST_FOOTER messages)
 # {ITEM_NUMBER}   List item number (only available in list item messages)
+
+
+# Message Fields:
+# MESSAGE_KEY: the unique identifier for each individual message, represented by an enum constant in code
+#   MESSAGE_TEXT: string value that will be displayed as a chat message, may be omitted
+#   TITILE_TEXT: string value that will be displayed as a title, may be omitted
+#   SUBTITLE_TEXT: string value that will be displayed as a subtitle, may be omitted
+#   ENABLED: boolean value determines whether any of the message text fields will be displayed, defaults to true if omitted
+#   REPEAT_DELAY: integer value representing the number of seconds to wait before sending a message to a given player again
+#   TITLE_FADE_IN, TITLE_STAY, TITLE_FADE_OUT: integer values to override the default title fade timings (in ticks)
+
+
+#################
+# Custom Messages
+#################
 
 MESSAGES:
   CHEST_SUCCESS:
