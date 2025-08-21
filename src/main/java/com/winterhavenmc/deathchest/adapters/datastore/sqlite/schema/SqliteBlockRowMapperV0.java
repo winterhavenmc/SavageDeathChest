@@ -17,7 +17,7 @@
 
 package com.winterhavenmc.deathchest.adapters.datastore.sqlite.schema;
 
-import com.winterhavenmc.deathchest.models.chestblock.ChestBlock;
+import com.winterhavenmc.deathchest.plugin.models.chestblock.ChestBlock;
 import org.bukkit.World;
 import org.bukkit.plugin.Plugin;
 
