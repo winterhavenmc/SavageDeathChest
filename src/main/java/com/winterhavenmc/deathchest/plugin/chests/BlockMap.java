@@ -26,7 +26,7 @@ import org.bukkit.Location;
 import java.util.*;
 
 
-final class BlockIndex
+final class BlockMap
 {
 	// map of ChestBlocks indexed by location
 	private final Map<Location, ValidChestBlock> locationMap;
@@ -38,7 +38,7 @@ final class BlockIndex
 	/**
 	 * Class constructor
 	 */
-	BlockIndex()
+	BlockMap()
 	{
 		// initialize location map
 		locationMap = new HashMap<>();
