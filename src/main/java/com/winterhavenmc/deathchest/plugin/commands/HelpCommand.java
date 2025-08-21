@@ -100,7 +100,7 @@ final class HelpCommand extends SubcommandAbstract
 		}
 
 		// get subcommand name
-		String subcommandName = args.get(0);
+		String subcommandName = args.getFirst();
 		displayHelp(sender, subcommandName);
 		return true;
 	}
