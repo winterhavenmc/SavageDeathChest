@@ -17,7 +17,7 @@
 
 package com.winterhavenmc.deathchest.adapters.datastore.sqlite;
 
-import com.winterhavenmc.deathchest.util.Notice;
+import com.winterhavenmc.deathchest.plugin.util.Notice;
 
 import java.text.MessageFormat;
 import java.util.Locale;
