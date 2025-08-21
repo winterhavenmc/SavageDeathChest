@@ -23,8 +23,8 @@ import com.winterhavenmc.deathchest.plugin.models.chestblock.ChestBlock;
 import com.winterhavenmc.deathchest.plugin.models.chestblock.ValidChestBlock;
 import com.winterhavenmc.deathchest.plugin.models.deathchest.DeathChest;
 import com.winterhavenmc.deathchest.plugin.models.deathchest.ValidDeathChest;
-import com.winterhavenmc.deathchest.plugin.datastore.BlockRepository;
-import com.winterhavenmc.deathchest.plugin.datastore.ChestRepository;
+import com.winterhavenmc.deathchest.plugin.ports.datastore.BlockRepository;
+import com.winterhavenmc.deathchest.plugin.ports.datastore.ChestRepository;
 import com.winterhavenmc.library.messagebuilder.resources.configuration.LocaleProvider;
 
 import org.bukkit.OfflinePlayer;

@@ -21,7 +21,7 @@ import com.winterhavenmc.deathchest.adapters.datastore.sqlite.SqliteMessage;
 import com.winterhavenmc.deathchest.adapters.datastore.sqlite.SqliteQueries;
 import com.winterhavenmc.deathchest.plugin.models.deathchest.DeathChest;
 import com.winterhavenmc.deathchest.plugin.models.deathchest.ValidDeathChest;
-import com.winterhavenmc.deathchest.plugin.datastore.ChestRepository;
+import com.winterhavenmc.deathchest.plugin.ports.datastore.ChestRepository;
 import com.winterhavenmc.library.messagebuilder.resources.configuration.LocaleProvider;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.plugin.Plugin;

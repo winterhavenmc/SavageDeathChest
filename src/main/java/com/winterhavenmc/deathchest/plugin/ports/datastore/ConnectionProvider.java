@@ -15,7 +15,7 @@
  *
  */
 
-package com.winterhavenmc.deathchest.plugin.datastore;
+package com.winterhavenmc.deathchest.plugin.ports.datastore;
 
 import java.sql.SQLException;
 
