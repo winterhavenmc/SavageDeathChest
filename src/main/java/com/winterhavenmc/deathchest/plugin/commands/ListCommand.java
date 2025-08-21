@@ -192,8 +192,11 @@ final class ListCommand extends SubcommandAbstract
 			return true;
 		}
 
-		// sort displayRecords
-		displayRecords.sort(Comparator.comparing(ValidDeathChest::expirationTime));
+		// make mutable copy of list
+		List<ValidDeathChest> sortableChests = new ArrayList<>(displayRecords);
+
+		// sort by expiration time
+		sortableChests.sort(Comparator.comparing(ValidDeathChest::expirationTime));
 
 		// get list page size from configuration
 		int itemsPerPage = plugin.getConfig().getInt("list-page-size-player");
@@ -206,15 +209,15 @@ final class ListCommand extends SubcommandAbstract
 		int page = getPageFromArgs(args);
 
 		// get page count
-		int pageCount = ((displayRecords.size() - 1) / itemsPerPage) + 1;
+		int pageCount = ((sortableChests.size() - 1) / itemsPerPage) + 1;
 		if (page > pageCount)
 		{
 			page = pageCount;
 		}
 		int startIndex = ((page - 1) * itemsPerPage);
-		int endIndex = Math.min((page * itemsPerPage), displayRecords.size());
+		int endIndex = Math.min((page * itemsPerPage), sortableChests.size());
 
-		List<ValidDeathChest> displayRange = displayRecords.subList(startIndex, endIndex);
+		List<ValidDeathChest> displayRange = sortableChests.subList(startIndex, endIndex);
 
 		int listCount = startIndex;
 
