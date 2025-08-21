@@ -295,7 +295,7 @@ public abstract class AbstractDeployment implements Deployment
 
 		// put DeathChest in datastore
 		Set<ValidDeathChest> deathChests = Collections.singleton(validDeathChest);
-		plugin.chestManager.insertChestRecords(deathChests);
+		plugin.chestManager.saveChestRecords(deathChests);
 	}
 
 

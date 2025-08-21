@@ -387,7 +387,7 @@ public final class ChestManager
 	}
 
 
-	public void insertChestRecords(final Collection<ValidDeathChest> deathChests)
+	public void saveChestRecords(final Collection<ValidDeathChest> deathChests)
 	{
 		// get validChestBlocks for all deathChests
 		Set<ValidChestBlock> chestBlocks = deathChests.stream()
