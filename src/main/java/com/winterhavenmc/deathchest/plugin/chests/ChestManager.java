@@ -105,7 +105,7 @@ public final class ChestManager
 
 		for (ValidChestBlock validChestBlock : dataStore.chestBlocks().getAll())
 		{
-			// if chest uuid is in chest index, get ChestBlockType and put in block index
+			// if chest uuid is in chest map, get ChestBlockType and put in block map
 			if (chestMap.containsKey(validChestBlock.getChestUid()))
 			{
 				// get chest block type constant from object type
@@ -116,7 +116,7 @@ public final class ChestManager
 					case SignChestBlock ignored -> ChestBlockType.SIGN;
 				};
 
-				// add validChestBlock to block index
+				// add validChestBlock to block map
 				this.blockMap.put(chestBlockType, validChestBlock);
 			}
 			else
@@ -128,7 +128,7 @@ public final class ChestManager
 		// expire chests with no blocks or past expiration
 		for (ValidDeathChest validDeathChest : chestMap.values())
 		{
-			// if DeathChest has no child blocks, remove from index and datastore
+			// if DeathChest has no child blocks, remove from map and datastore
 			if (this.getBlocks(validDeathChest.chestUid()).isEmpty())
 			{
 				chestMap.remove(validDeathChest);
@@ -188,7 +188,7 @@ public final class ChestManager
 	{
 		if (block != null)
 		{
-			// get chest block from index by location
+			// get chest block from map by location
 			ChestBlock chestBlock = this.blockMap.get(block.getLocation());
 
 			// return death chest referenced by uid in chest block
@@ -225,7 +225,7 @@ public final class ChestManager
 
 
 	/**
-	 * Remove DeathChest object from chest index
+	 * Remove DeathChest object from chest map
 	 *
 	 * @param validDeathChest the DeathChest object to remove from map
 	 */
@@ -236,7 +236,7 @@ public final class ChestManager
 
 
 	/**
-	 * Put validChestBlock object in block index
+	 * Put validChestBlock object in block map
 	 *
 	 * @param validChestBlock the validChestBlock to put in map
 	 */
@@ -247,7 +247,7 @@ public final class ChestManager
 
 
 	/**
-	 * Get chestBlock set from block index by chest uuid
+	 * Get chestBlock set from block map by chest uuid
 	 *
 	 * @param chestUid the UUID of the chest of which to retrieve a set of chest blocks
 	 * @return Set of Blocks in uuidBlockMap, or empty set if no blocks exist for chest UUID
@@ -259,7 +259,7 @@ public final class ChestManager
 
 
 	/**
-	 * Get chestBlock map from block index by chest uuid
+	 * Get chestBlock map from block map by chest uuid
 	 *
 	 * @param chestUid the UUID of the chest of which to retrieve a map of chest blocks
 	 * @return Map of Blocks in uuidBlockMap, or empty map if no blocks exist for chest UUID
@@ -284,7 +284,7 @@ public final class ChestManager
 	/**
 	 * Test if validChestBlock exists in map with passed block location
 	 *
-	 * @param block the block to check for existence in block index
+	 * @param block the block to check for existence in block map
 	 * @return {@code true} if a validChestBlock exists in map with passed block location,
 	 * {@code false} if no validChestBlock exists in map with passed block location
 	 */
@@ -300,7 +300,7 @@ public final class ChestManager
 	 * Test if a block is a DeathChest chest block
 	 *
 	 * @param block The block to test
-	 * @return {@code true} if block is Chest and block location exists in block index, or {@code false} if not
+	 * @return {@code true} if block is Chest and block location exists in block map, or {@code false} if not
 	 */
 	public boolean isChestBlockChest(final Block block)
 	{
@@ -314,7 +314,7 @@ public final class ChestManager
 	 * Test if a block is a deathchest sign
 	 *
 	 * @param block The block to test if it is a DeathSign
-	 * @return {@code true} if block is Sign or WallSign and block location exists in block index,
+	 * @return {@code true} if block is Sign or WallSign and block location exists in block map,
 	 * or {@code false} if not
 	 */
 	public boolean isChestBlockSign(final Block block)
@@ -377,8 +377,9 @@ public final class ChestManager
 
 
 	/**
-	 * Get all death chests in chest index
-	 * @return Collection of DeathChest - all death chests in the chest index
+	 * Get all death chests in chest map
+	 *
+	 * @return Collection of DeathChest - all death chests in the chest map
 	 */
 	public Collection<ValidDeathChest> getAllChests()
 	{
@@ -799,7 +800,7 @@ public final class ChestManager
 
 	/**
 	 * Destroy chest block, dropping any contents on ground.
-	 * Removes block metadata and deletes corresponding block record from block index and datastore.
+	 * Removes block metadata and deletes corresponding block record from block map and datastore.
 	 */
 	void destroy(final ValidChestBlock validChestBlock)
 	{
