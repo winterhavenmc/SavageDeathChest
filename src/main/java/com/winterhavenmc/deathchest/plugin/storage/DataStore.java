@@ -18,9 +18,9 @@
 package com.winterhavenmc.deathchest.plugin.storage;
 
 import com.winterhavenmc.deathchest.bootstrap.Bootstrap;
-import com.winterhavenmc.deathchest.plugin.datastore.BlockRepository;
-import com.winterhavenmc.deathchest.plugin.datastore.ChestRepository;
-import com.winterhavenmc.deathchest.plugin.datastore.ConnectionProvider;
+import com.winterhavenmc.deathchest.plugin.ports.datastore.BlockRepository;
+import com.winterhavenmc.deathchest.plugin.ports.datastore.ChestRepository;
+import com.winterhavenmc.deathchest.plugin.ports.datastore.ConnectionProvider;
 
 import org.bukkit.plugin.Plugin;
 

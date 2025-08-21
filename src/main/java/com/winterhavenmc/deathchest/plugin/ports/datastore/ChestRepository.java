@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 Tim Savage.
+ * Copyright (c) 2022-2025 Tim Savage.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,7 +15,7 @@
  *
  */
 
-package com.winterhavenmc.deathchest.plugin.datastore;
+package com.winterhavenmc.deathchest.plugin.ports.datastore;
 
 import com.winterhavenmc.deathchest.plugin.models.deathchest.ValidDeathChest;
 import java.util.Collection;
