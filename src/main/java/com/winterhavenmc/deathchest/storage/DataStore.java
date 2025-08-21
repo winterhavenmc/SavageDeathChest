@@ -29,7 +29,7 @@ import org.bukkit.plugin.Plugin;
  * SQLite implementation of Datastore
  * for persistent storage of death chests and chest block objects
  */
-public final class DataStore
+public final class DataStore implements AutoCloseable
 {
 	private final ConnectionProvider connectionProvider;
 
