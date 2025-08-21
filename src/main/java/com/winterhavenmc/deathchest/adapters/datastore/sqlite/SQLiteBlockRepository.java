@@ -1,0 +1,124 @@
+/*
+ * Copyright (c) 2022 Tim Savage.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, version 3.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
+
+package com.winterhavenmc.deathchest.adapters.datastore.sqlite;
+
+import com.winterhavenmc.deathchest.plugin.models.chestblock.ChestBlock;
+import com.winterhavenmc.deathchest.plugin.models.chestblock.ValidChestBlock;
+import com.winterhavenmc.deathchest.plugin.ports.datastore.BlockRepository;
+import com.winterhavenmc.library.messagebuilder.resources.configuration.LocaleProvider;
+import org.bukkit.plugin.Plugin;
+
+import java.sql.*;
+import java.util.*;
+import java.util.logging.Logger;
+
+
+/**
+ * SQLite implementation of Datastore
+ * for persistent storage of death chests and chest block objects
+ */
+public final class SQLiteBlockRepository implements BlockRepository
+{
+	private final Plugin plugin;
+	private final Logger logger;
+	private final LocaleProvider localeProvider;
+	private final Connection connection;
+	private final SqliteBlockQueryExecutor queryExecutor = new SqliteBlockQueryExecutor();
+	private final SqliteBlockRowMapper rowMapper = new SqliteBlockRowMapper();
+
+
+	/**
+	 * Class constructor
+	 */
+	public SQLiteBlockRepository(final Plugin plugin, final Connection connection)
+	{
+		this.plugin = plugin;
+		this.logger = plugin.getLogger();
+		this.localeProvider = LocaleProvider.create(plugin);
+		this.connection = connection;
+	}
+
+
+	@Override
+	public Collection<ValidChestBlock> getAll()
+	{
+		final Collection<ValidChestBlock> results = new HashSet<>();
+
+		try (final PreparedStatement preparedStatement = connection.prepareStatement(SqliteQueries.getQuery("SelectAllBlocks"));
+		     final ResultSet resultSet = queryExecutor.selectAllBlocks(preparedStatement))
+		{
+			while (resultSet.next())
+			{
+				ChestBlock chestBlock = rowMapper.map(plugin, resultSet);
+				if (chestBlock instanceof ValidChestBlock validChestBlock)
+				{
+					results.add(validChestBlock);
+				}
+			}
+		}
+		catch (SQLException e)
+		{
+			logger.warning(SqliteMessage.SELECT_ALL_BLOCKS_ERROR.getLocalizeMessage(localeProvider.getLocale()));
+			logger.warning(e.getLocalizedMessage());
+		}
+
+		return results;
+	}
+
+
+	@Override
+	public int save(final Collection<ValidChestBlock> blockRecords)
+	{
+		return blockRecords.stream()
+				.filter(Objects::nonNull)
+				.mapToInt(this::insertBlock)
+				.sum();
+	}
+
+
+	private int insertBlock(final ValidChestBlock validChestBlock)
+	{
+		try (final PreparedStatement preparedStatement = connection.prepareStatement(SqliteQueries.getQuery("InsertBlockRecord")))
+		{
+			return queryExecutor.insertBlock(validChestBlock, preparedStatement);
+		}
+		catch (SQLException sqlException)
+		{
+			logger.warning(SqliteMessage.INSERT_CHEST_ERROR.getLocalizeMessage(localeProvider.getLocale()));
+			logger.warning(sqlException.getLocalizedMessage());
+			return 0;
+		}
+	}
+
+
+	@Override
+	public int delete(final ValidChestBlock validChestBlock)
+	{
+		try (final PreparedStatement preparedStatement = connection.prepareStatement(SqliteQueries.getQuery("DeleteBlockByLocation")))
+		{
+			return queryExecutor.DeleteBlock(validChestBlock, preparedStatement);
+		}
+		catch (SQLException sqlException)
+		{
+			logger.warning(SqliteMessage.DELETE_BLOCK_ERROR.getLocalizeMessage(localeProvider.getLocale()));
+			logger.warning(sqlException.getLocalizedMessage());
+			return 0;
+		}
+	}
+
+}

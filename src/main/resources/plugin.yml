@@ -1,8 +1,8 @@
 name: ${project.name}
-main: com.winterhavenmc.deathchest.PluginMain
+main: com.winterhavenmc.deathchest.plugin.PluginMain
 author: ${project.author}
 version: ${project.version}
-api-version: 1.18
+api-version: 1.21
 softdepend: [ GriefPrevention, Iris, Lands, Multiverse-Core, My_Worlds, PreciousStones, RoadBlock, Towny, WorldGuard ]
 
 commands:
