@@ -23,6 +23,8 @@ import com.winterhavenmc.deathchest.plugin.messages.MessageId;
 import com.winterhavenmc.deathchest.plugin.permissions.protectionplugins.ProtectionPlugin;
 import com.winterhavenmc.deathchest.plugin.sounds.SoundId;
 import com.winterhavenmc.library.messagebuilder.pipeline.formatters.duration.BoundedDuration;
+import com.winterhavenmc.library.messagebuilder.resources.configuration.LocaleProvider;
+
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
@@ -40,6 +42,7 @@ import static com.winterhavenmc.deathchest.plugin.messages.Macro.*;
 final class StatusCommand extends SubcommandAbstract
 {
 	private final PluginMain plugin;
+	private final LocaleProvider localeProvider;
 
 
 	StatusCommand(final PluginMain plugin)
@@ -48,6 +51,7 @@ final class StatusCommand extends SubcommandAbstract
 		this.name = "status";
 		this.usageString = "/deathchest status";
 		this.description = MessageId.COMMAND_HELP_STATUS;
+		this.localeProvider = LocaleProvider.create(plugin);
 	}
 
 
@@ -127,7 +131,7 @@ final class StatusCommand extends SubcommandAbstract
 	private void displayLocale(final CommandSender sender)
 	{
 		plugin.messageBuilder.compose(sender, MessageId.COMMAND_STATUS_LOCALE)
-				.setMacro(Macro.LOCALE, plugin.getConfig().getString("locale"))
+				.setMacro(Macro.LOCALE, localeProvider.getLocale().toLanguageTag())
 				.send();
 	}
 
