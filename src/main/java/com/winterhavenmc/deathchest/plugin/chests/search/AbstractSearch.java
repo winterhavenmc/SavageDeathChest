@@ -157,13 +157,7 @@ abstract class AbstractSearch implements Search
 	private boolean isSpawnProtected(final Location location)
 	{
 		// check for null parameter
-		if (location == null)
-		{
-			return false;
-		}
-
-		// if location world is null, return false
-		if (location.getWorld() == null)
+		if (location == null || location.getWorld() == null)
 		{
 			return false;
 		}
@@ -176,6 +170,12 @@ abstract class AbstractSearch implements Search
 
 		// get world spawn location for location
 		Location worldSpawn = plugin.worldManager.getSpawnLocation(location.getWorld());
+
+		// check for null worldSpawn, same world as location
+		if (worldSpawn == null || worldSpawn.getWorld() == null || !location.getWorld().getUID().equals(worldSpawn.getWorld().getUID()))
+		{
+			return false;
+		}
 
 		// get spawn protection radius
 		double spawnRadius = plugin.getServer().getSpawnRadius();
