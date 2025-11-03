@@ -17,7 +17,7 @@
 
 package com.winterhavenmc.deathchest.adapters.datastore.sqlite;
 
-import com.winterhavenmc.deathchest.plugin.models.deathchest.DeathChest;
+import com.winterhavenmc.deathchest.models.deathchest.DeathChest;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

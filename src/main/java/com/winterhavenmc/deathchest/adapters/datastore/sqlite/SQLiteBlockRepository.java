@@ -17,9 +17,9 @@
 
 package com.winterhavenmc.deathchest.adapters.datastore.sqlite;
 
-import com.winterhavenmc.deathchest.plugin.models.chestblock.ChestBlock;
-import com.winterhavenmc.deathchest.plugin.models.chestblock.ValidChestBlock;
-import com.winterhavenmc.deathchest.plugin.ports.datastore.BlockRepository;
+import com.winterhavenmc.deathchest.models.chestblock.ChestBlock;
+import com.winterhavenmc.deathchest.models.chestblock.ValidChestBlock;
+import com.winterhavenmc.deathchest.core.ports.datastore.BlockRepository;
 import com.winterhavenmc.library.messagebuilder.resources.configuration.LocaleProvider;
 import org.bukkit.plugin.Plugin;
 
