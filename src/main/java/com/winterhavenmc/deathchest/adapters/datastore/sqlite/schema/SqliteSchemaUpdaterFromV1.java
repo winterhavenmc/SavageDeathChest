@@ -84,7 +84,7 @@ public final class SqliteSchemaUpdaterFromV1 implements SqliteSchemaUpdater
 	}
 
 
-	private Set<ValidDeathChest> selectAllChestRecords(final Plugin plugin, final Connection connection) throws SQLException
+	private Set<ValidDeathChest> selectAllChestRecords(final Plugin plugin, final Connection connection)
 	{
 		Set<ValidDeathChest> existingChests = new HashSet<>();
 
