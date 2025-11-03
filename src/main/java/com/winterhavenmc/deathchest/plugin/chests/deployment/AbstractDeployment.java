@@ -28,6 +28,8 @@ import com.winterhavenmc.deathchest.plugin.models.chestblock.ChestBlock;
 import com.winterhavenmc.deathchest.plugin.models.chestblock.ValidChestBlock;
 import com.winterhavenmc.deathchest.plugin.models.deathchest.ValidDeathChest;
 
+import com.winterhavenmc.library.messagebuilder.keys.ConstantKey;
+import com.winterhavenmc.library.messagebuilder.keys.ValidConstantKey;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -188,7 +190,8 @@ public abstract class AbstractDeployment implements Deployment
 	 */
 	private void setCustomInventoryName(final Player player, final Block block)
 	{
-		plugin.messageBuilder.getConstantResolver().getString("CHEST_INFO.INVENTORY_NAME").ifPresent(string -> {
+		ValidConstantKey inventoryNameKey = ConstantKey.of("CHEST_INFO.INVENTORY_NAME").isValid().orElseThrow();
+		plugin.messageBuilder.constants().getString(inventoryNameKey).ifPresent(string -> {
 			string = string.replace("{OWNER}", player.getName());
 			org.bukkit.block.Chest chestState = (org.bukkit.block.Chest) block.getState();
 			chestState.setCustomName(string);
