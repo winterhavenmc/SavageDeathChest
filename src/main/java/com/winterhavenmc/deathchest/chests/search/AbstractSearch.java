@@ -23,6 +23,7 @@ import com.winterhavenmc.deathchest.chests.LocationUtilities;
 import com.winterhavenmc.deathchest.permissions.protectionplugins.ProtectionCheckResult;
 import com.winterhavenmc.deathchest.permissions.protectionplugins.ProtectionCheckResultCode;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
@@ -176,6 +177,15 @@ abstract class AbstractSearch implements Search
 
 		// get world spawn location for location
 		Location worldSpawn = plugin.worldManager.getSpawnLocation(location.getWorld());
+
+		// check for null worldSpawn, null world, spawn location is not overworld, same worlds
+		if (worldSpawn == null
+				|| worldSpawn.getWorld() == null
+				|| !worldSpawn.getWorld().getEnvironment().equals(World.Environment.NORMAL)
+				|| !location.getWorld().getUID().equals(worldSpawn.getWorld().getUID()))
+		{
+			return false;
+		}
 
 		// get spawn protection radius
 		double spawnRadius = plugin.getServer().getSpawnRadius();
