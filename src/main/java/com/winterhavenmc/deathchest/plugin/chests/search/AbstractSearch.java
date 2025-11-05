@@ -157,14 +157,14 @@ abstract class AbstractSearch implements Search
 	 */
 	private boolean isSpawnProtected(final Location location)
 	{
-		// check for null parameter
-		if (location == null || location.getWorld() == null)
+		// if no server ops, spawn protection is disabled
+		if (plugin.getServer().getOperators().isEmpty())
 		{
 			return false;
 		}
 
-		// if no server ops, spawn protection is disabled
-		if (plugin.getServer().getOperators().isEmpty())
+		// check for null parameter, null location world
+		if (location == null || location.getWorld() == null)
 		{
 			return false;
 		}
@@ -172,7 +172,7 @@ abstract class AbstractSearch implements Search
 		// get world spawn location for location
 		Location worldSpawn = plugin.worldManager.getSpawnLocation(location.getWorld());
 
-		// check for null worldSpawn, null world, spawn location is not overworld, same worlds
+		// check for null worldSpawn, null world, spawn location not overworld, not same worlds
 		if (worldSpawn == null
 				|| worldSpawn.getWorld() == null
 				|| !worldSpawn.getWorld().getEnvironment().equals(World.Environment.NORMAL)
