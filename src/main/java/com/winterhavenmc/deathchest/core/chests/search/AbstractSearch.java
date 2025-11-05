@@ -157,14 +157,14 @@ abstract class AbstractSearch implements Search
 	 */
 	private boolean isSpawnProtected(final Location location)
 	{
-		// check for null parameter
-		if (location == null || location.getWorld() == null)
+		// if no server ops, spawn protection is disabled
+		if (plugin.getServer().getOperators().isEmpty())
 		{
 			return false;
 		}
 
-		// if no server ops, spawn protection is disabled
-		if (plugin.getServer().getOperators().isEmpty())
+		// check for null parameter
+		if (location == null || location.getWorld() == null)
 		{
 			return false;
 		}
