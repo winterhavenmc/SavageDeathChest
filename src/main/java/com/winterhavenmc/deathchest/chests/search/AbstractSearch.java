@@ -178,7 +178,7 @@ abstract class AbstractSearch implements Search
 		// get world spawn location for location
 		Location worldSpawn = plugin.worldManager.getSpawnLocation(location.getWorld());
 
-		// check for null worldSpawn, null world, spawn location is not overworld, same worlds
+		// check for null worldSpawn, null world, spawn location not overworld, not same worlds
 		if (worldSpawn == null
 				|| worldSpawn.getWorld() == null
 				|| !worldSpawn.getWorld().getEnvironment().equals(World.Environment.NORMAL)
