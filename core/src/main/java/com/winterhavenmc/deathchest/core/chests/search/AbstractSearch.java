@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 Tim Savage.
+ * Copyright (c) 2022-2025 Tim Savage.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,17 +15,21 @@
  *
  */
 
-package com.winterhavenmc.deathchest.plugin.chests.search;
+package com.winterhavenmc.deathchest.core.chests.search;
 
-import com.winterhavenmc.deathchest.plugin.PluginMain;
-import com.winterhavenmc.deathchest.plugin.chests.ChestSize;
-import com.winterhavenmc.deathchest.plugin.chests.LocationUtilities;
-import com.winterhavenmc.deathchest.plugin.permissions.protectionplugins.ProtectionCheckResult;
-import com.winterhavenmc.deathchest.plugin.permissions.protectionplugins.ProtectionCheckResultCode;
+
+import com.winterhavenmc.deathchest.core.chests.ChestSize;
+import com.winterhavenmc.deathchest.core.chests.LocationUtilities;
+import com.winterhavenmc.deathchest.core.context.ListenerCtx;
+import com.winterhavenmc.deathchest.core.permissions.protectionplugins.ProtectionCheckResult;
+import com.winterhavenmc.deathchest.core.permissions.protectionplugins.ProtectionCheckResultCode;
 
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+
+import java.util.Optional;
 
 
 /**
@@ -33,7 +37,7 @@ import org.bukkit.entity.Player;
  */
 abstract class AbstractSearch implements Search
 {
-	protected final PluginMain plugin;
+	private final ListenerCtx ctx;
 	protected final Player player;
 	protected final ChestSize chestSize;
 	protected final int searchDistance;
@@ -43,19 +47,18 @@ abstract class AbstractSearch implements Search
 
 	/**
 	 * Class constructor
-	 * @param plugin reference to main class instance
 	 * @param player player for whom death chest is being placed
 	 * @param chestSize double or single chest
 	 */
-	protected AbstractSearch(final PluginMain plugin,
-							 final Player player,
-							 final ChestSize chestSize)
+	protected AbstractSearch(final ListenerCtx ctx,
+	                         final Player player,
+	                         final ChestSize chestSize)
 	{
-		this.plugin = plugin;
+		this.ctx = ctx;
 		this.player = player;
 		this.chestSize = chestSize;
-		this.searchDistance = plugin.getConfig().getInt("search-distance");
-		this.placeAboveVoid = plugin.getConfig().getBoolean("place-above-void");
+		this.searchDistance = ctx.plugin().getConfig().getInt("search-distance");
+		this.placeAboveVoid = ctx.plugin().getConfig().getBoolean("place-above-void");
 
 		// initialize default result
 		searchResult = new SearchResult();
@@ -112,7 +115,7 @@ abstract class AbstractSearch implements Search
 		Block block = location.getBlock();
 
 		// if block at location is not replaceable block, return negative result
-		if (!plugin.chestManager.isReplaceableBlock(block))
+		if (!ctx.chestManager().isReplaceableBlock(block))
 		{
 			searchResult.setResultCode(SearchResultCode.NON_REPLACEABLE_BLOCK);
 			return searchResult;
@@ -126,7 +129,7 @@ abstract class AbstractSearch implements Search
 		}
 
 		// if block at location is protected by plugin, return negative result
-		ProtectionCheckResult protectionCheckResult = plugin.protectionPluginRegistry.placementAllowed(player, location);
+		ProtectionCheckResult protectionCheckResult = ctx.protectionPluginRegistry().placementAllowed(player, location);
 		if (protectionCheckResult.getResultCode().equals(ProtectionCheckResultCode.BLOCKED))
 		{
 			searchResult.setResultCode(SearchResultCode.PROTECTION_PLUGIN);
@@ -156,32 +159,35 @@ abstract class AbstractSearch implements Search
 	 */
 	private boolean isSpawnProtected(final Location location)
 	{
+		// if no server ops, spawn protection is disabled
+		if (ctx.plugin().getServer().getOperators().isEmpty())
+		{
+			return false;
+		}
+
 		// check for null parameter
 		if (location == null || location.getWorld() == null)
 		{
 			return false;
 		}
 
-		// if no server ops, spawn protection is disabled
-		if (plugin.getServer().getOperators().isEmpty())
-		{
-			return false;
-		}
-
 		// get world spawn location for location
-		Location worldSpawn = plugin.worldManager.getSpawnLocation(location.getWorld());
+		Optional<Location> worldSpawn = ctx.messageBuilder().worlds().spawnLocation(location.getWorld().getUID());
 
-		// check for null worldSpawn, same world as location
-		if (worldSpawn == null || worldSpawn.getWorld() == null || !location.getWorld().getUID().equals(worldSpawn.getWorld().getUID()))
+		// check for null worldSpawn, null world, spawn location is not overworld, same worlds
+		if (worldSpawn.isEmpty()
+				|| worldSpawn.get().getWorld() == null
+				|| !worldSpawn.get().getWorld().getEnvironment().equals(World.Environment.NORMAL)
+				|| !location.getWorld().getUID().equals(worldSpawn.get().getWorld().getUID()))
 		{
 			return false;
 		}
 
 		// get spawn protection radius
-		double spawnRadius = plugin.getServer().getSpawnRadius();
+		double spawnRadius = ctx.plugin().getServer().getSpawnRadius();
 
 		// if location is within spawn radius of world spawn location, return true; else return false
-		return location.distanceSquared(worldSpawn) < (Math.pow(spawnRadius, 2.0d));
+		return location.distanceSquared(worldSpawn.get()) < (Math.pow(spawnRadius, 2.0d));
 	}
 
 
