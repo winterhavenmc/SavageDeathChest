@@ -55,7 +55,7 @@ public sealed interface ChestBlock permits ValidChestBlock, InvalidChestBlock
 				case ChestBlockType.LEFT_CHEST -> new LeftChestBlock(chestUid, location);
 				case ChestBlockType.RIGHT_CHEST -> new RightChestBlock(chestUid, location);
 				case ChestBlockType.SIGN -> new SignChestBlock(chestUid, location);
-				case null -> new InvalidChestBlock(ChestBlockReason.NOT_ChEST_BLOCK, worldName);
+				case null -> new InvalidChestBlock(ChestBlockReason.INVALID_CHEST_BLOCK, worldName);
 			};
 		}
 	}

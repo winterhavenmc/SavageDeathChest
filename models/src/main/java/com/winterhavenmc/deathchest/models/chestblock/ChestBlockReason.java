@@ -28,7 +28,7 @@ public enum ChestBlockReason
 	LOCATION_NULL("The parameter 'location' was null."),
 	TYPE_NULL("The parameter 'type' was null."),
 	WORLD_NULL("The parameter 'world' was null."),
-	NOT_ChEST_BLOCK("The block is not a valid chest block."),
+	INVALID_CHEST_BLOCK("The block is not a valid chest block."),
 	;
 
 	private final String defaultMessage;
