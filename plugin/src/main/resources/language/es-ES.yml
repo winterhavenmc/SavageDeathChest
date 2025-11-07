@@ -55,119 +55,90 @@ CONSTANTS:
 
 MESSAGES:
   CHEST_SUCCESS:
-    ENABLED: true
     MESSAGE_TEXT: '<green>Cofre de la muerte se ha desplegado con éxito. Usted tiene {EXPIRATION_DURATION} para recuperar tu artículos.</green>'
 
   DOUBLECHEST_PARTIAL_SUCCESS:
-    ENABLED: true
     MESSAGE_TEXT: '<red>Sólo se podía colocar un solo cofre del punto muerte.</red>'
-    # available subs: {PLAYER}, {EXPIRATION_DURATION}, {EXPIRATION_DURATION_MINUTES}, {LOCATION}
 
   CHEST_DEPLOYED_PROTECTION_TIME:
-    ENABLED: true
     MESSAGE_TEXT: '<red>El cofre de la muerte está protegido del saqueo durante {PROTECTION_DURATION_MINUTES}.</red>'
-    # available subs: {OWNER}, {PROTECTION_DURATION}, {PROTECTION_DURATION_MINUTES}, {LOCATION}
 
   CHEST_ACCESSED_PROTECTION_TIME:
-    ENABLED: true
     repeat-delay: 1
     MESSAGE_TEXT: '<red>El cofre de la muerte que pertenece a {OWNER} está protegido contra el saqueo durante {PROTECTION_DURATION_MINUTES}.</red>'
-    # available subs: {OWNER}, {PROTECTION_DURATION}, {PROTECTION_DURATION_MINUTES}, {LOCATION}
 
   CHEST_DENIED_DEPLOYMENT_BY_PLUGIN:
-    ENABLED: true
     MESSAGE_TEXT: '<red>El despliegue del cofre de la muerte fue prevenido por {PLUGIN}.</red>'
-    # available subs: {PLAYER}, {PLUGIN}, {LOCATION}
 
   CHEST_DENIED_ACCESS_BY_PLUGIN:
-    ENABLED: true
     MESSAGE_TEXT: '<red>El acceso al cofre de la muerte fue impedido por {PLUGIN}.</red>'
-    # available subs: {PLAYER}, {PLUGIN}, {LOCATION}
 
   CHEST_DENIED_BLOCK:
-    ENABLED: true
     MESSAGE_TEXT: '<red>No se pudo colocar el cofre de la muerte.</red>'
 
   CHEST_DENIED_PERMISSION:
-    ENABLED: false
     MESSAGE_TEXT: '<red>No tienes permiso para cofres de la muerte.</red>'
 
   CHEST_DENIED_ADJACENT:
-    ENABLED: true
     MESSAGE_TEXT: '<red>El despliegue del cofre de la muerte fue prevenido por un cofre adyacente existente.</red>'
 
   CHEST_DENIED_SPAWN_RADIUS:
-    ENABLED: true
     MESSAGE_TEXT: '<red>El despliegue del cofre de la muerte fue prevenido por protección de origen mundial.</red>'
 
   CHEST_DENIED_WORLD_DISABLED:
-    ENABLED: true
     MESSAGE_TEXT: '<red>Los cofres de la muerte no están habilitados en este mundo.</red>'
 
   CHEST_DENIED_VOID:
-    ENABLED: true
     MESSAGE_TEXT: '<red>El cofre de la muerte no se puede desplegar en el vacío.</red>'
 
 
   INVENTORY_EMPTY:
-    ENABLED: true
     MESSAGE_TEXT: '<red>No tenías ningún inventario para poner en un cofre de la muerte.</red>'
 
   INVENTORY_FULL:
-    ENABLED: true
     MESSAGE_TEXT: '<red>Algunos artículos no se pudieron transferir porque su inventario está lleno.</red>'
 
   NO_CHEST_IN_INVENTORY:
-    ENABLED: true
     MESSAGE_TEXT: '<red>No tenías ningún cofres en su inventario.</red>'
 
   NOT_OWNER:
-    ENABLED: true
     MESSAGE_TEXT: '<red>Ese el cofre de muerte no pertenece a usted.</red>'
 
   CHEST_EXPIRED:
-    ENABLED: true
     MESSAGE_TEXT: '<red>Su el cofre de muerte ha expirado.</red>'
 
   CREATIVE_MODE:
-    ENABLED: true
     MESSAGE_TEXT: '<red>Inventario de modo creativo no se guarda en cofres de muerte.</red>'
 
   NO_CREATIVE_ACCESS:
-    ENABLED: true
     MESSAGE_TEXT: '<red>El acceso a los cofres de la muerte en el modo creativo no está permitido.</red>'
 
   CHEST_CURRENTLY_OPEN:
-    ENABLED: true
     MESSAGE_TEXT: '<red>Pecho Muerte está accediendo por otro jugador.</red>'
 
 
+  COMMAND_INVALID:
+    MESSAGE_TEXT: "<red>¡Esa no es una orden válida!</red>"
+
   COMMAND_FAIL_ARGS_COUNT_OVER:
-    ENABLED: true
     MESSAGE_TEXT: '<red>¡Demasiados parámetros!</red>'
 
   COMMAND_FAIL_HELP_PERMISSION:
-    ENABLED: true
     MESSAGE_TEXT: '<red>¡No tienes permiso para mostrar la ayuda de DeathChest!</red>'
 
   COMMAND_FAIL_LIST_PERMISSION:
-    ENABLED: true
     MESSAGE_TEXT: '<red>¡No tienes permiso para listar DeathChests!</red>'
 
   COMMAND_FAIL_LIST_OTHER_PERMISSION:
-    ENABLED: true
     MESSAGE_TEXT: '<red>¡No tienes permiso para enumerar los DeathChests de otros jugadores!</red>'
 
   COMMAND_FAIL_RELOAD_PERMISSION:
-    ENABLED: true
     MESSAGE_TEXT: '<red>¡No tienes permiso para recargar la configuración de DeathChest!</red>'
 
   COMMAND_FAIL_STATUS_PERMISSION:
-    ENABLED: true
     MESSAGE_TEXT: '<red>¡No tienes permiso para ver la configuración de DeathChest!</red>'
 
   COMMAND_SUCCESS_RELOAD:
-    ENABLED: true
     MESSAGE_TEXT: '<gray>Configuración del DeathChest recargada.</gray>'
 
 

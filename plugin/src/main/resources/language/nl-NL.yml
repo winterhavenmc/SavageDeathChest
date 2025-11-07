@@ -54,140 +54,112 @@ CONSTANTS:
 
 MESSAGES:
   CHEST_SUCCESS:
-    ENABLED: true
-    MESSAGE_TEXT: '<green>Je bezittingen zijn achtergebleven in een dodenkist!</green>'
+    MESSAGE_TEXT: "<green>Je bezittingen zijn achtergebleven in een dodenkist!</green>"
 
   DOUBLECHEST_PARTIAL_SUCCESS:
-    ENABLED: true
-    MESSAGE_TEXT: '<red>Omdat er niet genoeg ruimte was voor een dubbele kist, kon een deel van je bezittingen niet veiliggesteld worden.</red>'
+    MESSAGE_TEXT: "<red>Omdat er niet genoeg ruimte was voor een dubbele kist, kon een deel van je bezittingen niet veiliggesteld worden.</red>"
 
   CHEST_DEPLOYED_PROTECTION_TIME:
-    ENABLED: true
-    MESSAGE_TEXT: '<red>De doodskist wordt gedurende {PROTECTION_DURATION} beschermd tegen plunderingen.</red>'
+    MESSAGE_TEXT: "<red>De doodskist wordt gedurende {PROTECTION_DURATION} beschermd tegen plunderingen.</red>"
 
   CHEST_ACCESSED_PROTECTION_TIME:
-    ENABLED: true
     repeat-delay: 1
-    MESSAGE_TEXT: '<red>Doodkist van {OWNER} wordt gedurende {PROTECTION_DURATION} beschermd tegen plunderingen.</red>'
+    MESSAGE_TEXT: "<red>Doodkist van {OWNER} wordt gedurende {PROTECTION_DURATION} beschermd tegen plunderingen.</red>"
 
   CHEST_DENIED_DEPLOYMENT_BY_PLUGIN:
-    ENABLED: true
-    MESSAGE_TEXT: '<red>Het plaatsen van een dodenkist was niet mogelijk vanwege een conflict met {PLUGIN}.</red>'
+    MESSAGE_TEXT: "<red>Het plaatsen van een dodenkist was niet mogelijk vanwege een conflict met {PLUGIN}.</red>"
 
   CHEST_DENIED_ACCESS_BY_PLUGIN:
-    ENABLED: true
-    MESSAGE_TEXT: '<red>Toegang tot de kist bij overlijden werd voorkomen door {PLUGIN}.</red>'
+    MESSAGE_TEXT: "<red>Toegang tot de kist bij overlijden werd voorkomen door {PLUGIN}.</red>"
 
   CHEST_DENIED_BLOCK:
-    ENABLED: true
-    MESSAGE_TEXT: '<red>Er is niet genoeg ruimte om een dodenkist te plaatsen.</red>'
+    MESSAGE_TEXT: "<red>Er is niet genoeg ruimte om een dodenkist te plaatsen.</red>"
 
   CHEST_DENIED_PERMISSION:
-    ENABLED: false
-    MESSAGE_TEXT: '<red>Je hebt niet de benodigde rechten voor het gebruik van dodenkisten.</red>'
+    MESSAGE_TEXT: "<red>Je hebt niet de benodigde rechten voor het gebruik van dodenkisten.</red>"
 
   CHEST_DENIED_ADJACENT:
-    ENABLED: true
-    MESSAGE_TEXT: '<red>Het plaatsen van een dodenkist was niet mogelijk omdat er al een andere dodenkist stond.</red>'
+    MESSAGE_TEXT: "<red>Het plaatsen van een dodenkist was niet mogelijk omdat er al een andere dodenkist stond.</red>"
 
   CHEST_DENIED_SPAWN_RADIUS:
-    ENABLED: true
-    MESSAGE_TEXT: '<red>Het plaatsen van een dodenkist was niet mogelijk vanwege de world spawn protection.</red>'
+    MESSAGE_TEXT: "<red>Het plaatsen van een dodenkist was niet mogelijk vanwege de world spawn protection.</red>"
 
   CHEST_DENIED_WORLD_DISABLED:
-    ENABLED: true
-    MESSAGE_TEXT: '<red>Doodskisten zijn niet ingeschakeld in deze wereld.</red>'
+    MESSAGE_TEXT: "<red>Doodskisten zijn niet ingeschakeld in deze wereld.</red>"
 
   CHEST_DENIED_VOID:
-    ENABLED: true
-    MESSAGE_TEXT: '<red>Death chest kan niet worden ingezet in de leegte.</red>'
+    MESSAGE_TEXT: "<red>Death chest kan niet worden ingezet in de leegte.</red>"
 
 
   INVENTORY_EMPTY:
     ENABLED: false
-    MESSAGE_TEXT: '<red>Je had geen bezittingen waarvoor een dodenkist gemaakt moest worden.</red>'
+    MESSAGE_TEXT: "<red>Je had geen bezittingen waarvoor een dodenkist gemaakt moest worden.</red>"
 
   INVENTORY_FULL:
-    ENABLED: true
-    MESSAGE_TEXT: '<red>Niet alle bezittingen kunnen worden overgezet omdat je inventaris vol is.</red>'
+    MESSAGE_TEXT: "<red>Niet alle bezittingen kunnen worden overgezet omdat je inventaris vol is.</red>"
 
   NO_CHEST_IN_INVENTORY:
-    ENABLED: true
-    MESSAGE_TEXT: '<red>Je had geen kist in je inventaris.</red>'
+    MESSAGE_TEXT: "<red>Je had geen kist in je inventaris.</red>"
 
   NOT_OWNER:
-    ENABLED: true
-    MESSAGE_TEXT: '<red>Hé! Deze dodenkist is niet van jou.</red>'
+    MESSAGE_TEXT: "<red>Hé! Deze dodenkist is niet van jou.</red>"
 
   CHEST_EXPIRED:
-    ENABLED: true
-    MESSAGE_TEXT: '<red>Je hebt de dodenkist helaas niet op tijd gevonden.</red>'
+    MESSAGE_TEXT: "<red>Je hebt de dodenkist helaas niet op tijd gevonden.</red>"
     repeat-delay: 1
 
   CREATIVE_MODE:
-    ENABLED: true
-    MESSAGE_TEXT: '<red>Er is geen dodenkist gemaakt omdat je in creatieve modus speelt.</red>'
+    MESSAGE_TEXT: "<red>Er is geen dodenkist gemaakt omdat je in creatieve modus speelt.</red>"
 
   NO_CREATIVE_ACCESS:
-    ENABLED: true
-    MESSAGE_TEXT: '<red>Toegang tot dodenkisten is niet mogelijk in de creatieve speelmodus.</red>'
+    MESSAGE_TEXT: "<red>Toegang tot dodenkisten is niet mogelijk in de creatieve speelmodus.</red>"
 
   CHEST_CURRENTLY_OPEN:
-    ENABLED: true
-    MESSAGE_TEXT: '<red>Deze dodenkist wordt al bekeken.</red>'
+    MESSAGE_TEXT: "<red>Deze dodenkist wordt al bekeken.</red>"
+
+
+  COMMAND_INVALID:
+    MESSAGE_TEXT: "<red>Opdracht ongeldig!</red>"
 
   COMMAND_FAIL_ARGS_COUNT_OVER:
-    ENABLED: true
-    MESSAGE_TEXT: '<red>Teveel waarden opgegeven!</red>'
+    MESSAGE_TEXT: "<red>Teveel waarden opgegeven!</red>"
 
   COMMAND_FAIL_HELP_PERMISSION:
-    ENABLED: true
-    MESSAGE_TEXT: '<red>Je hebt niet de benodigde rechten om het help-commando te kunnen gebruiken!</red>'
+    MESSAGE_TEXT: "<red>Je hebt niet de benodigde rechten om het help-commando te kunnen gebruiken!</red>"
 
   COMMAND_FAIL_LIST_PERMISSION:
-    ENABLED: true
-    MESSAGE_TEXT: '<red>Je hebt niet de benodigde rechten om de lijst met dodenkisten te kunnen zien!</red>'
+    MESSAGE_TEXT: "<red>Je hebt niet de benodigde rechten om de lijst met dodenkisten te kunnen zien!</red>"
 
   COMMAND_FAIL_LIST_OTHER_PERMISSION:
-    ENABLED: true
-    MESSAGE_TEXT: '<red>Je hebt niet de benodigde rechten om de dodenkisten van andere spelers te kunnen inzien!</red>'
+    MESSAGE_TEXT: "<red>Je hebt niet de benodigde rechten om de dodenkisten van andere spelers te kunnen inzien!</red>"
 
   COMMAND_FAIL_RELOAD_PERMISSION:
-    ENABLED: true
-    MESSAGE_TEXT: '<red>Je hebt niet de benodigde rechten om de instellingen te kunnen herladen!</red>'
+    MESSAGE_TEXT: "<red>Je hebt niet de benodigde rechten om de instellingen te kunnen herladen!</red>"
 
   COMMAND_FAIL_STATUS_PERMISSION:
-    ENABLED: true
-    MESSAGE_TEXT: '<red>Je hebt niet de benodigde rechten om de instellingen te kunnen bekijken!</red>'
+    MESSAGE_TEXT: "<red>Je hebt niet de benodigde rechten om de instellingen te kunnen bekijken!</red>"
 
   COMMAND_SUCCESS_RELOAD:
-    ENABLED: true
-    MESSAGE_TEXT: '<gray>Instellingen opnieuw ingeladen.</gray>'
+    MESSAGE_TEXT: "<gray>Instellingen opnieuw ingeladen.</gray>"
 
 
   COMMAND_HELP_HELP:
-    ENABLED: true
-    MESSAGE_TEXT: '<yellow>Geeft hulp weer voor DeathChest-opdrachten.</yellow>'
+    MESSAGE_TEXT: "<yellow>Geeft hulp weer voor DeathChest-opdrachten.</yellow>"
 
   COMMAND_HELP_LIST:
-    ENABLED: true
-    MESSAGE_TEXT: '<yellow>Geeft een lijst met alle doodskisten weer.</yellow>'
+    MESSAGE_TEXT: "<yellow>Geeft een lijst met alle doodskisten weer.</yellow>"
 
   COMMAND_HELP_RELOAD:
-    ENABLED: true
-    MESSAGE_TEXT: '<yellow>Laadt de configuratie opnieuw.</yellow>'
+    MESSAGE_TEXT: "<yellow>Laadt de configuratie opnieuw.</yellow>"
 
   COMMAND_HELP_STATUS:
-    ENABLED: true
-    MESSAGE_TEXT: '<yellow>Geeft configuratie-instellingen weer.</yellow>'
+    MESSAGE_TEXT: "<yellow>Geeft configuratie-instellingen weer.</yellow>"
 
   COMMAND_HELP_INVALID:
-    ENABLED: true
-    MESSAGE_TEXT: '<yellow>Dat is geen geldige opdracht.</yellow>'
+    MESSAGE_TEXT: "<yellow>Dat is geen geldige opdracht.</yellow>"
 
   COMMAND_HELP_USAGE:
-    ENABLED: true
-    MESSAGE_TEXT: '<yellow>Commando gebruik:</yellow>'
+    MESSAGE_TEXT: "<yellow>Commando gebruik:</yellow>"
 
 
   #########################
@@ -200,7 +172,7 @@ MESSAGES:
     MESSAGE_TEXT: "<newline><dark_aqua>Proudly built with <click:open_url:{URL}><blue><underlined>MessageBuilderLib<underlined></blue></click></dark_aqua>"
 
   COMMAND_STATUS_PLUGIN_VERSION:
-    MESSAGE_TEXT: '<green>Version:</green> {VERSION}'
+    MESSAGE_TEXT: "<green>Version:</green> {VERSION}"
 
   COMMAND_STATUS_LANGUAGE:
     MESSAGE_TEXT: "<green>Language:</green> {LANGUAGE}"
@@ -240,15 +212,13 @@ MESSAGES:
   # List Command Elements
   #######################
   LIST_HEADER:
-    ENABLED: true
-    MESSAGE_TEXT: '<dark_aqua>Page <aqua>{PAGE_NUMBER}</aqua> of <aqua>{PAGE_TOTAL}</aqua></dark_aqua>'
+    MESSAGE_TEXT: "<dark_aqua>Pagina <aqua>{PAGE_NUMBER}</aqua> van <aqua>{PAGE_TOTAL}</aqua></dark_aqua>"
 
   LIST_FOOTER:
     ENABLED: false
-    MESSAGE_TEXT: '<dark_aqua>Page <aqua>{PAGE_NUMBER}</aqua> of <aqua>{PAGE_TOTAL}</aqua></dark_aqua>'
+    MESSAGE_TEXT: "<dark_aqua>Pagina <aqua>{PAGE_NUMBER}</aqua> van <aqua>{PAGE_TOTAL}</aqua></dark_aqua>"
 
   LIST_ITEM:
-    ENABLED: true
     MESSAGE_TEXT: |-
       {ITEM_NUMBER}) <green>Killer:</green> <aqua>{DEATH_CHEST.LOOTER}</aqua>
           <green>Location:</green> <aqua>{DEATH_CHEST.LOCATION}</aqua>
@@ -256,7 +226,6 @@ MESSAGES:
           <green>Protection time:</green> <aqua>{DEATH_CHEST.PROTECTION.DURATION}</aqua>
 
   LIST_ITEM_ALL:
-    ENABLED: true
     MESSAGE_TEXT: |-
       {ITEM_NUMBER}) <green>Owner:</green> <aqua>{DEATH_CHEST.OWNER}</aqua> <green>Killer:</green> <aqua>{DEATH_CHEST.LOOTER}</aqua>
           <green>Location:</green> <aqua>{DEATH_CHEST.LOCATION}</aqua>
@@ -264,9 +233,7 @@ MESSAGES:
           <green>Protection time:</green> <aqua>{DEATH_CHEST.PROTECTION.DURATION}</aqua>
 
   LIST_EMPTY:
-    ENABLED: true
-    MESSAGE_TEXT: '<aqua>Er zijn geen dodenkisten om te tonen!</aqua>'
+    MESSAGE_TEXT: "<aqua>Er zijn geen dodenkisten om te tonen!</aqua>"
 
   LIST_PLAYER_NOT_FOUND:
-    ENABLED: true
-    MESSAGE_TEXT: '<dark_aqua>Deze speler is onbekend!</dark_aqua>'
+    MESSAGE_TEXT: "<dark_aqua>Deze speler is onbekend!</dark_aqua>"

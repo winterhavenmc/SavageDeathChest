@@ -54,150 +54,117 @@ CONSTANTS:
 
 MESSAGES:
   CHEST_SUCCESS:
-    ENABLED: true
-    MESSAGE_TEXT: '<green>成功地放置了死亡箱. 你有 {EXPIRATION_DURATION} 来取回你的物品.</green>'
+    MESSAGE_TEXT: "<green>成功地放置了死亡箱. 你有 {EXPIRATION_DURATION} 来取回你的物品.</green>"
 
   DOUBLECHEST_PARTIAL_SUCCESS:
-    ENABLED: true
-    MESSAGE_TEXT: '<red>在你的死亡地点只能放置单个箱子. 一些物品已掉落.</red>'
+    MESSAGE_TEXT: "<red>在你的死亡地点只能放置单个箱子. 一些物品已掉落.</red>"
 
   CHEST_DEPLOYED_PROTECTION_TIME:
-    ENABLED: true
-    MESSAGE_TEXT: '<red>死亡宝箱在 {PROTECTION_DURATION} 内不会被掠夺.</red>'
+    MESSAGE_TEXT: "<red>死亡宝箱在 {PROTECTION_DURATION} 内不会被掠夺.</red>"
 
   CHEST_ACCESSED_PROTECTION_TIME:
-    ENABLED: true
     repeat-delay: 1
-    MESSAGE_TEXT: '<red>属于 {OWNER} 的死亡宝箱在 {PROTECTION_DURATION} 内不会被抢劫.</red>'
+    MESSAGE_TEXT: "<red>属于 {OWNER} 的死亡宝箱在 {PROTECTION_DURATION} 内不会被抢劫.</red>"
 
   CHEST_DENIED_PLUGIN:
-    ENABLED: true
-    MESSAGE_TEXT: '<red>死亡箱的部署被 {PLUGIN} 阻止了.</red>'
+    MESSAGE_TEXT: "<red>死亡箱的部署被 {PLUGIN} 阻止了.</red>"
 
   CHEST_DENIED_DEPLOYMENT_BY_PLUGIN:
-    ENABLED: true
-    MESSAGE_TEXT: '<red>死亡箱的部署被 {PLUGIN} 阻止了.</red>'
+    MESSAGE_TEXT: "<red>死亡箱的部署被 {PLUGIN} 阻止了.</red>"
 
   CHEST_DENIED_ACCESS_BY_PLUGIN:
-    ENABLED: true
-    MESSAGE_TEXT: '<red>{PLUGIN} 阻止了对死亡宝箱的访问.</red>'
+    MESSAGE_TEXT: "<red>{PLUGIN} 阻止了对死亡宝箱的访问.</red>"
 
   CHEST_DENIED_BLOCK:
-    ENABLED: true
-    MESSAGE_TEXT: '<red>找不到一个来放置箱子的开放空间.</red>'
+    MESSAGE_TEXT: "<red>找不到一个来放置箱子的开放空间.</red>"
 
   CHEST_DENIED_PERMISSION:
     ENABLED: false
-    MESSAGE_TEXT: '<red>你没有死亡箱的权限.</red>'
+    MESSAGE_TEXT: "<red>你没有死亡箱的权限.</red>"
 
   CHEST_DENIED_ADJACENT:
-    ENABLED: true
-    MESSAGE_TEXT: '<red>死亡箱的部署被一个已知的相邻箱子阻止了.</red>'
+    MESSAGE_TEXT: "<red>死亡箱的部署被一个已知的相邻箱子阻止了.</red>"
 
   CHEST_DENIED_SPAWN_RADIUS:
-    ENABLED: true
-    MESSAGE_TEXT: '<red>死亡箱的部署被世界出生点保护阻止了.</red>'
+    MESSAGE_TEXT: "<red>死亡箱的部署被世界出生点保护阻止了.</red>"
 
   CHEST_DENIED_WORLD_DISABLED:
-    ENABLED: true
-    MESSAGE_TEXT: '<red>死亡箱没有在该世界启用.</red>'
+    MESSAGE_TEXT: "<red>死亡箱没有在该世界启用.</red>"
 
   CHEST_DENIED_VOID:
-    ENABLED: true
-    MESSAGE_TEXT: '<red>死亡箱无法部署在虚空中.</red>'
+    MESSAGE_TEXT: "<red>死亡箱无法部署在虚空中.</red>"
 
 
   INVENTORY_EMPTY:
-    ENABLED: true
-    MESSAGE_TEXT: '<red>你没有背包可放在死亡箱中.</red>'
+    MESSAGE_TEXT: "<red>你没有背包可放在死亡箱中.</red>"
 
   INVENTORY_FULL:
-    ENABLED: true
-    MESSAGE_TEXT: '<red>因为你的背包满了 一些物品无法被转移.</red>'
+    MESSAGE_TEXT: "<red>因为你的背包满了 一些物品无法被转移.</red>"
 
   NO_CHEST_IN_INVENTORY:
-    ENABLED: true
-    MESSAGE_TEXT: '<red>你的背包中没有任何箱子.</red>'
+    MESSAGE_TEXT: "<red>你的背包中没有任何箱子.</red>"
 
   NOT_OWNER:
-    ENABLED: true
-    MESSAGE_TEXT: '<red>那个死亡箱不属于你.</red>'
+    MESSAGE_TEXT: "<red>那个死亡箱不属于你.</red>"
 
   CHEST_EXPIRED:
-    ENABLED: true
-    MESSAGE_TEXT: '<red>你的死亡箱已过期.</red>'
+    MESSAGE_TEXT: "<red>你的死亡箱已过期.</red>"
     repeat-delay: 1
 
   CREATIVE_MODE:
-    ENABLED: true
-    MESSAGE_TEXT: '<red>创造模式背包没有保存在死亡箱中.</red>'
+    MESSAGE_TEXT: "<red>创造模式背包没有保存在死亡箱中.</red>"
 
 
   NO_CREATIVE_ACCESS:
-    ENABLED: true
-    MESSAGE_TEXT: '<red>在创造模式下打开死亡箱是不允许的.</red>'
+    MESSAGE_TEXT: "<red>在创造模式下打开死亡箱是不允许的.</red>"
 
   CHEST_CURRENTLY_OPEN:
-    ENABLED: true
-    MESSAGE_TEXT: '<red>死亡箱当前已被其他玩家打开.</red>'
+    MESSAGE_TEXT: "<red>死亡箱当前已被其他玩家打开.</red>"
 
-  COMMAND_FAIL_INVALID_COMMAND:
-    ENABLED: true
-    MESSAGE_TEXT: '<red>那不是一个有效的命令!</red>'
+
+  COMMAND_INVALID:
+    MESSAGE_TEXT: "<red>那不是一个有效的命令!</red>"
 
   COMMAND_FAIL_ARGS_COUNT_OVER:
-    ENABLED: true
-    MESSAGE_TEXT: '<red>参数过多!</red>'
+    MESSAGE_TEXT: "<red>参数过多!</red>"
 
   COMMAND_FAIL_HELP_PERMISSION:
-    ENABLED: true
-    MESSAGE_TEXT: '<red>你没有权限来显示 DeathChest 帮助!</red>'
+    MESSAGE_TEXT: "<red>你没有权限来显示 DeathChest 帮助!</red>"
 
   COMMAND_FAIL_LIST_PERMISSION:
-    ENABLED: true
-    MESSAGE_TEXT: '<red>你没有权限来列出死亡箱!</red>'
+    MESSAGE_TEXT: "<red>你没有权限来列出死亡箱!</red>"
 
   COMMAND_FAIL_LIST_OTHER_PERMISSION:
-    ENABLED: true
-    MESSAGE_TEXT: '<red>你没有权限来列出其他玩家的死亡箱!</red>'
+    MESSAGE_TEXT: "<red>你没有权限来列出其他玩家的死亡箱!</red>"
 
   COMMAND_FAIL_RELOAD_PERMISSION:
-    ENABLED: true
-    MESSAGE_TEXT: '<red>你没有权限来重载 DeathChest 配置!</red>'
+    MESSAGE_TEXT: "<red>你没有权限来重载 DeathChest 配置!</red>"
 
   COMMAND_FAIL_STATUS_PERMISSION:
-    ENABLED: true
-    MESSAGE_TEXT: '<red>你没有权限来查看 DeathChest 设定!</red>'
+    MESSAGE_TEXT: "<red>你没有权限来查看 DeathChest 设定!</red>"
 
   COMMAND_SUCCESS_RELOAD:
-    ENABLED: true
-    MESSAGE_TEXT: '<gray>DeathChest 配置已重载.</gray>'
+    MESSAGE_TEXT: "<gray>DeathChest 配置已重载.</gray>"
     # available subs: {PLAYER}
 
 
   COMMAND_HELP_HELP:
-    ENABLED: true
-    MESSAGE_TEXT: '<yellow>列出 DeathChest 命令帮助.</yellow>'
+    MESSAGE_TEXT: "<yellow>列出 DeathChest 命令帮助.</yellow>"
 
   COMMAND_HELP_LIST:
-    ENABLED: true
-    MESSAGE_TEXT: '<yellow>列出所有死亡箱.</yellow>'
+    MESSAGE_TEXT: "<yellow>列出所有死亡箱.</yellow>"
 
   COMMAND_HELP_RELOAD:
-    ENABLED: true
-    MESSAGE_TEXT: '<yellow>重载该插件的配置.</yellow>'
+    MESSAGE_TEXT: "<yellow>重载该插件的配置.</yellow>"
 
   COMMAND_HELP_STATUS:
-    ENABLED: true
-    MESSAGE_TEXT: '<yellow>显示插件配置设定.</yellow>'
+    MESSAGE_TEXT: "<yellow>显示插件配置设定.</yellow>"
 
   COMMAND_HELP_INVALID:
-    ENABLED: true
-    MESSAGE_TEXT: '<yellow>那不是一个有效的命令.</yellow>'
+    MESSAGE_TEXT: "<yellow>那不是一个有效的命令.</yellow>"
 
   COMMAND_HELP_USAGE:
-    ENABLED: true
-    MESSAGE_TEXT: '<yellow>命令用法:</yellow>'
+    MESSAGE_TEXT: "<yellow>命令用法:</yellow>"
 
 
   #########################
@@ -210,7 +177,7 @@ MESSAGES:
     MESSAGE_TEXT: "<newline><dark_aqua>Proudly built with <click:open_url:{URL}><blue><underlined>MessageBuilderLib<underlined></blue></click></dark_aqua>"
 
   COMMAND_STATUS_PLUGIN_VERSION:
-    MESSAGE_TEXT: '<green>Version:</green> {VERSION}'
+    MESSAGE_TEXT: "<green>Version:</green> {VERSION}"
 
   COMMAND_STATUS_LANGUAGE:
     MESSAGE_TEXT: "<green>Language:</green> {LANGUAGE}"
@@ -250,22 +217,19 @@ MESSAGES:
   # List Command Elements
   #######################
   LIST_HEADER:
-    ENABLED: true
-    MESSAGE_TEXT: '<dark_aqua>页面 <aqua>{PAGE_NUMBER}</aqua> 共 <aqua>{PAGE_TOTAL}</aqua></dark_aqua>'
+    MESSAGE_TEXT: "<dark_aqua>页面 <aqua>{PAGE_NUMBER}</aqua> 共 <aqua>{PAGE_TOTAL}</aqua></dark_aqua>"
 
   LIST_FOOTER:
     ENABLED: false
-    MESSAGE_TEXT: '<dark_aqua>页面 <aqua>{PAGE_NUMBER}</aqua> 共 <aqua>{PAGE_TOTAL}</aqua></dark_aqua>'
+    MESSAGE_TEXT: "<dark_aqua>页面 <aqua>{PAGE_NUMBER}</aqua> 共 <aqua>{PAGE_TOTAL}</aqua></dark_aqua>"
 
   LIST_ITEM:
-    ENABLED: true
     MESSAGE_TEXT: |-
       {ITEM_NUMBER}) <green>Location: <aqua>{LOCATION}</aqua> Killer: <aqua>{KILLER}</aqua></green>
           <green>Expiration time: <aqua>{EXPIRATION_DURATION}</aqua></green>
           <green>Protection time: <aqua>{PROTECTION_DURATION}</aqua></green>
 
   LIST_ITEM_ALL:
-    ENABLED: true
     MESSAGE_TEXT: |-
       {ITEM_NUMBER}) <green>Owner: <aqua>{OWNER}</aqua> <green>Killer: <aqua>{KILLER}</aqua></green>
           <green>Location: <aqua>{LOCATION}</aqua></green>
@@ -273,9 +237,7 @@ MESSAGES:
           <green>Protection time: <aqua>{PROTECTION_DURATION}</aqua></green?
 
   LIST_EMPTY:
-    ENABLED: true
-    MESSAGE_TEXT: '<aqua>没有死亡箱可被列出!</aqua>'
+    MESSAGE_TEXT: "<aqua>没有死亡箱可被列出!</aqua>"
 
   LIST_PLAYER_NOT_FOUND:
-    ENABLED: true
-    MESSAGE_TEXT: '<dark_aqua>那个玩家无法被找到!</dark_aqua>'
+    MESSAGE_TEXT: "<dark_aqua>那个玩家无法被找到!</dark_aqua>"

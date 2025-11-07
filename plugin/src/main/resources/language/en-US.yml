@@ -118,7 +118,7 @@ MESSAGES:
     MESSAGE_TEXT: "<red>Death chest is currently being accessed by another player.</red>"
 
 
-  COMMAND_FAIL_INVALID_COMMAND:
+  COMMAND_INVALID:
     MESSAGE_TEXT: "<red>That is not a valid command!</red>"
 
   COMMAND_FAIL_ARGS_COUNT_OVER:
