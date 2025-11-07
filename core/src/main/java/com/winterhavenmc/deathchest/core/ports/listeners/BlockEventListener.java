@@ -15,7 +15,7 @@
  *
  */
 
-package com.winterhavenmc.deathchest.core.listeners;
+package com.winterhavenmc.deathchest.core.ports.listeners;
 
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;

@@ -17,10 +17,10 @@
 
 package com.winterhavenmc.deathchest.adapters.commands.bukkit;
 
-import com.winterhavenmc.deathchest.core.commands.*;
 import com.winterhavenmc.deathchest.core.context.CommandCtx;
-import com.winterhavenmc.deathchest.core.messages.MessageId;
-import com.winterhavenmc.deathchest.core.sounds.SoundId;
+import com.winterhavenmc.deathchest.core.ports.commands.CommandDispatcher;
+import com.winterhavenmc.deathchest.core.util.MessageId;
+import com.winterhavenmc.deathchest.core.util.SoundId;
 
 import org.bukkit.command.*;
 
@@ -122,7 +122,7 @@ public final class BukkitCommandDispatcher implements CommandDispatcher
 		if (subcommand == null)
 		{
 			subcommand = subcommandRegistry.getCommand("help");
-			ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_INVALID_COMMAND).send();
+			ctx.messageBuilder().compose(sender, MessageId.COMMAND_INVALID).send();
 			ctx.messageBuilder().sounds().play(sender, SoundId.COMMAND_INVALID);
 		}
 

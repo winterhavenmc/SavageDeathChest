@@ -24,14 +24,14 @@ import com.winterhavenmc.deathchest.adapters.listeners.bukkit.BukkitInventoryEve
 import com.winterhavenmc.deathchest.adapters.listeners.bukkit.BukkitPlayerEventListener;
 
 import com.winterhavenmc.deathchest.core.chests.ChestManager;
-import com.winterhavenmc.deathchest.core.commands.CommandDispatcher;
+import com.winterhavenmc.deathchest.core.ports.commands.CommandDispatcher;
 import com.winterhavenmc.deathchest.core.context.CommandCtx;
 import com.winterhavenmc.deathchest.core.controller.InvalidPluginController;
 import com.winterhavenmc.deathchest.core.controller.PluginController;
 import com.winterhavenmc.deathchest.core.controller.ValidPluginController;
-import com.winterhavenmc.deathchest.core.listeners.BlockEventListener;
-import com.winterhavenmc.deathchest.core.listeners.InventoryEventListener;
-import com.winterhavenmc.deathchest.core.listeners.PlayerEventListener;
+import com.winterhavenmc.deathchest.core.ports.listeners.BlockEventListener;
+import com.winterhavenmc.deathchest.core.ports.listeners.InventoryEventListener;
+import com.winterhavenmc.deathchest.core.ports.listeners.PlayerEventListener;
 import com.winterhavenmc.deathchest.core.permissions.protectionplugins.ProtectionPluginRegistry;
 import com.winterhavenmc.deathchest.core.ports.datastore.ConnectionProvider;
 import com.winterhavenmc.deathchest.core.context.ListenerCtx;

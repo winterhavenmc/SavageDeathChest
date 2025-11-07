@@ -15,7 +15,7 @@
  *
  */
 
-package com.winterhavenmc.deathchest.core.messages;
+package com.winterhavenmc.deathchest.core.util;
 
 
 /**
@@ -45,7 +45,7 @@ public enum MessageId
 	NO_CREATIVE_ACCESS,
 	CHEST_CURRENTLY_OPEN,
 
-	COMMAND_FAIL_INVALID_COMMAND,
+	COMMAND_INVALID,
 	COMMAND_FAIL_ARGS_COUNT_OVER,
 	COMMAND_FAIL_HELP_PERMISSION,
 	COMMAND_FAIL_LIST_PERMISSION,

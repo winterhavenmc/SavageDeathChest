@@ -17,7 +17,7 @@
 
 package com.winterhavenmc.deathchest.adapters.commands.bukkit;
 
-import com.winterhavenmc.deathchest.core.messages.MessageId;
+import com.winterhavenmc.deathchest.core.util.MessageId;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 

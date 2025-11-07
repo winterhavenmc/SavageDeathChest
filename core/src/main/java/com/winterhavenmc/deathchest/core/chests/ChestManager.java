@@ -20,13 +20,13 @@ package com.winterhavenmc.deathchest.core.chests;
 import com.winterhavenmc.deathchest.core.ports.datastore.ConnectionProvider;
 import com.winterhavenmc.deathchest.models.chestblock.*;
 import com.winterhavenmc.deathchest.core.chests.deployment.DeploymentFactory;
-import com.winterhavenmc.deathchest.core.messages.Macro;
-import com.winterhavenmc.deathchest.core.messages.MessageId;
+import com.winterhavenmc.deathchest.core.util.Macro;
+import com.winterhavenmc.deathchest.core.util.MessageId;
 import com.winterhavenmc.deathchest.models.deathchest.DeathChest;
 import com.winterhavenmc.deathchest.models.deathchest.DeathChestReason;
 import com.winterhavenmc.deathchest.models.deathchest.InvalidDeathChest;
 import com.winterhavenmc.deathchest.models.deathchest.ValidDeathChest;
-import com.winterhavenmc.deathchest.core.sounds.SoundId;
+import com.winterhavenmc.deathchest.core.util.SoundId;
 import com.winterhavenmc.deathchest.core.storage.DataStore;
 
 import com.winterhavenmc.library.messagebuilder.MessageBuilder;

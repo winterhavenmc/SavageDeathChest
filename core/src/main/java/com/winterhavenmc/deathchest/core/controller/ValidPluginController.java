@@ -17,7 +17,7 @@
 
 package com.winterhavenmc.deathchest.core.controller;
 
-import com.winterhavenmc.deathchest.core.commands.CommandDispatcher;
+import com.winterhavenmc.deathchest.core.ports.commands.CommandDispatcher;
 import com.winterhavenmc.deathchest.core.ports.datastore.ConnectionProvider;
 import com.winterhavenmc.deathchest.core.util.MetricsHandler;
 

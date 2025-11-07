@@ -17,7 +17,7 @@
 
 package com.winterhavenmc.deathchest.adapters.listeners.bukkit;
 
-import com.winterhavenmc.deathchest.core.listeners.InventoryEventListener;
+import com.winterhavenmc.deathchest.core.ports.listeners.InventoryEventListener;
 import com.winterhavenmc.deathchest.core.context.ListenerCtx;
 
 import com.winterhavenmc.deathchest.models.deathchest.DeathChest;

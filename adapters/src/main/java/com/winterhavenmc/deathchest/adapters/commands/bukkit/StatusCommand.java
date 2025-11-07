@@ -18,8 +18,8 @@
 package com.winterhavenmc.deathchest.adapters.commands.bukkit;
 
 import com.winterhavenmc.deathchest.core.context.CommandCtx;
-import com.winterhavenmc.deathchest.core.messages.Macro;
-import com.winterhavenmc.deathchest.core.messages.MessageId;
+import com.winterhavenmc.deathchest.core.util.Macro;
+import com.winterhavenmc.deathchest.core.util.MessageId;
 import com.winterhavenmc.deathchest.core.permissions.protectionplugins.ProtectionPlugin;
 
 import com.winterhavenmc.library.messagebuilder.core.ports.pipeline.formatters.duration.BoundedDuration;
@@ -30,7 +30,7 @@ import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 
-import static com.winterhavenmc.deathchest.core.messages.Macro.*;
+import static com.winterhavenmc.deathchest.core.util.Macro.*;
 
 
 /**

@@ -17,13 +17,13 @@
 
 package com.winterhavenmc.deathchest.core.permissions;
 
-import com.winterhavenmc.deathchest.core.messages.Macro;
-import com.winterhavenmc.deathchest.core.messages.MessageId;
+import com.winterhavenmc.deathchest.core.util.Macro;
+import com.winterhavenmc.deathchest.core.util.MessageId;
 import com.winterhavenmc.deathchest.core.context.ListenerCtx;
 import com.winterhavenmc.deathchest.models.deathchest.ValidDeathChest;
 import com.winterhavenmc.deathchest.core.permissions.protectionplugins.ProtectionCheckResult;
 import com.winterhavenmc.deathchest.core.permissions.protectionplugins.ProtectionCheckResultCode;
-import com.winterhavenmc.deathchest.core.sounds.SoundId;
+import com.winterhavenmc.deathchest.core.util.SoundId;
 
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;

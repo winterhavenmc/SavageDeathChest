@@ -18,9 +18,9 @@
 package com.winterhavenmc.deathchest.adapters.listeners.bukkit;
 
 import com.winterhavenmc.deathchest.core.context.ListenerCtx;
-import com.winterhavenmc.deathchest.core.listeners.PlayerEventListener;
-import com.winterhavenmc.deathchest.core.messages.Macro;
-import com.winterhavenmc.deathchest.core.messages.MessageId;
+import com.winterhavenmc.deathchest.core.ports.listeners.PlayerEventListener;
+import com.winterhavenmc.deathchest.core.util.Macro;
+import com.winterhavenmc.deathchest.core.util.MessageId;
 import com.winterhavenmc.deathchest.models.deathchest.DeathChest;
 import com.winterhavenmc.deathchest.models.deathchest.ValidDeathChest;
 import com.winterhavenmc.deathchest.core.permissions.InventoryOpenAction;

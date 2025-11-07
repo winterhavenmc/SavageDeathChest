@@ -17,8 +17,8 @@
 
 package com.winterhavenmc.deathchest.adapters.commands.bukkit;
 
-import com.winterhavenmc.deathchest.core.messages.MessageId;
-import com.winterhavenmc.deathchest.core.sounds.SoundId;
+import com.winterhavenmc.deathchest.core.util.MessageId;
+import com.winterhavenmc.deathchest.core.util.SoundId;
 import com.winterhavenmc.library.messagebuilder.MessageBuilder;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;

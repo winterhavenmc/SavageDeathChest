@@ -15,7 +15,7 @@
  *
  */
 
-package com.winterhavenmc.deathchest.core.commands;
+package com.winterhavenmc.deathchest.core.ports.commands;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;

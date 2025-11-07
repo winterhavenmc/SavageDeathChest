@@ -15,32 +15,17 @@
  *
  */
 
-package com.winterhavenmc.deathchest.core.messages;
+package com.winterhavenmc.deathchest.core.util;
 
-public enum Macro
+
+/**
+ * An enum that whose values represent the in game sounds played by the plugin corresponding to
+ * user configured settings in the sounds.yml file.
+ */
+public enum SoundId
 {
-	DEATH_CHEST,
-	LOCATION,
-	PLUGIN,
-	ITEM_NUMBER,
-	PAGE_NUMBER,
-	PAGE_TOTAL,
-	OWNER,
-	KILLER,
-	VIEWER,
-
-	// Status Command Macros
-	VERSION,
-	LANGUAGE,
-	LOCALE,
-	TIMEZONE,
-	PROTECTION_DURATION,
-	EXPIRATION_DURATION,
-	SEARCH_DISTANCE,
-	REQUIRE_CHEST,
-	QUICK_LOOT,
-	KILLER_LOOTING,
-	ENABLED_WORLDS,
-	URL,
-	REPLACEABLE_BLOCKS, CONFIG_SETTING,
+	CHEST_BREAK,
+	CHEST_DENIED_ACCESS,
+	INVENTORY_ADD_ITEM,
+	COMMAND_INVALID,
 }

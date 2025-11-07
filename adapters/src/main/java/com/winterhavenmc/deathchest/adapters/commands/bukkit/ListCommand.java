@@ -18,8 +18,8 @@
 package com.winterhavenmc.deathchest.adapters.commands.bukkit;
 
 import com.winterhavenmc.deathchest.core.context.CommandCtx;
-import com.winterhavenmc.deathchest.core.messages.Macro;
-import com.winterhavenmc.deathchest.core.messages.MessageId;
+import com.winterhavenmc.deathchest.core.util.Macro;
+import com.winterhavenmc.deathchest.core.util.MessageId;
 import com.winterhavenmc.deathchest.models.deathchest.ValidDeathChest;
 
 import org.bukkit.command.Command;

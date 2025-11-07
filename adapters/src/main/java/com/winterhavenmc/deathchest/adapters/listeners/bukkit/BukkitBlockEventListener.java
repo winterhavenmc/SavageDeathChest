@@ -18,7 +18,7 @@
 package com.winterhavenmc.deathchest.adapters.listeners.bukkit;
 
 import com.winterhavenmc.deathchest.core.chests.LocationUtilities;
-import com.winterhavenmc.deathchest.core.listeners.BlockEventListener;
+import com.winterhavenmc.deathchest.core.ports.listeners.BlockEventListener;
 import com.winterhavenmc.deathchest.core.context.ListenerCtx;
 import com.winterhavenmc.deathchest.models.deathchest.DeathChest;
 import com.winterhavenmc.deathchest.models.deathchest.ValidDeathChest;
