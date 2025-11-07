@@ -17,6 +17,7 @@
 
 package com.winterhavenmc.deathchest.models.deathchest;
 
+import java.text.MessageFormat;
 import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
@@ -24,15 +25,17 @@ import java.util.ResourceBundle;
 
 public enum DeathChestReason
 {
-	OWNER_NULL("The parameter 'owner' was null."),
-	LOCATION_NULL("The parameter 'location' was null."),
-	CONFIG_NULL("The parameter 'config' was null."),
-	CHEST_UID_NULL("The parameter 'chestUid' was null."),
-	OWNER_UID_NULL("The parameter 'ownerUid' was null."),
-	WORLD_UID_NULL("The parameter 'worldUid' was null."),
-	BLOCK_NULL("The parameter 'block' was null."),
+	PARAMETER_NULL("The parameter ''{0}'' was null."),
 	BLOCK_INVALID("The block was not a DeathChest block."),
-	WORLD_NULL("The parameter 'world' was null."),
+
+	OWNER_NULL("The parameter ''owner'' was null."),
+	LOCATION_NULL("The parameter ''location'' was null."),
+	CONFIG_NULL("The parameter ''config'' was null."),
+	CHEST_UID_NULL("The parameter ''chestUid'' was null."),
+	OWNER_UID_NULL("The parameter ''ownerUid'' was null."),
+	WORLD_UID_NULL("The parameter ''worldUid'' was null."),
+	BLOCK_NULL("The parameter ''block'' was null."),
+	WORLD_NULL("The parameter ''world'' was null."),
 	;
 
 	private final String defaultMessage;
@@ -55,6 +58,28 @@ public enum DeathChestReason
 		{
 			return this.defaultMessage;
 		}
+	}
+
+
+	public String getLocalizedMessage(final Locale locale, final Object... objects)
+	{
+		try
+		{
+			final ResourceBundle bundle = ResourceBundle.getBundle(getClass().getSimpleName(), locale);
+			final String pattern = bundle.getString(name());
+			return MessageFormat.format(pattern, objects);
+		}
+		catch (MissingResourceException exception)
+		{
+			return MessageFormat.format(this.defaultMessage, objects);
+		}
+	}
+
+
+	@Override
+	public String toString()
+	{
+		return this.defaultMessage;
 	}
 
 }
