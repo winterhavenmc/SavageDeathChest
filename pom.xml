@@ -125,9 +125,9 @@
 
 			<!-- RoadBlock -->
 			<dependency>
-				<groupId>com.winterhaven-mc</groupId>
-				<artifactId>RoadBlock</artifactId>
-				<version>1.18.3-SNAPSHOT</version>
+				<groupId>com.winterhavenmc</groupId>
+				<artifactId>roadblock</artifactId>
+				<version>1.21.1-SNAPSHOT</version>
 				<scope>provided</scope>
 			</dependency>
 
@@ -215,8 +215,8 @@
 
 		<!-- RoadBlock -->
 		<dependency>
-			<groupId>com.winterhaven-mc</groupId>
-			<artifactId>RoadBlock</artifactId>
+			<groupId>com.winterhavenmc</groupId>
+			<artifactId>roadblock</artifactId>
 		</dependency>
 
 		<!-- Towny -->
