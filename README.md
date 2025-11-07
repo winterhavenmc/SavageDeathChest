@@ -1,4 +1,5 @@
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/871d864a23794c6583cc5eb7a930a8e4)](https://app.codacy.com/gh/tim-savage/SavageDeathChest?utm_source=github.com&utm_medium=referral&utm_content=tim-savage/SavageDeathChest&utm_campaign=Badge_Grade_Settings)
+[![Codacy Badge](https://app.codacy.com/project/badge/Coverage/e5152f8b690941df9096b00bb5ad095a)](https://app.codacy.com/gh/winterhavenmc/SavageDeathChest/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_coverage)
 [![Spigot Version](https://badgen.net/static/spigot-api/1.21.10?color=yellow)](https://spigotmc.org)
 &nbsp;[![License](https://badgen.net/static/license/GPLv3)](https://www.gnu.org/licenses/gpl-3.0)
 
