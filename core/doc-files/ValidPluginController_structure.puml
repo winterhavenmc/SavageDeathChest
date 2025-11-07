@@ -1,0 +1,657 @@
+@startuml
+
+/' diagram meta data start
+config=StructureConfiguration;
+{
+  "projectClassification": {
+    "searchMode": "OpenProject", // OpenProject, AllProjects
+    "includedProjects": "",
+    "pathEndKeywords": "*.impl",
+    "isClientPath": "",
+    "isClientName": "",
+    "isTestPath": "",
+    "isTestName": "",
+    "isMappingPath": "",
+    "isMappingName": "",
+    "isDataAccessPath": "",
+    "isDataAccessName": "",
+    "isDataStructurePath": "",
+    "isDataStructureName": "",
+    "isInterfaceStructuresPath": "",
+    "isInterfaceStructuresName": "",
+    "isEntryPointPath": "",
+    "isEntryPointName": "",
+    "treatFinalFieldsAsMandatory": false
+  },
+  "graphRestriction": {
+    "classPackageExcludeFilter": "",
+    "classPackageIncludeFilter": "",
+    "classNameExcludeFilter": "",
+    "classNameIncludeFilter": "",
+    "methodNameExcludeFilter": "",
+    "methodNameIncludeFilter": "",
+    "removeByInheritance": "", // inheritance/annotation based filtering is done in a second step
+    "removeByAnnotation": "",
+    "removeByClassPackage": "", // cleanup the graph after inheritance/annotation based filtering is done
+    "removeByClassName": "",
+    "cutMappings": false,
+    "cutEnum": true,
+    "cutTests": true,
+    "cutClient": true,
+    "cutDataAccess": true,
+    "cutInterfaceStructures": true,
+    "cutDataStructures": true,
+    "cutGetterAndSetter": true,
+    "cutConstructors": true
+  },
+  "graphTraversal": {
+    "forwardDepth": 6,
+    "backwardDepth": 3,
+    "classPackageExcludeFilter": "",
+    "classPackageIncludeFilter": "",
+    "classNameExcludeFilter": "",
+    "classNameIncludeFilter": "",
+    "methodNameExcludeFilter": "",
+    "methodNameIncludeFilter": "",
+    "hideMappings": false,
+    "hideDataStructures": false,
+    "hidePrivateMethods": true,
+    "hideInterfaceCalls": false, // indirection: implementation -> interface (is hidden) -> implementation
+    "onlyShowApplicationEntryPoints": false, // root node is included
+    "useMethodCallsForStructureDiagram": "ForwardOnly" // ForwardOnly, BothDirections, No
+  },
+  "details": {
+    "aggregation": "GroupByClass", // ByClass, GroupByClass, None
+    "showClassGenericTypes": true,
+    "showMethods": true,
+    "showMethodParameterNames": true,
+    "showMethodParameterTypes": true,
+    "showMethodReturnType": true,
+    "showPackageLevels": 2,
+    "showDetailedClassStructure": true
+  },
+  "rootClass": "com.winterhavenmc.deathchest.core.controller.ValidPluginController",
+  "extensionCallbackMethod": "" // qualified.class.name#methodName - signature: public static String method(String)
+}
+diagram meta data end '/
+
+
+
+digraph g {
+    rankdir="TB"
+    splines=polyline
+    
+
+'nodes 
+subgraph cluster_1655488073 { 
+   	label=winterhavenmc
+	labeljust=l
+	fillcolor="#ececec"
+	style=filled
+   
+   subgraph cluster_877670820 { 
+   	label=deathchest
+	labeljust=l
+	fillcolor="#d8d8d8"
+	style=filled
+   
+   BlockRepository724083881[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(I)BlockRepository</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ delete(validChestBlock: ValidChestBlock): int</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getAll(): Collection&lt;ValidChestBlock&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" >+ save(blockRecords: Collection&lt;ValidChestBlock&gt;): int</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#F1E5FD"
+];
+
+Bootstrap1182627471[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)Bootstrap</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   blockEventListener: BlockEventListener [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   inventoryEventListener: InventoryEventListener [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   playerEventListener: PlayerEventListener [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   pluginController: PluginController [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ onDisable()</TD></TR>
+<TR><TD ALIGN="LEFT" >+ onEnable()</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+BukkitCommandDispatcher2144118153[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)BukkitCommandDispatcher</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   ctx: CommandCtx [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   subcommandRegistry: SubcommandRegistry [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >- hasPermission(sender: CommandSender): Predicate&lt;String&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" >- matchesPrefix(prefix: String): Predicate&lt;String&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" >- matchingCommands(sender: CommandSender, matchString: String): List&lt;String&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" >+ onCommand(sender: CommandSender, command: Command, label: String, args: String[]): boolean</TD></TR>
+<TR><TD ALIGN="LEFT" >+ onTabComplete(sender: CommandSender, command: Command, alias: String, args: String[]): List&lt;String&gt;</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+ChestManager26185156[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)ChestManager</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   blockMap: BlockMap [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   chestMap: ChestMap [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   dataStore: DataStore [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   deploymentFactory: DeploymentFactory [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   messageBuilder: MessageBuilder [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   plugin: Plugin [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   replaceableBlocks: ReplaceableBlocks [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ autoLoot(player: Player, validDeathChest: ValidDeathChest)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ cancelExpireTask(validDeathChest: ValidDeathChest)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ closeDataStore()</TD></TR>
+<TR><TD ALIGN="LEFT" >+ deleteBlockRecord(validChestBlock: ValidChestBlock)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ deleteChestRecord(validDeathChest: ValidDeathChest)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ destroy(validDeathChest: ValidDeathChest)</TD></TR>
+<TR><TD ALIGN="LEFT" ># destroy(validChestBlock: ValidChestBlock)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ dropContents(validDeathChest: ValidDeathChest)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ expire(validDeathChest: ValidDeathChest)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ fill(itemStacks: Collection&lt;ItemStack&gt;, validDeathChest: ValidDeathChest): Collection&lt;ItemStack&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getAttachedBlock(block: Block): Optional&lt;Block&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" ># getBlockMap(chestUid: UUID): Map&lt;ChestBlockType, ValidChestBlock&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getBlocks(chestUid: UUID): Collection&lt;ValidChestBlock&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getChest(chestUid: UUID): DeathChest</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getChest(block: Block): DeathChest</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getChest(inventory: Inventory): DeathChest</TD></TR>
+<TR><TD ALIGN="LEFT" ># getExpireTaskId(validDeathChest: ValidDeathChest): int</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getInventory(deathChest: ValidDeathChest): Optional&lt;Inventory&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getInventory(blockMap: Map&lt;ChestBlockType, ValidChestBlock&gt;): Optional&lt;Inventory&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" ># getInventory(validChestBlock: ValidChestBlock): Optional&lt;Inventory&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getViewerCount(validDeathChest: ValidDeathChest): int</TD></TR>
+<TR><TD ALIGN="LEFT" >+ isChestBlock(block: Block): boolean</TD></TR>
+<TR><TD ALIGN="LEFT" >+ isChestBlockChest(block: Block): boolean</TD></TR>
+<TR><TD ALIGN="LEFT" >+ isChestBlockSign(block: Block): boolean</TD></TR>
+<TR><TD ALIGN="LEFT" >+ isDeathChestInventory(inventory: Inventory): boolean</TD></TR>
+<TR><TD ALIGN="LEFT" >- isExpired(validDeathChest: ValidDeathChest): boolean</TD></TR>
+<TR><TD ALIGN="LEFT" >+ isReplaceableBlock(block: Block): boolean</TD></TR>
+<TR><TD ALIGN="LEFT" >+ loadChests()</TD></TR>
+<TR><TD ALIGN="LEFT" >+ protectionExpired(validDeathChest: ValidDeathChest): boolean</TD></TR>
+<TR><TD ALIGN="LEFT" >+ putBlock(chestBlockType: ChestBlockType, validChestBlock: ValidChestBlock)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ putChest(validDeathChest: ValidDeathChest)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ reload()</TD></TR>
+<TR><TD ALIGN="LEFT" ># removeBlock(validChestBlock: ValidChestBlock)</TD></TR>
+<TR><TD ALIGN="LEFT" ># removeChest(validDeathChest: ValidDeathChest)</TD></TR>
+<TR><TD ALIGN="LEFT" ># removeMetadata(validChestBlock: ValidChestBlock)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ saveChestRecords(deathChests: Collection&lt;ValidDeathChest&gt;)</TD></TR>
+<TR><TD ALIGN="LEFT" ># transferContents(validChestBlock: ValidChestBlock, player: Player): Collection&lt;ItemStack&gt;</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+ChestRepository724083881[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(I)ChestRepository</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ delete(deathChest: ValidDeathChest): int</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getAll(): Collection&lt;ValidDeathChest&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getCount(): int</TD></TR>
+<TR><TD ALIGN="LEFT" >+ save(deathChests: Collection&lt;ValidDeathChest&gt;): int</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#F1E5FD"
+];
+
+CommandCtx1020471229[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)CommandCtx</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   chestManager: ChestManager [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   messageBuilder: MessageBuilder [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   plugin: JavaPlugin [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   protectionPluginRegistry: ProtectionPluginRegistry [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ chestManager(): ChestManager</TD></TR>
+<TR><TD ALIGN="LEFT" >+ messageBuilder(): MessageBuilder</TD></TR>
+<TR><TD ALIGN="LEFT" >+ plugin(): JavaPlugin</TD></TR>
+<TR><TD ALIGN="LEFT" >+ protectionPluginRegistry(): ProtectionPluginRegistry</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+CommandDispatcher1534614074[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(I)CommandDispatcher</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ onCommand(sender: CommandSender, command: Command, label: String, args: String[]): boolean</TD></TR>
+<TR><TD ALIGN="LEFT" >+ onTabComplete(sender: CommandSender, command: Command, alias: String, args: String[]): List&lt;String&gt;</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#F1E5FD"
+];
+
+ConnectionProvider724083881[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(I)ConnectionProvider</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ chestBlocks(): BlockRepository</TD></TR>
+<TR><TD ALIGN="LEFT" >+ close()</TD></TR>
+<TR><TD ALIGN="LEFT" >+ connect()</TD></TR>
+<TR><TD ALIGN="LEFT" >+ deathChests(): ChestRepository</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#F1E5FD"
+];
+
+HelpCommand2144118153[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)HelpCommand</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   messageBuilder: MessageBuilder [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   subcommandRegistry: SubcommandRegistry [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" ># displayHelp(sender: CommandSender, commandName: String)</TD></TR>
+<TR><TD ALIGN="LEFT" ># displayUsageAll(sender: CommandSender)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ onCommand(sender: CommandSender, args: List&lt;String&gt;): boolean</TD></TR>
+<TR><TD ALIGN="LEFT" >+ onTabComplete(sender: CommandSender, command: Command, alias: String, args: String[]): List&lt;String&gt;</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+InvalidPluginController1443598030[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)InvalidPluginController</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   reason: ControllerFailReason [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ reason(): ControllerFailReason</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+ListCommand2144118153[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)ListCommand</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   OVER_MAX_ARGS: Predicate&lt;List&lt;String&gt;&gt; [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   ctx: CommandCtx [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >- displayChestList(sender: CommandSender, args: List&lt;String&gt;, displayRecords: List&lt;ValidDeathChest&gt;, displayNames: boolean): boolean</TD></TR>
+<TR><TD ALIGN="LEFT" >- displayListFooter(sender: CommandSender, page: int, pageCount: int)</TD></TR>
+<TR><TD ALIGN="LEFT" >- displayListHeader(sender: CommandSender, page: int, pageCount: int)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ displayUsage(sender: CommandSender)</TD></TR>
+<TR><TD ALIGN="LEFT" >- getChestsForPlayer(player: Player): List&lt;ValidDeathChest&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" >- getNameFromArgs(args: List&lt;String&gt;): String</TD></TR>
+<TR><TD ALIGN="LEFT" >- getPageFromArgs(args: List&lt;String&gt;): int</TD></TR>
+<TR><TD ALIGN="LEFT" >- isNumeric(strNum: String): boolean</TD></TR>
+<TR><TD ALIGN="LEFT" >+ onCommand(sender: CommandSender, args: List&lt;String&gt;): boolean</TD></TR>
+<TR><TD ALIGN="LEFT" >+ onTabComplete(sender: CommandSender, command: Command, alias: String, args: String[]): List&lt;String&gt;</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+PluginController1443598030[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(I)PluginController</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ create(plugin: JavaPlugin): PluginController</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#F1E5FD"
+];
+
+ProtectionPluginRegistry1092552885[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)ProtectionPluginRegistry</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   plugin: JavaPlugin [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   protectionPluginSet: Set&lt;ProtectionPlugin&gt; [0..*]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ accessAllowed(player: Player, location: Location): ProtectionCheckResult</TD></TR>
+<TR><TD ALIGN="LEFT" >+ placementAllowed(player: Player, location: Location): ProtectionCheckResult</TD></TR>
+<TR><TD ALIGN="LEFT" >- register(protectionPlugin: ProtectionPlugin)</TD></TR>
+<TR><TD ALIGN="LEFT" >- registerEnabledPlugins(plugin: JavaPlugin)</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+ReloadCommand2144118153[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)ReloadCommand</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   ctx: CommandCtx [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ onCommand(sender: CommandSender, args: List&lt;String&gt;): boolean</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+SQLiteBlockRepository17079856[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)SQLiteBlockRepository</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   connection: Connection [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   messageBuilder: MessageBuilder [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   plugin: Plugin [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   queryExecutor: SqliteBlockQueryExecutor [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   rowMapper: SqliteBlockRowMapper [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ delete(validChestBlock: ValidChestBlock): int</TD></TR>
+<TR><TD ALIGN="LEFT" >- insertBlock(validChestBlock: ValidChestBlock): int</TD></TR>
+<TR><TD ALIGN="LEFT" >+ save(blockRecords: Collection&lt;ValidChestBlock&gt;): int</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+SQLiteChestRepository17079856[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)SQLiteChestRepository</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   chestRowMapper: SqliteChestRowMapper [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   connection: Connection [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   messageBuilder: MessageBuilder [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   plugin: Plugin [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   queryExecutor: SqliteChestQueryExecutor [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ delete(validDeathChest: ValidDeathChest): int</TD></TR>
+<TR><TD ALIGN="LEFT" >+ deleteOrphanedChest(worldName: String): int</TD></TR>
+<TR><TD ALIGN="LEFT" >+ save(deathChests: Collection&lt;ValidDeathChest&gt;): int</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+SqliteConnectionProvider17079856[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)SqliteConnectionProvider</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   blockRepository: BlockRepository [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   chestRepository: ChestRepository [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   connection: Connection [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   dataFilePath: String [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   initialized: boolean [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   logger: Logger [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   messageBuilder: MessageBuilder [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   plugin: Plugin [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ chestBlocks(): BlockRepository</TD></TR>
+<TR><TD ALIGN="LEFT" >+ close()</TD></TR>
+<TR><TD ALIGN="LEFT" >+ connect()</TD></TR>
+<TR><TD ALIGN="LEFT" >- createBlockTable(connection: Connection, locale: Locale)</TD></TR>
+<TR><TD ALIGN="LEFT" >- createChestTable(connection: Connection, locale: Locale)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ deathChests(): ChestRepository</TD></TR>
+<TR><TD ALIGN="LEFT" >- enableForeignKeys(connection: Connection, locale: Locale)</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+SqliteQueries17079856[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)SqliteQueries</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ getQuery(query: String): String</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+SqliteSchemaUpdater1155125119[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(I)SqliteSchemaUpdater</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ create(plugin: Plugin, messageBuilder: MessageBuilder, connection: Connection, chestRepository: ChestRepository, blockRepository: BlockRepository): SqliteSchemaUpdater</TD></TR>
+<TR><TD ALIGN="LEFT" >- getSchemaVersion(plugin: Plugin, messageBuilder: MessageBuilder, connection: Connection): int</TD></TR>
+<TR><TD ALIGN="LEFT" >+ tableExists(connection: Connection, tableName: String): boolean</TD></TR>
+<TR><TD ALIGN="LEFT" >+ update()</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#F1E5FD"
+];
+
+SqliteSchemaUpdaterFromV01155125119[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)SqliteSchemaUpdaterFromV0</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   blockRepository: BlockRepository [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   chestRepository: ChestRepository [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   connection: Connection [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   messageBuilder: MessageBuilder [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   plugin: Plugin [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >- getUid(uidString: String): UUID</TD></TR>
+<TR><TD ALIGN="LEFT" >- migrateBlockRecords()</TD></TR>
+<TR><TD ALIGN="LEFT" >- migrateChestRecords()</TD></TR>
+<TR><TD ALIGN="LEFT" >- selectAllBlockRecords(plugin: Plugin, connection: Connection): Set&lt;ValidChestBlock&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" >- selectAllChestRecords(plugin: Plugin, connection: Connection): Set&lt;ValidDeathChest&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" >+ update()</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+SqliteSchemaUpdaterFromV11155125119[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)SqliteSchemaUpdaterFromV1</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   chestRepository: ChestRepository [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   connection: Connection [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   messageBuilder: MessageBuilder [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   plugin: Plugin [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >- mapChestRow(resultSet: ResultSet): DeathChest</TD></TR>
+<TR><TD ALIGN="LEFT" >- migrateChestRecords()</TD></TR>
+<TR><TD ALIGN="LEFT" >- selectAllChestRecords(connection: Connection): Set&lt;ValidDeathChest&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" >+ update()</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+SqliteSchemaUpdaterNoOp1155125119[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)SqliteSchemaUpdaterNoOp</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   messageBuilder: MessageBuilder [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   plugin: Plugin [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ update()</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+StatusCommand2144118153[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)StatusCommand</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   ctx: CommandCtx [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >- displayDebugSetting(sender: CommandSender)</TD></TR>
+<TR><TD ALIGN="LEFT" >- displayEnabledWorlds(sender: CommandSender)</TD></TR>
+<TR><TD ALIGN="LEFT" >- displayExpirationTime(sender: CommandSender)</TD></TR>
+<TR><TD ALIGN="LEFT" >- displayKillerLooting(sender: CommandSender)</TD></TR>
+<TR><TD ALIGN="LEFT" >- displayLanguage(sender: CommandSender)</TD></TR>
+<TR><TD ALIGN="LEFT" >- displayLocale(sender: CommandSender)</TD></TR>
+<TR><TD ALIGN="LEFT" >- displayPluginVersion(sender: CommandSender)</TD></TR>
+<TR><TD ALIGN="LEFT" >- displayProtectionPlugins(sender: CommandSender)</TD></TR>
+<TR><TD ALIGN="LEFT" >- displayProtectionTime(sender: CommandSender)</TD></TR>
+<TR><TD ALIGN="LEFT" >- displayQuickLoot(sender: CommandSender)</TD></TR>
+<TR><TD ALIGN="LEFT" >- displayReplaceableBlocks(sender: CommandSender)</TD></TR>
+<TR><TD ALIGN="LEFT" >- displayRequireChest(sender: CommandSender)</TD></TR>
+<TR><TD ALIGN="LEFT" >- displaySearchDistance(sender: CommandSender)</TD></TR>
+<TR><TD ALIGN="LEFT" >- displayStatusBanner(sender: CommandSender)</TD></TR>
+<TR><TD ALIGN="LEFT" >- displayStatusFooter(sender: CommandSender)</TD></TR>
+<TR><TD ALIGN="LEFT" >- displayTimezone(sender: CommandSender)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ onCommand(sender: CommandSender, args: List&lt;String&gt;): boolean</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+Subcommand2144118153[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(I)Subcommand</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ displayUsage(sender: CommandSender)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getDescription(): MessageId</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getMaxArgs(): int</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getName(): String</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getUsage(): String</TD></TR>
+<TR><TD ALIGN="LEFT" >+ onCommand(sender: CommandSender, argsList: List&lt;String&gt;): boolean</TD></TR>
+<TR><TD ALIGN="LEFT" >+ onTabComplete(sender: CommandSender, command: Command, alias: String, args: String[]): List&lt;String&gt;</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#F1E5FD"
+];
+
+SubcommandAbstract2144118153[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)SubcommandAbstract</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >#   description: MessageId [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   maxArgs: int [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   name: String [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   usageString: String [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ displayUsage(sender: CommandSender)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ onTabComplete(sender: CommandSender, command: Command, alias: String, args: String[]): List&lt;String&gt;</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+SubcommandRegistry2144118153[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)SubcommandRegistry</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >#   subcommandMap: Map&lt;String, Subcommand&gt; [0..*]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" ># getCommand(name: String): Subcommand</TD></TR>
+<TR><TD ALIGN="LEFT" ># register(subcommand: Subcommand)</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+ValidPluginController1443598030[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)ValidPluginController</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+   commandDispatcher: CommandDispatcher [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   datastore: ConnectionProvider [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   plugin: JavaPlugin [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ shutDown()</TD></TR>
+<TR><TD ALIGN="LEFT" >+ startUp(connectionProvider: ConnectionProvider, commandDispatcher: CommandDispatcher)</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+} 
+} 
+
+'edges    
+BlockRepository724083881 -> SQLiteBlockRepository17079856[arrowhead=none, arrowtail=empty, dir=both];
+Bootstrap1182627471 -> PluginController1443598030[label="pluginController
+[0..1]"];
+BukkitCommandDispatcher2144118153 -> CommandCtx1020471229[label="ctx
+[0..1]"];
+BukkitCommandDispatcher2144118153 -> SubcommandRegistry2144118153[label="subcommandRegistry
+[0..1]"];
+ChestRepository724083881 -> SQLiteChestRepository17079856[arrowhead=none, arrowtail=empty, dir=both];
+CommandCtx1020471229 -> ChestManager26185156[label="chestManager
+[0..1]"];
+CommandCtx1020471229 -> ProtectionPluginRegistry1092552885[label="protectionPluginRegistry
+[0..1]"];
+CommandDispatcher1534614074 -> BukkitCommandDispatcher2144118153[arrowhead=none, arrowtail=empty, dir=both];
+ConnectionProvider724083881 -> SqliteConnectionProvider17079856[arrowhead=none, arrowtail=empty, dir=both];
+PluginController1443598030 -> InvalidPluginController1443598030[arrowhead=none, arrowtail=empty, dir=both];
+PluginController1443598030 -> ValidPluginController1443598030[arrowhead=none, arrowtail=empty, dir=both];
+SqliteConnectionProvider17079856 -> BlockRepository724083881[label="blockRepository
+[0..1]"];
+SqliteConnectionProvider17079856 -> ChestRepository724083881[label="chestRepository
+[0..1]"];
+SqliteSchemaUpdater1155125119 -> SqliteSchemaUpdaterFromV01155125119[arrowhead=none, arrowtail=empty, dir=both];
+SqliteSchemaUpdater1155125119 -> SqliteSchemaUpdaterFromV11155125119[arrowhead=none, arrowtail=empty, dir=both];
+SqliteSchemaUpdater1155125119 -> SqliteSchemaUpdaterNoOp1155125119[arrowhead=none, arrowtail=empty, dir=both];
+Subcommand2144118153 -> HelpCommand2144118153[label="onCommand() -> onCommand()"];
+Subcommand2144118153 -> ListCommand2144118153[label="onCommand() -> onCommand()"];
+Subcommand2144118153 -> ReloadCommand2144118153[label="onCommand() -> onCommand()"];
+Subcommand2144118153 -> StatusCommand2144118153[label="onCommand() -> onCommand()"];
+Subcommand2144118153 -> SubcommandAbstract2144118153[arrowhead=none, arrowtail=empty, dir=both];
+SubcommandRegistry2144118153 -> Subcommand2144118153[label="subcommandMap
+[0..*]"];
+ValidPluginController1443598030 -> CommandDispatcher1534614074[label="commandDispatcher
+[0..1]"];
+ValidPluginController1443598030 -> ConnectionProvider724083881[label="datastore
+[0..1]"];
+    
+}
+@enduml
