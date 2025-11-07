@@ -38,13 +38,7 @@ public sealed interface SqliteSchemaUpdater permits SqliteSchemaUpdaterFromV1, S
 	                                  final ChestRepository chestRepository,
 	                                  final BlockRepository blockRepository)
 	{
-		int schemaVersion = getSchemaVersion(plugin, messageBuilder, connection);
-		if (plugin.getConfig().getBoolean("debug"))
-		{
-			plugin.getLogger().info(SqliteMessage.SCHEMA_VERSION_NOTICE.getLocalizeMessage(messageBuilder.config().locale(), schemaVersion));
-		}
-
-		return switch (schemaVersion)
+		return switch (getSchemaVersion(plugin, messageBuilder, connection))
 		{
 			case 0 -> new SqliteSchemaUpdaterFromV0(plugin, messageBuilder, connection, chestRepository, blockRepository);
 			case 1 -> new SqliteSchemaUpdaterFromV1(plugin, messageBuilder, connection, chestRepository);
