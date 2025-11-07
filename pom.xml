@@ -1,11 +1,21 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.winterhaven-mc</groupId>
-	<artifactId>SavageDeathChest</artifactId>
-	<version>2.0.0-SNAPSHOT</version>
-	<name>SavageDeathChest</name>
+	<packaging>pom</packaging>
 
-	<url>https://github.com/tim-savage/SavageDeathChest</url>
+	<name>SavageDeathChest</name>
+	<url>https://github.com/winterhavenmc/SavageDeathChest</url>
+
+	<groupId>com.winterhavenmc.deathchest</groupId>
+	<artifactId>deathchest-parent</artifactId>
+	<version>2.0.0-SNAPSHOT</version>
+
+	<modules>
+		<module>adapters</module>
+		<module>core</module>
+		<module>models</module>
+		<module>plugin</module>
+	</modules>
 
 	<description>
 		A minecraft plugin that preserves player inventories on death in a chest.
@@ -30,21 +40,13 @@
 		<url>https://github.com/tim-savage/SavageDeathChest/issues</url>
 	</issueManagement>
 
-	<profiles>
-		<profile>
+	<distributionManagement>
+		<repository>
 			<id>repsy</id>
-			<activation>
-				<activeByDefault>true</activeByDefault>
-			</activation>
-			<distributionManagement>
-				<repository>
-					<id>repsy</id>
-					<name>Repsy.io winterhavenmc Maven Packages</name>
-					<url>https://repo.repsy.io/mvn/winterhavenmc/public/</url>
-				</repository>
-			</distributionManagement>
-		</profile>
-	</profiles>
+			<name>Repsy.io winterhavenmc Maven Packages</name>
+			<url>https://repo.repsy.io/mvn/winterhavenmc/public/</url>
+		</repository>
+	</distributionManagement>
 
 	<repositories>
 		<repository>
@@ -77,68 +79,136 @@
 		</repository>
 	</repositories>
 
+	<dependencyManagement>
+		<dependencies>
+			<!-- Spigot API -->
+			<dependency>
+				<groupId>org.spigotmc</groupId>
+				<artifactId>spigot-api</artifactId>
+				<version>1.21.10-R0.1-SNAPSHOT</version>
+				<scope>provided</scope>
+			</dependency>
+
+			<!-- MessageBuilderLib -->
+			<dependency>
+				<groupId>com.winterhavenmc</groupId>
+				<artifactId>messagebuilder</artifactId>
+				<version>2.0.0-SNAPSHOT</version>
+				<scope>compile</scope>
+			</dependency>
+
+			<!-- bStats -->
+			<dependency>
+				<groupId>org.bstats</groupId>
+				<artifactId>bstats-bukkit</artifactId>
+				<version>3.1.0</version>
+				<scope>compile</scope>
+			</dependency>
+
+
+			<!-- Protection Plugins -->
+			<!-- GriefPrevention -->
+			<dependency>
+				<groupId>com.github.TechFortress</groupId>
+				<artifactId>GriefPrevention</artifactId>
+				<version>16.18</version>
+				<scope>provided</scope>
+			</dependency>
+
+			<!-- Lands -->
+			<dependency>
+				<groupId>com.github.angeschossen</groupId>
+				<artifactId>LandsAPI</artifactId>
+				<version>5.15.2</version>
+				<scope>provided</scope>
+			</dependency>
+
+			<!-- RoadBlock -->
+			<dependency>
+				<groupId>com.winterhaven-mc</groupId>
+				<artifactId>RoadBlock</artifactId>
+				<version>1.18.3-SNAPSHOT</version>
+				<scope>provided</scope>
+			</dependency>
+
+			<!-- Towny -->
+			<!-- https://repo.glaremasters.me/repository/towny -->
+			<dependency>
+				<groupId>com.palmergames.bukkit.towny</groupId>
+				<artifactId>towny</artifactId>
+				<version>0.101.1.14</version>
+				<scope>provided</scope>
+			</dependency>
+
+			<!-- WorldEdit Bukkit -->
+			<!-- https://mvnrepository.com/artifact/com.sk89q.worldedit/worldedit-core -->
+			<dependency>
+				<groupId>com.sk89q.worldedit</groupId>
+				<artifactId>worldedit-bukkit</artifactId>
+				<version>7.2.13</version>
+				<scope>provided</scope>
+			</dependency>
+
+			<!-- WorldGuard Bukkit -->
+			<!-- https://mvnrepository.com/artifact/com.sk89q.worldguard/worldguard-bukkit -->
+			<dependency>
+				<groupId>com.sk89q.worldguard</groupId>
+				<artifactId>worldguard-bukkit</artifactId>
+				<version>7.0.14</version>
+				<scope>provided</scope>
+			</dependency>
+
+			<!-- SQLite -->
+			<!-- https://mvnrepository.com/artifact/org.xerial/sqlite-jdbc -->
+			<dependency>
+				<groupId>org.xerial</groupId>
+				<artifactId>sqlite-jdbc</artifactId>
+				<version>3.50.3.0</version>
+				<scope>provided</scope>
+			</dependency>
+
+			<!-- Unit Testing Dependencies -->
+			<!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api -->
+			<dependency>
+				<groupId>org.junit.jupiter</groupId>
+				<artifactId>junit-jupiter-api</artifactId>
+				<version>5.11.3</version>
+				<scope>test</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
 	<dependencies>
 		<!-- Spigot API -->
 		<dependency>
 			<groupId>org.spigotmc</groupId>
 			<artifactId>spigot-api</artifactId>
-			<version>1.21.8-R0.1-SNAPSHOT</version>
-			<scope>provided</scope>
 		</dependency>
 
 		<!-- MessageBuilderLib -->
 		<dependency>
-			<groupId>com.winterhaven-mc</groupId>
-			<artifactId>message-builder-lib</artifactId>
+			<groupId>com.winterhavenmc.messagebuilder</groupId>
+			<artifactId>bootstrap</artifactId>
 			<version>2.0.0-SNAPSHOT</version>
 		</dependency>
 
-		<!-- SoundConfigLib -->
-		<dependency>
-			<groupId>com.winterhaven-mc</groupId>
-			<artifactId>sound-config-lib</artifactId>
-			<version>1.21.0-SNAPSHOT</version>
-		</dependency>
-
-		<!-- WorldManagerLib -->
-		<dependency>
-			<groupId>com.winterhaven-mc</groupId>
-			<artifactId>world-manager-lib</artifactId>
-			<version>1.21.0-SNAPSHOT</version>
-		</dependency>
-
-		<!-- bStats -->
-		<dependency>
-			<groupId>org.bstats</groupId>
-			<artifactId>bstats-bukkit</artifactId>
-			<version>3.1.0</version>
-		</dependency>
-
-
 		<!-- Protection Plugins -->
-
 		<!-- GriefPrevention -->
 		<dependency>
 			<groupId>com.github.TechFortress</groupId>
 			<artifactId>GriefPrevention</artifactId>
-			<version>16.18</version>
-			<scope>provided</scope>
 		</dependency>
 
 		<!-- Lands -->
 		<dependency>
 			<groupId>com.github.angeschossen</groupId>
 			<artifactId>LandsAPI</artifactId>
-			<version>5.15.2</version>
-			<scope>provided</scope>
 		</dependency>
 
 		<!-- RoadBlock -->
 		<dependency>
 			<groupId>com.winterhaven-mc</groupId>
 			<artifactId>RoadBlock</artifactId>
-			<version>1.18.3-SNAPSHOT</version>
-			<scope>provided</scope>
 		</dependency>
 
 		<!-- Towny -->
@@ -146,7 +216,6 @@
 		<dependency>
 			<groupId>com.palmergames.bukkit.towny</groupId>
 			<artifactId>towny</artifactId>
-			<version>0.101.1.14</version>
 		</dependency>
 
 		<!-- WorldEdit Bukkit -->
@@ -154,8 +223,6 @@
 		<dependency>
 			<groupId>com.sk89q.worldedit</groupId>
 			<artifactId>worldedit-bukkit</artifactId>
-			<version>7.2.13</version>
-			<scope>provided</scope>
 		</dependency>
 
 		<!-- WorldGuard Bukkit -->
@@ -163,17 +230,6 @@
 		<dependency>
 			<groupId>com.sk89q.worldguard</groupId>
 			<artifactId>worldguard-bukkit</artifactId>
-			<version>7.0.14</version>
-			<scope>provided</scope>
-		</dependency>
-
-		<!-- SQLite -->
-		<!-- https://mvnrepository.com/artifact/org.xerial/sqlite-jdbc -->
-		<dependency>
-			<groupId>org.xerial</groupId>
-			<artifactId>sqlite-jdbc</artifactId>
-			<version>3.46.1.2</version>
-			<scope>test</scope>
 		</dependency>
 
 		<!-- Unit Testing Dependencies -->
@@ -181,16 +237,10 @@
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
 			<artifactId>junit-jupiter-api</artifactId>
-			<version>5.11.3</version>
-			<scope>test</scope>
 		</dependency>
-
 	</dependencies>
 
 	<build>
-		<!-- jar filename -->
-		<finalName>${project.name}-${project.version}</finalName>
-
 		<!-- Resources -->
 		<resources>
 			<resource>
@@ -207,137 +257,165 @@
 			</testResource>
 		</testResources>
 
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-enforcer-plugin</artifactId>
+					<version>3.5.0</version>
+					<executions>
+						<execution>
+							<id>ban-bad-log4j-versions</id>
+							<phase>validate</phase>
+							<goals>
+								<goal>enforce</goal>
+							</goals>
+							<configuration>
+								<rules>
+									<bannedDependencies>
+										<excludes>
+											<exclude>org.apache.logging.log4j:log4j-core:(,2.17.0)</exclude>
+										</excludes>
+									</bannedDependencies>
+								</rules>
+								<fail>true</fail>
+							</configuration>
+						</execution>
+					</executions>
+				</plugin>
+
+				<!-- Compilation plugin -->
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<version>3.13.0</version>
+				</plugin>
+
+				<!-- Shade plugin -->
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-shade-plugin</artifactId>
+					<version>3.6.0</version>
+					<executions>
+						<execution>
+							<phase>package</phase>
+							<goals>
+								<goal>shade</goal>
+							</goals>
+							<configuration>
+								<!-- Final shaded JAR name -->
+								<finalName>SavageDeathChest-${project.version}</finalName>
+
+								<!-- Minimize to remove unused classes (optional, test carefully) -->
+								<minimizeJar>true</minimizeJar>
+
+								<!-- Do not generate a dependency-reduced POM -->
+								<createDependencyReducedPom>false</createDependencyReducedPom>
+
+								<filters>
+									<filter>
+										<!-- Apply only to dependencies (not the plugin module itself) -->
+										<artifact>*:*</artifact>
+										<excludes>
+											<exclude>META-INF/*.SF</exclude>
+											<exclude>META-INF/*.DSA</exclude>
+											<exclude>META-INF/*.RSA</exclude>
+											<!-- optionally exclude MANIFEST.MF from dependencies if not needed -->
+											<exclude>META-INF/MANIFEST.MF</exclude>
+										</excludes>
+									</filter>
+								</filters>
+
+								<!-- relocate these packages on the class path to avoid conflicts with other plugins -->
+								<relocations>
+									<relocation>
+										<pattern>com.winterhavenmc.library</pattern>
+										<shadedPattern>com.winterhavenmc.deathchest.shaded</shadedPattern>
+									</relocation>
+									<relocation>
+										<pattern>org.bstats</pattern>
+										<shadedPattern>com.winterhavenmc.deathchest.shaded</shadedPattern>
+									</relocation>
+								</relocations>
+							</configuration>
+						</execution>
+					</executions>
+				</plugin>
+
+				<!-- Create Javadoc jar -->
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-javadoc-plugin</artifactId>
+					<version>3.11.2</version>
+					<configuration>
+						<doclint>all,-missing</doclint>
+					</configuration>
+					<executions>
+						<execution>
+							<id>attach-javadocs</id>
+							<goals>
+								<goal>jar</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
+
+				<!-- Create Sources jar -->
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-source-plugin</artifactId>
+					<version>3.3.1</version>
+					<executions>
+						<execution>
+							<id>attach-sources</id>
+							<goals>
+								<goal>jar</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
+
+				<!-- Plugin for Unit Tests -->
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-surefire-plugin</artifactId>
+					<version>2.22.2</version>
+					<configuration>
+						<junitArtifactName>org.junit.jupiter:junit-jupiter</junitArtifactName>
+						<trimStackTrace>false</trimStackTrace>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-enforcer-plugin</artifactId>
-				<version>3.5.0</version>
-				<executions>
-					<execution>
-						<id>ban-bad-log4j-versions</id>
-						<phase>validate</phase>
-						<goals>
-							<goal>enforce</goal>
-						</goals>
-						<configuration>
-							<rules>
-								<bannedDependencies>
-									<excludes>
-										<exclude>org.apache.logging.log4j:log4j-core:(,2.17.0)</exclude>
-									</excludes>
-								</bannedDependencies>
-							</rules>
-							<fail>true</fail>
-						</configuration>
-					</execution>
-				</executions>
 			</plugin>
 
 			<!-- Compilation plugin -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.13.0</version>
-			</plugin>
-
-			<!-- Shade plugin -->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-shade-plugin</artifactId>
-				<version>3.6.0</version>
-				<executions>
-					<execution>
-						<phase>package</phase>
-						<goals>
-							<goal>shade</goal>
-						</goals>
-						<configuration>
-							<minimizeJar>true</minimizeJar>
-							<filters>
-								<filter>
-									<artifact>org.bstats:bstats-*</artifact>
-									<excludes>
-										<exclude>META-INF/MANIFEST.MF</exclude>
-										<exclude>META-INF/*.SF</exclude>
-										<exclude>META-INF/*.DSA</exclude>
-										<exclude>META-INF/*.RSA</exclude>
-									</excludes>
-								</filter>
-								<filter>
-									<artifact>com.winterhaven-mc:*-lib</artifact>
-									<excludes>
-										<exclude>META-INF/MANIFEST.MF</exclude>
-										<exclude>META-INF/*.SF</exclude>
-										<exclude>META-INF/*.DSA</exclude>
-										<exclude>META-INF/*.RSA</exclude>
-									</excludes>
-								</filter>
-							</filters>
-							<artifactSet>
-								<includes>
-									<include>com.winterhaven-mc:message-builder-lib</include>
-									<include>com.winterhaven-mc:world-manager-lib</include>
-									<include>com.winterhaven-mc:sound-config-lib</include>
-									<include>org.bstats</include>
-								</includes>
-							</artifactSet>
-							<relocations>
-								<relocation>
-									<pattern>com.winterhavenmc.util</pattern>
-									<shadedPattern>com.winterhavenmc.deathchest.shaded</shadedPattern>
-								</relocation>
-								<relocation>
-									<pattern>org.bstats</pattern>
-									<shadedPattern>com.winterhavenmc.deathchest.shaded</shadedPattern>
-								</relocation>
-							</relocations>
-						</configuration>
-					</execution>
-				</executions>
 			</plugin>
 
 			<!-- Create Javadoc jar -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
-				<version>3.11.2</version>
-				<configuration>
-					<doclint>all,-missing</doclint>
-				</configuration>
-				<executions>
-					<execution>
-						<id>attach-javadocs</id>
-						<goals>
-							<goal>jar</goal>
-						</goals>
-					</execution>
-				</executions>
 			</plugin>
 
 			<!-- Create Sources jar -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-source-plugin</artifactId>
-				<version>3.3.1</version>
-				<executions>
-					<execution>
-						<id>attach-sources</id>
-						<goals>
-							<goal>jar</goal>
-						</goals>
-					</execution>
-				</executions>
 			</plugin>
 
 			<!-- Plugin for Unit Tests -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
-				<version>2.22.2</version>
-				<configuration>
-					<junitArtifactName>org.junit.jupiter:junit-jupiter</junitArtifactName>
-					<trimStackTrace>false</trimStackTrace>
-				</configuration>
 			</plugin>
 		</plugins>
 	</build>
