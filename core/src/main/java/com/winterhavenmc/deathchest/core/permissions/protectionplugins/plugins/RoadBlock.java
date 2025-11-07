@@ -19,6 +19,7 @@ package com.winterhavenmc.deathchest.core.permissions.protectionplugins.plugins;
 
 import com.winterhavenmc.deathchest.core.permissions.protectionplugins.ProtectionPlugin;
 import com.winterhavenmc.deathchest.core.permissions.protectionplugins.ProtectionPluginAbstract;
+
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
