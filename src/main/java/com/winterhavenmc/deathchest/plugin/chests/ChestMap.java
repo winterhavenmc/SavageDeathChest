@@ -66,8 +66,13 @@ final class ChestMap
 
 	int getExpireTaskId(final ValidDeathChest deathChest)
 	{
-		return expireMap.get(deathChest.chestUid());
+		if (deathChest == null || deathChest.chestUid() == null)
+		{
+			return -1;
+		}
+		return expireMap.getOrDefault(deathChest.chestUid(), -1);
 	}
+
 
 
 	/**
@@ -89,8 +94,13 @@ final class ChestMap
 	 */
 	void remove(final ValidDeathChest validDeathChest)
 	{
-		this.deathChestMap.remove(validDeathChest.chestUid());
+		if (validDeathChest != null && validDeathChest.chestUid() != null)
+		{
+			this.deathChestMap.remove(validDeathChest.chestUid());
+			this.expireMap.remove(validDeathChest.chestUid());
+		}
 	}
+
 
 
 	/**

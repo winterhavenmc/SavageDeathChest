@@ -4,3 +4,4 @@ language/es-ES.yml
 language/fr-FR.yml
 language/nl-NL.yml
 language/zh-CN.yml
+language/ru-RU.yml

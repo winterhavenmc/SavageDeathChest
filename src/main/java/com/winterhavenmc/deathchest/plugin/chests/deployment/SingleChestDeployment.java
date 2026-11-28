@@ -25,6 +25,7 @@ import com.winterhavenmc.deathchest.plugin.chests.search.SearchResultCode;
 
 import com.winterhavenmc.deathchest.plugin.models.deathchest.DeathChest;
 import com.winterhavenmc.deathchest.plugin.models.deathchest.ValidDeathChest;
+import org.bukkit.Location;
 import org.bukkit.block.data.type.Chest;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -45,6 +46,11 @@ public class SingleChestDeployment extends AbstractDeployment implements Deploym
 	public SingleChestDeployment(PluginMain plugin, Player player, Collection<ItemStack> droppedItems)
 	{
 		super(plugin, player, droppedItems);
+	}
+
+	public SingleChestDeployment(final PluginMain plugin, final Player player, final Collection<ItemStack> droppedItems, final Location originLocation, Player killer)
+	{
+		super(plugin, player, droppedItems, originLocation, killer);
 	}
 
 
@@ -77,20 +83,30 @@ public class SingleChestDeployment extends AbstractDeployment implements Deploym
 			else
 			{
 				searchResult = new SearchResult(SearchResultCode.NO_REQUIRED_CHEST, remainingItems);
-				DeathChest deathChest = DeathChest.of(player, searchResult.getLocation(), plugin.getConfig());
+				DeathChest deathChest = DeathChest.of(player, killer, originLocation, plugin.getConfig());
 				if (deathChest instanceof ValidDeathChest validDeathChest)
 				{
 					this.finalize(searchResult, validDeathChest);
+				}
+				else
+				{
+					for (ItemStack item : remainingItems)
+					{
+						if (originLocation != null && originLocation.getWorld() != null)
+						{
+							originLocation.getWorld().dropItemNaturally(originLocation, item);
+						}
+					}
 				}
 				return searchResult;
 			}
 		}
 
 		// search for valid chest location
-		searchResult = new QuadrantSearch(plugin, player, ChestSize.SINGLE).execute();
+		searchResult = new QuadrantSearch(plugin, player, ChestSize.SINGLE, originLocation).execute();
 
 		// create new deathChest object for player
-		DeathChest deathChest = DeathChest.of(player, searchResult.getLocation(), plugin.getConfig());
+		DeathChest deathChest = DeathChest.of(player, killer, searchResult.getLocation(), plugin.getConfig());
 		if (deathChest instanceof ValidDeathChest validDeathChest)
 		{
 			// if search successful, place chest

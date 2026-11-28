@@ -487,10 +487,10 @@ public final class ChestManager
 	 */
 	public void cancelExpireTask(ValidDeathChest validDeathChest)
 	{
-		// if task id is positive integer, cancel task
-		if (getExpireTaskId(validDeathChest) > 0)
+		int taskId = getExpireTaskId(validDeathChest);
+		if (taskId > 0)
 		{
-			plugin.getServer().getScheduler().cancelTask(getExpireTaskId(validDeathChest));
+			plugin.getServer().getScheduler().cancelTask(taskId);
 		}
 	}
 

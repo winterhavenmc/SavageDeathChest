@@ -20,6 +20,7 @@ package com.winterhavenmc.deathchest.plugin.chests.search;
 import com.winterhavenmc.deathchest.plugin.PluginMain;
 import com.winterhavenmc.deathchest.plugin.chests.ChestSize;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 
 
@@ -28,6 +29,9 @@ import org.bukkit.entity.Player;
  */
 public final class QuadrantSearch extends AbstractSearch
 {
+	private final Location originLocation;
+
+
 	/**
 	 * An enum that implements a cartesian quadrant system, where each member defines the sign of the x and z coordinates.
 	 * The x and z coordinates are used to describe a plane in the horizontal orientation, as if looking down from above.
@@ -85,8 +89,25 @@ public final class QuadrantSearch extends AbstractSearch
 						  final Player player,
 						  final ChestSize chestSize)
 	{
+		this(plugin, player, chestSize, player.getLocation());
+	}
+
+
+	/**
+	 * Class constructor with custom origin location
+	 * @param plugin reference to plugin main class
+	 * @param player the player whose death triggered a death chest deployment
+	 * @param chestSize the size of chest required to accommodate the players inventory
+	 * @param originLocation the target origin location for chest search
+	 */
+	public QuadrantSearch(final PluginMain plugin,
+						  final Player player,
+						  final ChestSize chestSize,
+						  final Location originLocation)
+	{
 		// call superclass constructor
 		super(plugin, player, chestSize);
+		this.originLocation = (originLocation != null) ? originLocation : player.getLocation();
 	}
 
 
@@ -96,20 +117,17 @@ public final class QuadrantSearch extends AbstractSearch
 	@Override
 	public SearchResult execute()
 	{
-		// get player death location
-		Location origin = player.getLocation();
+		// get target origin location
+		Location origin = originLocation.clone();
+		World targetWorld = (origin.getWorld() != null) ? origin.getWorld() : player.getWorld();
 
 		// round y to account for fractional height blocks
 		origin.setY(origin.getBlockY() - 1);
 
 		// get min y for origin
-		int minY = 0;
-		if (origin.getWorld() != null)
-		{
-			minY = origin.getWorld().getMinHeight();
-		}
+		int minY = targetWorld.getMinHeight();
 
-		// if player died below world min height and place-above-void configured true, start search at world min height
+		// if origin is below world min height and place-above-void configured true, start search at world min height
 		if (origin.getY() < minY)
 		{
 			if (placeAboveVoid)
@@ -124,8 +142,8 @@ public final class QuadrantSearch extends AbstractSearch
 			}
 		}
 
-		// if player died above world max build height, start search 1 block below max build height
-		origin.setY(Math.min(origin.getY(), player.getWorld().getMaxHeight() - 1));
+		// if origin is above world max build height, start search 1 block below max build height
+		origin.setY(Math.min(origin.getY(), targetWorld.getMaxHeight() - 1));
 
 		// set test location to copy of origin
 		Location testLocation = origin.clone();
@@ -136,7 +154,7 @@ public final class QuadrantSearch extends AbstractSearch
 			for (int y = 0; y < searchDistance; y++)
 			{
 				// if world max height reached, break loop
-				if (y * verticalAxis.yFactor + testLocation.getY() >= player.getWorld().getMaxHeight())
+				if (y * verticalAxis.yFactor + testLocation.getY() >= targetWorld.getMaxHeight())
 				{
 					break;
 				}

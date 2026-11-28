@@ -11,7 +11,7 @@
  * General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ * along with this program. If not, see <http://gnu.org>.
  *
  */
 
@@ -33,6 +33,12 @@ public sealed interface DeathChest permits ValidDeathChest, InvalidDeathChest
 
 	static DeathChest of(final Player owner, final Location location, final Configuration config)
 	{
+		return of(owner, (owner != null) ? owner.getKiller() : null, location, config);
+	}
+
+
+	static DeathChest of(final Player owner, final Player killer, final Location location, final Configuration config)
+	{
 		if (owner == null) return new InvalidDeathChest(DeathChestReason.OWNER_NULL);
 		else if (location == null) return new InvalidDeathChest(DeathChestReason.LOCATION_NULL);
 		else if (config == null) return new InvalidDeathChest(DeathChestReason.CONFIG_NULL);
@@ -42,12 +48,13 @@ public sealed interface DeathChest permits ValidDeathChest, InvalidDeathChest
 			final UUID ownerUid = owner.getUniqueId();
 			final String ownerName = owner.getName();
 
-			final UUID killerUid = (owner.getKiller() != null) ? owner.getKiller().getUniqueId() : INVALID_UUID;
-			final String killerName = (owner.getKiller() != null) ? owner.getKiller().getName() : "";
+			final Player resolvedKiller = (killer != null) ? killer : owner.getKiller();
+			final UUID killerUid = (resolvedKiller != null) ? resolvedKiller.getUniqueId() : INVALID_UUID;
+			final String killerName = (resolvedKiller != null) ? resolvedKiller.getName() : "";
 
-			// player.getWorld() is never null
-			final String worldName = owner.getWorld().getName();
-			final UUID worldUid = owner.getWorld().getUID();
+			// use location world if available so cross-world respawn chests store the actual chest world
+			final String worldName = (location.getWorld() != null) ? location.getWorld().getName() : owner.getWorld().getName();
+			final UUID worldUid = (location.getWorld() != null) ? location.getWorld().getUID() : owner.getWorld().getUID();
 			final int locationX = location.getBlockX();
 			final int locationY = location.getBlockY();
 			final int locationZ = location.getBlockZ();
@@ -63,9 +70,9 @@ public sealed interface DeathChest permits ValidDeathChest, InvalidDeathChest
 
 
 	static DeathChest of(final UUID chestUid, final UUID ownerUid, final String ownerName,
-	                     final UUID killerUid, final String killerName, final UUID worldUid, final String worldName,
-	                     final int locationX, final int locationY, final int locationZ, final int itemCount,
-	                     final Instant placementTime, final Instant expirationTime, final Instant protectionExpirationTime)
+						 final UUID killerUid, final String killerName, final UUID worldUid, final String worldName,
+						 final int locationX, final int locationY, final int locationZ, final int itemCount,
+						 final Instant placementTime, final Instant expirationTime, final Instant protectionExpirationTime)
 	{
 		if (chestUid == null) return new InvalidDeathChest(DeathChestReason.CHEST_UID_NULL);
 		else if (ownerUid == null) return new InvalidDeathChest(DeathChestReason.OWNER_UID_NULL);

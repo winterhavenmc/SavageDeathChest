@@ -11,7 +11,7 @@
  * General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ * along with this program. If not, see <http://gnu.org>.
  *
  */
 
@@ -19,6 +19,7 @@ package com.winterhavenmc.deathchest.plugin.chests.deployment;
 
 import com.winterhavenmc.deathchest.plugin.PluginMain;
 import com.winterhavenmc.deathchest.plugin.chests.ChestSize;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -30,30 +31,32 @@ public class DeploymentFactory
 {
 	public Deployment createDeployment(final PluginMain plugin, final Player player, final Collection<ItemStack> droppedItems)
 	{
-		// combine stacks of same items where possible
-		Collection<ItemStack> consolidatedItems = consolidateItemStacks(droppedItems);
+		return createDeployment(plugin, player, droppedItems, player.getLocation(), player.getKiller());
+	}
 
-		// get required chest size
+
+	public Deployment createDeployment(final PluginMain plugin, final Player player, final Collection<ItemStack> droppedItems, final Location originLocation)
+	{
+		return createDeployment(plugin, player, droppedItems, originLocation, player.getKiller());
+	}
+
+
+	public Deployment createDeployment(final PluginMain plugin, final Player player, final Collection<ItemStack> droppedItems, final Location originLocation, final Player killer)
+	{
+		Collection<ItemStack> consolidatedItems = consolidateItemStacks(droppedItems);
 		ChestSize chestSize = ChestSize.selectFor(consolidatedItems.size());
 
-		// deploy appropriately sized chest
 		if (chestSize.equals(ChestSize.SINGLE) || !player.hasPermission("deathchest.doublechest"))
 		{
-			return new SingleChestDeployment(plugin, player, consolidatedItems);
+			return new SingleChestDeployment(plugin, player, consolidatedItems, originLocation, killer);
 		}
 		else
 		{
-			return new DoubleChestDeployment(plugin, player, consolidatedItems);
+			return new DoubleChestDeployment(plugin, player, consolidatedItems, originLocation, killer);
 		}
 	}
 
 
-	/**
-	 * Combine ItemStacks of same material up to max stack size
-	 *
-	 * @param itemStacks Collection of ItemStacks to combine
-	 * @return Collection of ItemStack with same materials combined
-	 */
 	private Collection<ItemStack> consolidateItemStacks(final Collection<ItemStack> itemStacks)
 	{
 		final Collection<ItemStack> returnList = new LinkedList<>();

@@ -45,8 +45,15 @@ chest-protection: true
 # Set to negative integer to match chest expire time and suppress relevant messages.
 chest-protection-time: -1
 
-# Allow player's killer to access death chest
-killer-looting: false
+# allow killer to loot death chest
+killer-looting: true
+
+# Where to deploy the death chest:
+# DEATH - at the location where the player died
+# RESPAWN - at the player's respawn location (bed/respawn anchor, or world spawn if unset)
+# Note: if killer-looting is true and the player was killed by another player (PvP),
+# the chest will ALWAYS deploy at the death location regardless of this setting.
+chest-location: RESPAWN
 
 # Require players to have a chest in their inventory
 require-chest: false
