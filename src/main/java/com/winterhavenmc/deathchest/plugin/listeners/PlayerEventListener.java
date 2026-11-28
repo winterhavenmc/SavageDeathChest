@@ -70,37 +70,32 @@ public final class PlayerEventListener implements Listener
 	{
 		Player player = event.getEntity();
 
+		final Location deathLocSnapshot = player.getLocation().clone();
+
 		if (!plugin.worldManager.isEnabled(player.getWorld()))
 		{
-			plugin.messageBuilder.compose(player, MessageId.CHEST_DENIED_WORLD_DISABLED)
-					.setMacro(Macro.LOCATION, player.getLocation())
-					.send();
+			sendDelayedDeathMessage(player, MessageId.CHEST_DENIED_WORLD_DISABLED, deathLocSnapshot);
 			return;
 		}
 
 		if (!player.hasPermission("deathchest.chest"))
 		{
-			plugin.messageBuilder.compose(player, MessageId.CHEST_DENIED_PERMISSION)
-					.setMacro(Macro.LOCATION, player.getLocation())
-					.send();
+			sendDelayedDeathMessage(player, MessageId.CHEST_DENIED_PERMISSION, deathLocSnapshot);
 			return;
 		}
 
 		if (permissionCheck.isCreativeDeployDisabled(player))
 		{
-			plugin.messageBuilder.compose(player, MessageId.CREATIVE_MODE)
-					.setMacro(Macro.LOCATION, player.getLocation())
-					.send();
+			sendDelayedDeathMessage(player, MessageId.CREATIVE_MODE, deathLocSnapshot);
 			return;
 		}
 
 		if (event.getDrops().isEmpty())
 		{
-			plugin.messageBuilder.compose(player, MessageId.INVENTORY_EMPTY)
-					.setMacro(Macro.LOCATION, player.getLocation())
-					.send();
+			sendDelayedDeathMessage(player, MessageId.INVENTORY_EMPTY, deathLocSnapshot);
 			return;
 		}
+
 
 		if (plugin.getConfig().getBoolean("log-inventory-on-death"))
 		{
@@ -220,5 +215,21 @@ public final class PlayerEventListener implements Listener
 	{
 		return event.getAction().equals(Action.RIGHT_CLICK_BLOCK);
 	}
-
+	private void sendDelayedDeathMessage(final Player player, final MessageId messageId, final Location location)
+	{
+		plugin.getServer().getScheduler().runTaskLater(plugin, () ->
+		{
+			if (!com.winterhavenmc.deathchest.plugin.chests.deployment.AbstractDeployment
+					.sendLanguageMessage(plugin, player, messageId, location, null))
+			{
+				final Player recipient = plugin.getServer().getPlayer(player.getUniqueId());
+				if (recipient != null && recipient.isOnline())
+				{
+					plugin.messageBuilder.compose(recipient, messageId)
+							.setMacro(Macro.LOCATION, location)
+							.send();
+				}
+			}
+		}, 1L);
+	}
 }

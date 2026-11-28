@@ -326,7 +326,9 @@ public abstract class AbstractDeployment implements Deployment
 			default -> null;
 		};
 
-		if (messageId != null && sendLegacyLanguageMessage(recipient, messageId, validDeathChest, result))
+		final org.bukkit.Location loc = (validDeathChest != null) ? validDeathChest.getLocation() : result.getLocation();
+		final String pluginName = (result.getProtectionPlugin() != null) ? String.valueOf(result.getProtectionPlugin()) : null;
+		if (messageId != null && sendLanguageMessage(plugin, recipient, messageId, loc, pluginName))
 		{
 			return;
 		}
@@ -365,9 +367,19 @@ public abstract class AbstractDeployment implements Deployment
 		}
 	}
 
-	private boolean sendLegacyLanguageMessage(final Player recipient, final MessageId messageId,
-											  final ValidDeathChest chest, final SearchResult result)
+	public static boolean sendLanguageMessage(final PluginMain plugin, final Player player, final MessageId messageId,
+											  final org.bukkit.Location loc, final String protectionPlugin)
 	{
+		if (player == null)
+		{
+			return false;
+		}
+		final Player recipient = plugin.getServer().getPlayer(player.getUniqueId());
+		if (recipient == null || !recipient.isOnline())
+		{
+			return false;
+		}
+
 		final String lang = plugin.getConfig().getString("language", "en-US");
 		final java.io.File langFile = new java.io.File(plugin.getDataFolder(), "language/" + lang + ".yml");
 		if (!langFile.exists())
@@ -379,7 +391,6 @@ public abstract class AbstractDeployment implements Deployment
 				org.bukkit.configuration.file.YamlConfiguration.loadConfiguration(langFile);
 		final String key = messageId.name();
 
-		// Ищем секцию сообщения по всем возможным путям (v1.x и v2.0)
 		final String[] candidateBases = { key, "MESSAGES." + key, "messages." + key };
 		String foundBase = null;
 		for (final String base : candidateBases)
@@ -395,32 +406,20 @@ public abstract class AbstractDeployment implements Deployment
 		{
 			return false;
 		}
-
 		if (!yaml.getBoolean(foundBase + ".enabled", true))
 		{
 			return true;
 		}
 
-		// Читаем текст из любого возможного поля (string, message, text) или напрямую как строку
 		String text = yaml.getString(foundBase + ".string");
-		if (text == null)
-		{
-			text = yaml.getString(foundBase + ".message");
-		}
-		if (text == null)
-		{
-			text = yaml.getString(foundBase + ".text");
-		}
-		if (text == null && yaml.isString(foundBase))
-		{
-			text = yaml.getString(foundBase);
-		}
+		if (text == null) text = yaml.getString(foundBase + ".message");
+		if (text == null) text = yaml.getString(foundBase + ".text");
+		if (text == null && yaml.isString(foundBase)) text = yaml.getString(foundBase);
 		if (text == null || text.isEmpty())
 		{
 			return false;
 		}
 
-		final org.bukkit.Location loc = (chest != null) ? chest.getLocation() : result.getLocation();
 		if (loc != null)
 		{
 			final String worldName = (loc.getWorld() != null) ? loc.getWorld().getName() : "world";
@@ -459,16 +458,14 @@ public abstract class AbstractDeployment implements Deployment
 				.replace("%EXPIRE_TIME%", expireFormatted)
 				.replace("{EXPIRE_TIME}", expireFormatted);
 
-		if (result.getProtectionPlugin() != null)
+		if (protectionPlugin != null)
 		{
-			final String pluginName = String.valueOf(result.getProtectionPlugin());
-			text = text.replace("%PLUGIN%", pluginName).replace("{PLUGIN}", pluginName);
+			text = text.replace("%PLUGIN%", protectionPlugin).replace("{PLUGIN}", protectionPlugin);
 		}
 
 		recipient.sendMessage(org.bukkit.ChatColor.translateAlternateColorCodes('&', text));
 		return true;
 	}
-
 
 
 	/**

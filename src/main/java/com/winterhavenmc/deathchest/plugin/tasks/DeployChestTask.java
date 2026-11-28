@@ -53,6 +53,42 @@ public final class DeployChestTask extends BukkitRunnable
 	@Override
 	public void run()
 	{
+		if (plugin.getConfig().getBoolean("require-chest", true))
+		{
+			boolean hasChest = false;
+			for (ItemStack item : droppedItems)
+			{
+				if (item != null && item.getType() == org.bukkit.Material.CHEST && item.getAmount() > 0)
+				{
+					hasChest = true;
+					break;
+				}
+			}
+
+			if (!hasChest)
+			{
+				final Location dropLoc = (deathLocation != null) ? deathLocation : originLocation;
+				if (dropLoc != null && dropLoc.getWorld() != null)
+				{
+					for (ItemStack item : droppedItems)
+					{
+						if (item != null)
+						{
+							dropLoc.getWorld().dropItemNaturally(dropLoc, item);
+						}
+					}
+				}
+
+				com.winterhavenmc.deathchest.plugin.chests.deployment.AbstractDeployment.sendLanguageMessage(
+						plugin,
+						player,
+						com.winterhavenmc.deathchest.plugin.messages.MessageId.NO_CHEST_IN_INVENTORY,
+						dropLoc,
+						null
+				);
+				return;
+			}
+		}
 		final SearchResult result = plugin.chestManager.getDeploymentFactory()
 				.createDeployment(plugin, player, droppedItems, originLocation, killer)
 				.deploy();
@@ -72,7 +108,17 @@ public final class DeployChestTask extends BukkitRunnable
 					}
 				}
 			}
+
+			if (result.getResultCode().equals(SearchResultCode.NO_CHEST))
+			{
+				com.winterhavenmc.deathchest.plugin.chests.deployment.AbstractDeployment.sendLanguageMessage(
+						plugin,
+						player,
+						com.winterhavenmc.deathchest.plugin.messages.MessageId.NO_CHEST_IN_INVENTORY,
+						dropLoc,
+						null
+				);
+			}
 		}
 	}
-
 }

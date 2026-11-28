@@ -66,13 +66,13 @@ MESSAGES:
     string: '&cСундук смерти, принадлежащий %OWNER% защищен от грабежей %PROTECTION_DURATION_MINUTES%.'
     # available subs: %OWNER%, %PROTECTION_DURATION%, %PROTECTION_DURATION_MINUTES%, %LOCATION%
 
-CHEST_DENIED_DEPLOYMENT_BY_PLUGIN:
-  enabled: true
-  string: '&cРазмещение сундука смерти запрещено плагином {PLUGIN}.'
+  CHEST_DENIED_DEPLOYMENT_BY_PLUGIN:
+    enabled: true
+    string: '&cРазмещение сундука смерти запрещено плагином {PLUGIN}.'
 
-CHEST_DENIED_ACCESS_BY_PLUGIN:
-  enabled: true
-  string: '&cДоступ к сундуку смерти запрещён плагином {PLUGIN}.'
+  CHEST_DENIED_ACCESS_BY_PLUGIN:
+    enabled: true
+    string: '&cДоступ к сундуку смерти запрещён плагином {PLUGIN}.'
 
   CHEST_DENIED_BLOCK:
     enabled: true
