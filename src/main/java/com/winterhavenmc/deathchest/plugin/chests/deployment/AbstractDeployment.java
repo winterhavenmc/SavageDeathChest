@@ -306,36 +306,169 @@ public abstract class AbstractDeployment implements Deployment
 	 */
 	private void sendResultMessage(final Player player, final ValidDeathChest validDeathChest, final SearchResult result)
 	{
+		final Player recipient = plugin.getServer().getPlayer(player.getUniqueId());
+		if (recipient == null || !recipient.isOnline())
+		{
+			return;
+		}
+
+		final MessageId messageId = switch (result.getResultCode())
+		{
+			case SUCCESS -> MessageId.CHEST_SUCCESS;
+			case PARTIAL_SUCCESS -> MessageId.DOUBLECHEST_PARTIAL_SUCCESS;
+			case PROTECTION_PLUGIN -> MessageId.CHEST_DENIED_DEPLOYMENT_BY_PLUGIN;
+			case ABOVE_GRASS_PATH, NON_REPLACEABLE_BLOCK -> MessageId.CHEST_DENIED_BLOCK;
+			case ADJACENT_CHEST -> MessageId.CHEST_DENIED_ADJACENT_CHEST;
+			case NO_CHEST -> MessageId.NO_CHEST_IN_INVENTORY;
+			case SPAWN_RADIUS -> MessageId.CHEST_DENIED_SPAWN_PROTECTION;
+			case VOID -> MessageId.CHEST_DENIED_VOID;
+			case WORLD_HEIGHT -> MessageId.CHEST_DENIED_WORLD_HEIGHT;
+			default -> null;
+		};
+
+		if (messageId != null && sendLegacyLanguageMessage(recipient, messageId, validDeathChest, result))
+		{
+			return;
+		}
+
 		switch (result.getResultCode())
 		{
-			case SUCCESS -> plugin.messageBuilder.compose(player, MessageId.CHEST_SUCCESS)
+			case SUCCESS -> plugin.messageBuilder.compose(recipient, MessageId.CHEST_SUCCESS)
 					.setMacro(Macro.DEATH_CHEST, validDeathChest)
 					.send();
-			case PARTIAL_SUCCESS -> plugin.messageBuilder.compose(player, MessageId.DOUBLECHEST_PARTIAL_SUCCESS)
+			case PARTIAL_SUCCESS -> plugin.messageBuilder.compose(recipient, MessageId.DOUBLECHEST_PARTIAL_SUCCESS)
 					.setMacro(Macro.DEATH_CHEST, validDeathChest)
 					.send();
-			case PROTECTION_PLUGIN -> plugin.messageBuilder.compose(player, MessageId.CHEST_DENIED_DEPLOYMENT_BY_PLUGIN)
+			case PROTECTION_PLUGIN -> plugin.messageBuilder.compose(recipient, MessageId.CHEST_DENIED_DEPLOYMENT_BY_PLUGIN)
 					.setMacro(Macro.LOCATION, result.getLocation())
 					.setMacro(Macro.PLUGIN, result.getProtectionPlugin())
 					.send();
 			case ABOVE_GRASS_PATH, NON_REPLACEABLE_BLOCK ->
-					plugin.messageBuilder.compose(player, MessageId.CHEST_DENIED_BLOCK)
+					plugin.messageBuilder.compose(recipient, MessageId.CHEST_DENIED_BLOCK)
 							.setMacro(Macro.LOCATION, result.getLocation())
 							.send();
-			case ADJACENT_CHEST -> plugin.messageBuilder.compose(player, MessageId.CHEST_DENIED_ADJACENT)
+			case ADJACENT_CHEST -> plugin.messageBuilder.compose(recipient, MessageId.CHEST_DENIED_ADJACENT_CHEST)
 					.setMacro(Macro.LOCATION, result.getLocation())
 					.send();
-			case NO_REQUIRED_CHEST -> plugin.messageBuilder.compose(player, MessageId.NO_CHEST_IN_INVENTORY)
+			case NO_CHEST -> plugin.messageBuilder.compose(recipient, MessageId.NO_CHEST_IN_INVENTORY)
 					.setMacro(Macro.LOCATION, result.getLocation())
 					.send();
-			case SPAWN_RADIUS -> plugin.messageBuilder.compose(player, MessageId.CHEST_DENIED_SPAWN_RADIUS)
+			case SPAWN_RADIUS -> plugin.messageBuilder.compose(recipient, MessageId.CHEST_DENIED_SPAWN_PROTECTION)
 					.setMacro(Macro.LOCATION, result.getLocation())
 					.send();
-			case VOID -> plugin.messageBuilder.compose(player, MessageId.CHEST_DENIED_VOID)
+			case VOID -> plugin.messageBuilder.compose(recipient, MessageId.CHEST_DENIED_VOID)
+					.setMacro(Macro.LOCATION, result.getLocation())
+					.send();
+			case WORLD_HEIGHT -> plugin.messageBuilder.compose(recipient, MessageId.CHEST_DENIED_WORLD_HEIGHT)
 					.setMacro(Macro.LOCATION, result.getLocation())
 					.send();
 		}
 	}
+
+	private boolean sendLegacyLanguageMessage(final Player recipient, final MessageId messageId,
+											  final ValidDeathChest chest, final SearchResult result)
+	{
+		final String lang = plugin.getConfig().getString("language", "en-US");
+		final java.io.File langFile = new java.io.File(plugin.getDataFolder(), "language/" + lang + ".yml");
+		if (!langFile.exists())
+		{
+			return false;
+		}
+
+		final org.bukkit.configuration.file.YamlConfiguration yaml =
+				org.bukkit.configuration.file.YamlConfiguration.loadConfiguration(langFile);
+		final String key = messageId.name();
+
+		// Ищем секцию сообщения по всем возможным путям (v1.x и v2.0)
+		final String[] candidateBases = { key, "MESSAGES." + key, "messages." + key };
+		String foundBase = null;
+		for (final String base : candidateBases)
+		{
+			if (yaml.contains(base))
+			{
+				foundBase = base;
+				break;
+			}
+		}
+
+		if (foundBase == null)
+		{
+			return false;
+		}
+
+		if (!yaml.getBoolean(foundBase + ".enabled", true))
+		{
+			return true;
+		}
+
+		// Читаем текст из любого возможного поля (string, message, text) или напрямую как строку
+		String text = yaml.getString(foundBase + ".string");
+		if (text == null)
+		{
+			text = yaml.getString(foundBase + ".message");
+		}
+		if (text == null)
+		{
+			text = yaml.getString(foundBase + ".text");
+		}
+		if (text == null && yaml.isString(foundBase))
+		{
+			text = yaml.getString(foundBase);
+		}
+		if (text == null || text.isEmpty())
+		{
+			return false;
+		}
+
+		final org.bukkit.Location loc = (chest != null) ? chest.getLocation() : result.getLocation();
+		if (loc != null)
+		{
+			final String worldName = (loc.getWorld() != null) ? loc.getWorld().getName() : "world";
+			text = text.replace("%WORLD%", worldName).replace("{WORLD}", worldName)
+					.replace("%X%", String.valueOf(loc.getBlockX())).replace("{X}", String.valueOf(loc.getBlockX()))
+					.replace("%Y%", String.valueOf(loc.getBlockY())).replace("{Y}", String.valueOf(loc.getBlockY()))
+					.replace("%Z%", String.valueOf(loc.getBlockZ())).replace("{Z}", String.valueOf(loc.getBlockZ()));
+		}
+
+		final long expireMinutes = plugin.getConfig().getLong("expire-time", 60);
+		final String expireFormatted;
+		if (expireMinutes <= 0)
+		{
+			expireFormatted = yaml.getString("TIME_STRINGS.UNLIMITED", "unlimited time");
+		}
+		else if (expireMinutes >= 1440 && expireMinutes % 1440 == 0)
+		{
+			final long days = expireMinutes / 1440;
+			final String unit = yaml.getString(days == 1 ? "TIME_STRINGS.DAY" : "TIME_STRINGS.DAY_PLURAL", days == 1 ? "day" : "days");
+			expireFormatted = days + " " + unit;
+		}
+		else if (expireMinutes >= 60 && expireMinutes % 60 == 0)
+		{
+			final long hours = expireMinutes / 60;
+			final String unit = yaml.getString(hours == 1 ? "TIME_STRINGS.HOUR" : "TIME_STRINGS.HOUR_PLURAL", hours == 1 ? "hour" : "hours");
+			expireFormatted = hours + " " + unit;
+		}
+		else
+		{
+			final String unit = yaml.getString(expireMinutes == 1 ? "TIME_STRINGS.MINUTE" : "TIME_STRINGS.MINUTE_PLURAL", expireMinutes == 1 ? "minute" : "minutes");
+			expireFormatted = expireMinutes + " " + unit;
+		}
+
+		text = text.replace("%EXPIRATION_DURATION%", expireFormatted)
+				.replace("{EXPIRATION_DURATION}", expireFormatted)
+				.replace("%EXPIRE_TIME%", expireFormatted)
+				.replace("{EXPIRE_TIME}", expireFormatted);
+
+		if (result.getProtectionPlugin() != null)
+		{
+			final String pluginName = String.valueOf(result.getProtectionPlugin());
+			text = text.replace("%PLUGIN%", pluginName).replace("{PLUGIN}", pluginName);
+		}
+
+		recipient.sendMessage(org.bukkit.ChatColor.translateAlternateColorCodes('&', text));
+		return true;
+	}
+
 
 
 	/**

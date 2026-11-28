@@ -1,0 +1,243 @@
+# Language configuration file for SavageDeathChest v1.18.4
+
+##############
+# Time strings
+##############
+TIME_STRINGS:
+  DAY: 'day'
+  DAY_PLURAL: 'days'
+  HOUR: 'час'
+  HOUR_PLURAL: 'hours'
+  MINUTE: 'minute'
+  MINUTE_PLURAL: 'minutes'
+  SECOND: 'second'
+  SECOND_PLURAL: 'seconds'
+  UNLIMITED: 'unlimited time'
+  LESS_THAN_ONE: 'less than one'
+
+
+## SIGN_TEXT and DATE_FORMAT have been moved to config.yml
+
+
+#################
+# Custom Messages
+#################
+# Variable substitutions:
+# %EXPIRATION_DURATION%           expiration duration with seconds
+# %EXPIRATION_DURATION_MINUTES%   expiration duration without seconds
+# %PROTECTION_DURATION%           protection duration with seconds
+# %PROTECTION_DURATION_MINUTES%   protection duration without seconds
+
+# %PLAYER%        Player name of message recipient
+# %OWNER%         Chest owner name (only available in messages that reference a valid chest object)
+# %KILLER%        Chest killer name (only available in messages that reference a valid chest object)
+# %VIEWER%        Chest viewer name
+# %PLUGIN%        Protection plugin name
+# %LOCATION%      Chest location formatted: world [x, y, z]
+#   The following substitutions are available in all messages that support %LOCATION%
+# %WORLD%         World name of chest (or player if no chest)
+# %LOC_X%         Chest coordinates (or player if no chest)
+# %LOC_Y%         Chest coordinates (or player if no chest)
+# %LOC_Z%         Chest coordinates (or player if no chest)
+
+# %PAGE_NUMBER%   List page number (only available in LIST_HEADER and LIST_FOOTER messages)
+# %PAGE_TOTAL%    List total page count (only available in LIST_HEADER and LIST_FOOTER messages)
+# %ITEM_NUMBER%   List item number (only available in list item messages)
+
+MESSAGES:
+  CHEST_SUCCESS:
+    enabled: true
+    string: '&cУспешно размещенный сундук смерти. У вас есть %EXPIRATION_DURATION% чтобы получить ваши предметы.'
+    # available subs: %PLAYER%, %EXPIRATION_DURATION%, %EXPIRATION_DURATION_MINUTES%, %LOCATION%
+
+  DOUBLECHEST_PARTIAL_SUCCESS:
+    enabled: true
+    string: '&cТолько один сундук может быть размещен на месте вашей смерти. Некоторые предметы были сброшены.'
+    # available subs: %PLAYER%, %EXPIRATION_DURATION%, %EXPIRATION_DURATION_MINUTES%, %LOCATION%
+
+  CHEST_DEPLOYED_PROTECTION_TIME:
+    enabled: true
+    string: '&cСундук смерти защищен от разграбления %PROTECTION_DURATION_MINUTES%.'
+    # available subs: %OWNER%, %PROTECTION_DURATION%, %PROTECTION_DURATION_MINUTES%, %LOCATION%
+
+  CHEST_ACCESSED_PROTECTION_TIME:
+    enabled: true
+    repeat-delay: 1
+    string: '&cСундук смерти, принадлежащий %OWNER% защищен от грабежей %PROTECTION_DURATION_MINUTES%.'
+    # available subs: %OWNER%, %PROTECTION_DURATION%, %PROTECTION_DURATION_MINUTES%, %LOCATION%
+
+CHEST_DENIED_DEPLOYMENT_BY_PLUGIN:
+  enabled: true
+  string: '&cРазмещение сундука смерти запрещено плагином {PLUGIN}.'
+
+CHEST_DENIED_ACCESS_BY_PLUGIN:
+  enabled: true
+  string: '&cДоступ к сундуку смерти запрещён плагином {PLUGIN}.'
+
+  CHEST_DENIED_BLOCK:
+    enabled: true
+    string: '&cНе удалось найти открытое пространство для размещения сундука.'
+    # available subs: %PLAYER%, %LOCATION%
+
+  CHEST_DENIED_PERMISSION:
+    enabled: false
+    string: '&cУ вас нет разрешения на сундуки смерти.'
+    # available subs: %PLAYER%, %LOCATION%
+
+  CHEST_DENIED_ADJACENT:
+    enabled: true
+    string: '&cРазмещению сундука смерти помешал существующий соседний сундук.'
+    # available subs: %PLAYER%, %LOCATION%
+
+  CHEST_DENIED_SPAWN_RADIUS:
+    enabled: true
+    string: '&cDeath chest deployment was prevented by world spawn protection.'
+    # available subs: %PLAYER%, %LOCATION%
+
+  CHEST_DENIED_WORLD_DISABLED:
+    enabled: true
+    string: '&cDeath chests are not enabled in this world.'
+    # available subs: %PLAYER%, %LOCATION%
+
+  CHEST_DENIED_VOID:
+    enabled: true
+    string: '&cСундук смерти нельзя разместить в пустоте.'
+    # available subs: %PLAYER%, %LOCATION%
+
+
+  INVENTORY_EMPTY:
+    enabled: true
+    string: '&cУ вас не было инвентаря для помещения в сундук смерти.'
+    # available subs: %PLAYER%, %LOCATION%
+
+  INVENTORY_FULL:
+    enabled: true
+    string: '&cНекоторые предметы не могут быть переданы, потому что ваш инвентарь заполнен.'
+    # available subs: %PLAYER%, %LOCATION%
+
+  NO_CHEST_IN_INVENTORY:
+    enabled: true
+    string: '&cСундук Смерти не был создан, так как у вас не было сундуков в инвентаре.'
+    # available subs: %PLAYER%, %LOCATION%
+
+  NOT_OWNER:
+    enabled: true
+    string: '&cЭтот сундук смерти тебе не принадлежит.'
+    # available subs: %PLAYER%, %LOCATION%, %OWNER%, %KILLER%
+
+  CHEST_EXPIRED:
+    enabled: true
+    string: '&cСрок действия вашего сундука смерти истек.'
+    repeat-delay: 1
+    # available subs: %PLAYER%, %LOCATION%
+
+  CREATIVE_MODE:
+    enabled: true
+    string: '&cCreative mode inventory is not saved in death chests.'
+    # available subs: %PLAYER%, %LOCATION%
+
+
+  NO_CREATIVE_ACCESS:
+    enabled: true
+    string: '&cAccess to death chests in creative mode is not allowed.'
+    # available subs: %PLAYER%, %LOCATION%
+
+  CHEST_CURRENTLY_OPEN:
+    enabled: true
+    string: '&cDeath chest is currently being accessed by another player.'
+    # available subs: %PLAYER%, %LOCATION%, %OWNER%, %KILLER%, %VIEWER%
+
+  COMMAND_FAIL_INVALID_COMMAND:
+    enabled: true
+    string: '&cThat is not a valid command!'
+    # available subs: %PLAYER%
+
+  COMMAND_FAIL_ARGS_COUNT_OVER:
+    enabled: true
+    string: '&cToo many arguments!'
+    # available subs: %PLAYER%
+
+  COMMAND_FAIL_HELP_PERMISSION:
+    enabled: true
+    string: '&cYou do not have permission to display DeathChest help!'
+    # available subs: %PLAYER%
+
+  COMMAND_FAIL_LIST_PERMISSION:
+    enabled: true
+    string: '&cYou do not have permission to list DeathChests!'
+    # available subs: %PLAYER%
+
+  COMMAND_FAIL_LIST_OTHER_PERMISSION:
+    enabled: true
+    string: '&cУ вас нет разрешения на перечисление сундуков смерти других игроков!'
+    # available subs: %PLAYER%
+
+  COMMAND_FAIL_RELOAD_PERMISSION:
+    enabled: true
+    string: '&cYou do not have permission to reload DeathChest configuration!'
+    # available subs: %PLAYER%
+
+  COMMAND_FAIL_STATUS_PERMISSION:
+    enabled: true
+    string: '&cYou do not have permission to view DeathChest settings!'
+    # available subs: %PLAYER%
+
+  COMMAND_SUCCESS_RELOAD:
+    enabled: true
+    string: '&7Конфигурация DeathChest перезагружена.'
+    # available subs: %PLAYER%
+
+
+  COMMAND_HELP_HELP:
+    enabled: true
+    string: '&eОтображает помощь для команд DeathChest.'
+
+  COMMAND_HELP_LIST:
+    enabled: true
+    string: '&eОтображает список всех сундуков смерти.'
+
+  COMMAND_HELP_RELOAD:
+    enabled: true
+    string: '&eReloads the plugin configuration.'
+
+  COMMAND_HELP_STATUS:
+    enabled: true
+    string: '&eDisplays plugin configuration settings.'
+
+  COMMAND_HELP_INVALID:
+    enabled: true
+    string: '&eThat is not a valid command.'
+
+  COMMAND_HELP_USAGE:
+    enabled: true
+    string: '&eCommand usage:'
+
+
+  LIST_HEADER:
+    enabled: true
+    string: '&3Page &b%PAGE_NUMBER%&3 of &b%PAGE_TOTAL%'
+
+  LIST_FOOTER:
+    enabled: false
+    string: '&3Page &b%PAGE_NUMBER%&3 of &b%PAGE_TOTAL%'
+
+  LIST_ITEM:
+    enabled: true
+    string: "%ITEM_NUMBER%) &aLocation:&b %LOCATION% &aKiller:&b %KILLER%\n
+    &aExpiration time:&b %EXPIRATION_DURATION% \n
+    &aProtection time:&b %PROTECTION_DURATION%"
+
+  LIST_ITEM_ALL:
+    enabled: true
+    string: "%ITEM_NUMBER%) &aOwner:&b %OWNER% &aKiller:&b %KILLER% \n
+    &aLocation:&b %LOCATION% \n
+    &aExpiration time:&b %EXPIRATION_DURATION% \n
+    &aProtection time:&b %PROTECTION_DURATION%"
+
+  LIST_EMPTY:
+    enabled: true
+    string: '&bНет сундуков смерти в списке!'
+
+  LIST_PLAYER_NOT_FOUND:
+    enabled: true
+    string: '&3That player could not be found!'
